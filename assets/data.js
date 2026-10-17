@@ -3,7 +3,7 @@ window.SITE = {
   "location": "Worldwide",
   "tagline": "Roblox game developer & systems designer",
   "description": "I turn ideas into playable Roblox experiences — from fluid combat and movement to responsive interfaces and complete game systems.",
-  "discord": "#contact",
+  "discord": "management.html#contact-options",
   "discordHandle": "Add your Discord handle in assets/data.js",
   "email": "",
   "availability": "Open for projects",
@@ -17,12 +17,20 @@ window.SITE = {
       "portfolio.html"
     ],
     [
+      "SFX",
+      "sfx.html"
+    ],
+    [
       "Proof",
       "proof.html"
     ],
     [
       "Pricing",
       "pricing.html"
+    ],
+    [
+      "Management",
+      "management.html"
     ],
     [
       "About",
@@ -46,279 +54,279 @@ window.SITE = {
     ]
   ],
   "metrics": [
-  {
-    "value": "13",
-    "label": "Showcase projects",
-    "detail": "Games, systems, UI and VFX",
-    "icon": "✦"
-  },
-  {
-    "value": "04",
-    "label": "Project categories",
-    "detail": "From gameplay to visual effects",
-    "icon": "↗"
-  },
-  {
-    "value": "09",
-    "label": "Development areas",
-    "detail": "Different ways to build and create",
-    "icon": "⌘"
-  },
-  {
-    "value": "01",
-    "label": "Developer",
-    "detail": "One portfolio. Many disciplines.",
-    "icon": "◈"
-  }
-],
+    {
+      "value": "13",
+      "label": "Showcase projects",
+      "detail": "Games, systems, UI and VFX",
+      "icon": "✦"
+    },
+    {
+      "value": "04",
+      "label": "Project categories",
+      "detail": "From gameplay to visual effects",
+      "icon": "↗"
+    },
+    {
+      "value": "09",
+      "label": "Development areas",
+      "detail": "Different ways to build and create",
+      "icon": "⌘"
+    },
+    {
+      "value": "01",
+      "label": "Developer",
+      "detail": "One portfolio. Many disciplines.",
+      "icon": "◈"
+    }
+  ],
   "studios": [
-  [
-    "Zombie survival gameplay",
-    "GAMES"
-  ],
-  [
-    "Combat & boss encounters",
-    "COMBAT"
-  ],
-  [
-    "Anime abilities & transformations",
-    "ABILITIES"
-  ],
-  [
-    "Shops & dialogue interfaces",
-    "UI"
-  ],
-  [
-    "Skill trees & inventories",
-    "PROGRESSION"
-  ],
-  [
-    "Cinematic cutscene abilities",
-    "CINEMATICS"
-  ],
-  [
-    "Vehicle driving systems",
-    "VEHICLES"
-  ],
-  [
-    "Sports game physics",
-    "PHYSICS"
-  ],
-  [
-    "Visual effects creation",
-    "VFX"
-  ]
-],
-  "projects": [
-  {
-    "name": "Zombie Wave",
-    "category": "Games & Physics",
-    "type": "SURVIVAL GAME",
-    "for": "PROJECT SHOWCASE",
-    "desc": "Wave-based zombie gameplay designed around repeatable encounters and the pace of survival.",
-    "focus": [
-      "Wave survival",
-      "Gameplay",
-      "Enemies"
+    [
+      "Zombie survival gameplay",
+      "GAMES"
     ],
-    "icon": "wave",
-    "tone": "ember",
-    "code": "01",
-    "time": "NISHINO / ROBLOX"
-  },
-  {
-    "name": "Combat System",
-    "category": "Combat & Abilities",
-    "type": "COMBAT SYSTEM",
-    "for": "PROJECT SHOWCASE",
-    "desc": "A combat-focused Roblox system built for player-versus-target interactions and responsive action.",
-    "focus": [
-      "Combat",
-      "Gameplay systems",
-      "Interactions"
+    [
+      "Combat & boss encounters",
+      "COMBAT"
     ],
-    "icon": "combat",
-    "tone": "fire",
-    "code": "02",
-    "time": "NISHINO / ROBLOX"
-  },
-  {
-    "name": "Boss Battle",
-    "category": "Combat & Abilities",
-    "type": "BOSS ENCOUNTER",
-    "for": "PROJECT SHOWCASE",
-    "desc": "A dedicated boss-fight project focused on bringing an encounter to life through combat and presentation.",
-    "focus": [
-      "Boss fight",
-      "Combat",
-      "Encounter design"
+    [
+      "Anime abilities & transformations",
+      "ABILITIES"
     ],
-    "icon": "boss",
-    "tone": "gold",
-    "code": "03",
-    "time": "NISHINO / ROBLOX"
-  },
-  {
-    "name": "Shop UI",
-    "category": "UI & Systems",
-    "type": "INTERFACE",
-    "for": "PROJECT SHOWCASE",
-    "desc": "An in-game shop interface for browsing items and making choices inside a Roblox experience.",
-    "focus": [
-      "UI",
-      "Shop",
-      "Interface design"
-    ],
-    "icon": "shop",
-    "tone": "bronze",
-    "code": "04",
-    "time": "NISHINO / ROBLOX"
-  },
-  {
-    "name": "NPC Dialogue UI",
-    "category": "UI & Systems",
-    "type": "INTERFACE",
-    "for": "PROJECT SHOWCASE",
-    "desc": "A conversation interface for NPC interactions, built to give in-game dialogue a clear presentation.",
-    "focus": [
-      "UI",
-      "Dialogue",
-      "NPCs"
-    ],
-    "icon": "dialogue",
-    "tone": "amber",
-    "code": "05",
-    "time": "NISHINO / ROBLOX"
-  },
-  {
-    "name": "Car Driving System",
-    "category": "Games & Physics",
-    "type": "VEHICLE SYSTEM",
-    "for": "PROJECT SHOWCASE",
-    "desc": "Vehicle driving mechanics for Roblox, with a focus on player controls and how cars feel in motion.",
-    "focus": [
-      "Vehicles",
-      "Controls",
-      "Driving"
-    ],
-    "icon": "car",
-    "tone": "copper",
-    "code": "06",
-    "time": "NISHINO / ROBLOX"
-  },
-  {
-    "name": "Skill Trees",
-    "category": "UI & Systems",
-    "type": "PROGRESSION SYSTEM",
-    "for": "PROJECT SHOWCASE",
-    "desc": "Skill tree interfaces and progression structures for presenting character development paths.",
-    "focus": [
-      "Skill trees",
-      "Progression",
+    [
+      "Shops & dialogue interfaces",
       "UI"
     ],
-    "icon": "skills",
-    "tone": "gold",
-    "code": "07",
-    "time": "NISHINO / ROBLOX"
-  },
-  {
-    "name": "Inventory Systems",
-    "category": "UI & Systems",
-    "type": "INVENTORY SYSTEM",
-    "for": "PROJECT SHOWCASE",
-    "desc": "Inventory management and interface systems for organizing and interacting with in-game items.",
-    "focus": [
-      "Inventory",
-      "Items",
-      "Systems"
+    [
+      "Skill trees & inventories",
+      "PROGRESSION"
     ],
-    "icon": "inventory",
-    "tone": "bronze",
-    "code": "08",
-    "time": "NISHINO / ROBLOX"
-  },
-  {
-    "name": "Cutscene Abilities",
-    "category": "Combat & Abilities",
-    "type": "CINEMATIC ABILITIES",
-    "for": "PROJECT SHOWCASE",
-    "desc": "Gameplay abilities presented through more cinematic moments, including action-focused visual sequencing.",
-    "focus": [
-      "Cinematics",
-      "Abilities",
-      "Presentation"
+    [
+      "Cinematic cutscene abilities",
+      "CINEMATICS"
     ],
-    "icon": "cutscene",
-    "tone": "ember",
-    "code": "09",
-    "time": "NISHINO / ROBLOX"
-  },
-  {
-    "name": "Anime Abilities",
-    "category": "Combat & Abilities",
-    "type": "ABILITY SYSTEM",
-    "for": "PROJECT SHOWCASE",
-    "desc": "Anime-inspired combat abilities emphasizing distinctive actions and dramatic on-screen presentation.",
-    "focus": [
-      "Anime",
-      "Abilities",
-      "Combat"
+    [
+      "Vehicle driving systems",
+      "VEHICLES"
     ],
-    "icon": "anime",
-    "tone": "fire",
-    "code": "10",
-    "time": "NISHINO / ROBLOX"
-  },
-  {
-    "name": "Anime Transformations",
-    "category": "Combat & Abilities",
-    "type": "TRANSFORMATIONS",
-    "for": "PROJECT SHOWCASE",
-    "desc": "Anime-inspired character transformation sequences with a focus on visual impact and presentation.",
-    "focus": [
-      "Transformations",
-      "Anime",
-      "Visuals"
+    [
+      "Sports game physics",
+      "PHYSICS"
     ],
-    "icon": "transform",
-    "tone": "gold",
-    "code": "11",
-    "time": "NISHINO / ROBLOX"
-  },
-  {
-    "name": "Roblox Sports Physics Games",
-    "category": "Games & Physics",
-    "type": "SPORTS GAMEPLAY",
-    "for": "PROJECT SHOWCASE",
-    "desc": "Physics-focused Roblox sports gameplay work exploring movement and interactions around the ball or game object.",
-    "focus": [
-      "Sports",
-      "Physics",
-      "Gameplay"
-    ],
-    "icon": "sports",
-    "tone": "copper",
-    "code": "12",
-    "time": "NISHINO / ROBLOX"
-  },
-  {
-    "name": "VFX Creation",
-    "category": "VFX",
-    "type": "VISUAL EFFECTS",
-    "for": "PROJECT SHOWCASE",
-    "desc": "Effects work for Roblox gameplay, from movement and impact moments to ability-based visuals.",
-    "focus": [
-      "VFX",
-      "Effects",
-      "Visual design"
-    ],
-    "icon": "vfx",
-    "tone": "amber",
-    "code": "13",
-    "time": "NISHINO / ROBLOX"
-  }
-],
+    [
+      "Visual effects creation",
+      "VFX"
+    ]
+  ],
+  "projects": [
+    {
+      "name": "Zombie Wave",
+      "category": "Games & Physics",
+      "type": "SURVIVAL GAME",
+      "for": "PROJECT SHOWCASE",
+      "desc": "Wave-based zombie gameplay designed around repeatable encounters and the pace of survival.",
+      "focus": [
+        "Wave survival",
+        "Gameplay",
+        "Enemies"
+      ],
+      "icon": "wave",
+      "tone": "ember",
+      "code": "01",
+      "time": "NISHINO / ROBLOX"
+    },
+    {
+      "name": "Combat System",
+      "category": "Combat & Abilities",
+      "type": "COMBAT SYSTEM",
+      "for": "PROJECT SHOWCASE",
+      "desc": "A combat-focused Roblox system built for player-versus-target interactions and responsive action.",
+      "focus": [
+        "Combat",
+        "Gameplay systems",
+        "Interactions"
+      ],
+      "icon": "combat",
+      "tone": "fire",
+      "code": "02",
+      "time": "NISHINO / ROBLOX"
+    },
+    {
+      "name": "Boss Battle",
+      "category": "Combat & Abilities",
+      "type": "BOSS ENCOUNTER",
+      "for": "PROJECT SHOWCASE",
+      "desc": "A dedicated boss-fight project focused on bringing an encounter to life through combat and presentation.",
+      "focus": [
+        "Boss fight",
+        "Combat",
+        "Encounter design"
+      ],
+      "icon": "boss",
+      "tone": "gold",
+      "code": "03",
+      "time": "NISHINO / ROBLOX"
+    },
+    {
+      "name": "Shop UI",
+      "category": "UI & Systems",
+      "type": "INTERFACE",
+      "for": "PROJECT SHOWCASE",
+      "desc": "An in-game shop interface for browsing items and making choices inside a Roblox experience.",
+      "focus": [
+        "UI",
+        "Shop",
+        "Interface design"
+      ],
+      "icon": "shop",
+      "tone": "bronze",
+      "code": "04",
+      "time": "NISHINO / ROBLOX"
+    },
+    {
+      "name": "NPC Dialogue UI",
+      "category": "UI & Systems",
+      "type": "INTERFACE",
+      "for": "PROJECT SHOWCASE",
+      "desc": "A conversation interface for NPC interactions, built to give in-game dialogue a clear presentation.",
+      "focus": [
+        "UI",
+        "Dialogue",
+        "NPCs"
+      ],
+      "icon": "dialogue",
+      "tone": "amber",
+      "code": "05",
+      "time": "NISHINO / ROBLOX"
+    },
+    {
+      "name": "Car Driving System",
+      "category": "Games & Physics",
+      "type": "VEHICLE SYSTEM",
+      "for": "PROJECT SHOWCASE",
+      "desc": "Vehicle driving mechanics for Roblox, with a focus on player controls and how cars feel in motion.",
+      "focus": [
+        "Vehicles",
+        "Controls",
+        "Driving"
+      ],
+      "icon": "car",
+      "tone": "copper",
+      "code": "06",
+      "time": "NISHINO / ROBLOX"
+    },
+    {
+      "name": "Skill Trees",
+      "category": "UI & Systems",
+      "type": "PROGRESSION SYSTEM",
+      "for": "PROJECT SHOWCASE",
+      "desc": "Skill tree interfaces and progression structures for presenting character development paths.",
+      "focus": [
+        "Skill trees",
+        "Progression",
+        "UI"
+      ],
+      "icon": "skills",
+      "tone": "gold",
+      "code": "07",
+      "time": "NISHINO / ROBLOX"
+    },
+    {
+      "name": "Inventory Systems",
+      "category": "UI & Systems",
+      "type": "INVENTORY SYSTEM",
+      "for": "PROJECT SHOWCASE",
+      "desc": "Inventory management and interface systems for organizing and interacting with in-game items.",
+      "focus": [
+        "Inventory",
+        "Items",
+        "Systems"
+      ],
+      "icon": "inventory",
+      "tone": "bronze",
+      "code": "08",
+      "time": "NISHINO / ROBLOX"
+    },
+    {
+      "name": "Cutscene Abilities",
+      "category": "Combat & Abilities",
+      "type": "CINEMATIC ABILITIES",
+      "for": "PROJECT SHOWCASE",
+      "desc": "Gameplay abilities presented through more cinematic moments, including action-focused visual sequencing.",
+      "focus": [
+        "Cinematics",
+        "Abilities",
+        "Presentation"
+      ],
+      "icon": "cutscene",
+      "tone": "ember",
+      "code": "09",
+      "time": "NISHINO / ROBLOX"
+    },
+    {
+      "name": "Anime Abilities",
+      "category": "Combat & Abilities",
+      "type": "ABILITY SYSTEM",
+      "for": "PROJECT SHOWCASE",
+      "desc": "Anime-inspired combat abilities emphasizing distinctive actions and dramatic on-screen presentation.",
+      "focus": [
+        "Anime",
+        "Abilities",
+        "Combat"
+      ],
+      "icon": "anime",
+      "tone": "fire",
+      "code": "10",
+      "time": "NISHINO / ROBLOX"
+    },
+    {
+      "name": "Anime Transformations",
+      "category": "Combat & Abilities",
+      "type": "TRANSFORMATIONS",
+      "for": "PROJECT SHOWCASE",
+      "desc": "Anime-inspired character transformation sequences with a focus on visual impact and presentation.",
+      "focus": [
+        "Transformations",
+        "Anime",
+        "Visuals"
+      ],
+      "icon": "transform",
+      "tone": "gold",
+      "code": "11",
+      "time": "NISHINO / ROBLOX"
+    },
+    {
+      "name": "Roblox Sports Physics Games",
+      "category": "Games & Physics",
+      "type": "SPORTS GAMEPLAY",
+      "for": "PROJECT SHOWCASE",
+      "desc": "Physics-focused Roblox sports gameplay work exploring movement and interactions around the ball or game object.",
+      "focus": [
+        "Sports",
+        "Physics",
+        "Gameplay"
+      ],
+      "icon": "sports",
+      "tone": "copper",
+      "code": "12",
+      "time": "NISHINO / ROBLOX"
+    },
+    {
+      "name": "VFX Creation",
+      "category": "VFX",
+      "type": "VISUAL EFFECTS",
+      "for": "PROJECT SHOWCASE",
+      "desc": "Effects work for Roblox gameplay, from movement and impact moments to ability-based visuals.",
+      "focus": [
+        "VFX",
+        "Effects",
+        "Visual design"
+      ],
+      "icon": "vfx",
+      "tone": "amber",
+      "code": "13",
+      "time": "NISHINO / ROBLOX"
+    }
+  ],
   "reviews": [],
   "faqs": [
     {
@@ -339,6 +347,23 @@ window.SITE = {
         [
           "Do you work on existing games?",
           "Existing projects can be reviewed to plan integrations and improvements."
+        ]
+      ]
+    },
+    {
+      "group": "Management & Contact",
+      "items": [
+        [
+          "Who handles commission communication?",
+          "Foallow manages inquiries, updates and client-facing coordination. Nishino remains responsible for technical implementation and project deliverables."
+        ],
+        [
+          "Who should I contact if something goes wrong?",
+          "Raise payment, schedule or communication concerns with Foallow first. Technical questions can be discussed with Nishino through the agreed project channel."
+        ],
+        [
+          "Does management guarantee a refund or delivery date?",
+          "No guarantee is implied. Payment schedules, refund terms, milestone dates, responsibilities and escalation steps must be written into the individual commission agreement."
         ]
       ]
     },
@@ -502,6 +527,44 @@ window.SITE = {
           ]
         ]
       ]
+    }
+  ],
+  "contacts": {
+    "developer": {
+      "name": "Nishino",
+      "role": "Roblox Developer",
+      "platform": "GitHub",
+      "label": "@nishinorblx-sys",
+      "url": "https://github.com/nishinorblx-sys"
+    },
+    "manager": {
+      "name": "Foallow",
+      "role": "Commission Manager",
+      "platform": "Direct contact",
+      "label": "Contact link to be added",
+      "url": ""
+    }
+  },
+  "managementServices": [
+    {
+      "title": "Commission coordination",
+      "description": "Manage commission inquiries, track project updates, and keep communication smooth between the client and the development team."
+    },
+    {
+      "title": "Dispute resolution",
+      "description": "Handle disputes, concerns and difficult conversations on Nishino’s behalf, seeking an agreed resolution before escalating when needed."
+    },
+    {
+      "title": "Payment coordination",
+      "description": "Track agreed milestones, invoices and payment deadlines, and coordinate the proper and timely distribution of payments."
+    },
+    {
+      "title": "Relationships & networking",
+      "description": "Maintain productive relationships with clients, collaborators and team members, and help connect new commissions with the right people."
+    },
+    {
+      "title": "First point of escalation",
+      "description": "Act as a communication bridge when a client is dissatisfied. Foallow steps in first to hear the issue and work toward a solution rather than directing conflict at the developer."
     }
   ]
 };

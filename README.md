@@ -1,49 +1,47 @@
-# NISHINO — Solar Amber Portfolio
+# Nishino — Solar Amber Portfolio V8
 
-A fully editable dark orange-and-gold Roblox developer portfolio with animations.
+An editable, animated Roblox developer portfolio. Version 8 adds an SFX preview page, Management by Foallow, and improved interaction audio.
 
-## Start
+## Upload this update to GitHub
 
-Open `index.html` locally, or host this static folder on any HTML hosting service. All 9 pages use the same shared styles and code.
+1. Extract `Nishino-Solar-Amber-V8-Update.zip` on your computer.
+2. Open `https://github.com/nishinorblx-sys/nishino-portfolio`.
+3. Select **Add file → Upload files** and drag the **contents** of the extracted update folder into the repository root. Keep the `assets` folder structure. Do not upload the ZIP itself or add an extra enclosing folder.
+4. Review the changed files and commit them to the `main` branch. Your connected Vercel project should deploy the commit automatically.
+5. Open `https://nishino-portfolio.vercel.app`, refresh, and check the SFX and Management pages.
 
-## Edit
+The separate **Full Website** ZIP includes every site file and its audio assets for a complete replacement or backup. You only need the **Update** ZIP if your GitHub repository still contains the original V7 assets.
 
-- `assets/data.js` contains the name, navigation, 13 showcase projects, services and contact placeholders.
-- `assets/styles.css` contains layout, responsive styles and the Solar Amber palette.
-- `assets/motion.css` contains the entrances, effects and animation styling.
-- `assets/app.js` renders all pages.
-- `assets/motion.js` handles scroll reveals, number counters, pointer tilt and transitions.
+## New pages
 
-## Important
+- `sfx.html` — three interactive playback samples using the existing loading, hover and click MP3s.
+- `management.html` — Foallow's responsibilities, developer/management role separation, commission workflow and two contact cards.
+- `assets/sections.css` — matching Solar Amber styles and mobile layouts.
 
-The original portfolio owner's reviews, education, clients, pricing promises and contact details have been removed. All 13 showcase project names were provided by Nishino. Descriptions are concise category-level summaries, not verified technical specifications. The icon artwork on each card is decorative and is not a gameplay screenshot. Add your own screenshots and demo links before publishing.
+The site includes the original thirteen project entries in `assets/data.js`, along with the existing animations and page transitions.
 
-The primary contact target is `#contact`, and no personal Discord or email was invented. Add a real contact link before publishing.
+## Contact information to fill in
 
-## Pages
+Update the `contacts` object near the start of `assets/data.js`:
 
-Home, Portfolio, Proof, Pricing, About, Clients, Reviews, FAQ, and Terms.
+- `contacts.developer` currently links to the confirmed public GitHub handle `@nishinorblx-sys`.
+- `contacts.manager` is **not a verified contact link** yet. Replace `label`, `platform` and `url` with Foallow's correct Discord, email, or social profile. When `url` is nonempty, the card automatically shows a working contact button.
 
-## Motion and accessibility
+The portfolio avoids inventing unverified contact information. The homepage and hiring buttons now lead to the management contact area.
 
-Interactive effects are disabled for users who request reduced motion.
+## Audio behavior
 
-## Portfolio — 13 projects
+- `Website1.MP3` plays with the 1.54-second loading sequence after the visitor enters the experience.
+- `Website2.MP3` is the quick category/navigation hover sound, with a 35ms limiter.
+- `Website3.MP3` plays on site clicks; dynamic project cards and the added pages are supported.
+- Short hover and click sounds use decoded Web Audio buffers when available, with an HTML Audio fallback. Temporary decoding or playback errors do not permanently disable a sound.
+- Audio playback still depends on user gestures and the browser's autoplay policy.
+- The header SOUND ON/OFF control persists the visitor's preference. If sound is silent, make sure it displays SOUND ON.
 
-Zombie Wave, Combat System, Boss Battle, Shop UI, NPC Dialogue UI, Car Driving System, Skill Trees, Inventory Systems, Cutscene Abilities, Anime Abilities, Anime Transformations, Roblox Sports Physics Games, and VFX Creation.
+## Project media
 
-The homepage features the first three items. Portfolio filters are generated from categories in `assets/data.js`. To change the order, title, category, subtitle or tags, edit the project objects in that file.
+Actual footage and images are not included. The graphic portfolio covers are visual placeholders, not gameplay captures. Each project may define an `img` and `video` path inside `assets/data.js` when those files are added.
 
-To attach a real screenshot, place it in a folder such as `assets/media/`, then add an `img` property to the relevant object: `"img": "assets/media/zombie-wave.webp"`. Leave it empty until you have real footage. To add an MP4 clip in the project popup, add a `video` property such as `"video": "assets/media/zombie-wave.mp4"` to that project. The file should exist in your local project. Custom thumbnails are visual placeholders, not actual project captures.
+## Scope and management expectations
 
-## Audio effects — V7
-
-`assets/audio/Website1.MP3` is a faster version of your loading clip, time-compressed without raising its pitch. Its 1.54-second playback is synchronized with the loading progress. The original 2.69-second recording is preserved at `assets/audio/Website1-original.MP3`.
-
-The first visit shows an ENTER EXPERIENCE button because web browsers require a user gesture to reliably play sound. Once entered, the short loading animation runs. Navigation between pages skips repeat splash screens entirely, using the existing animated page transition instead.
-
-`assets/audio/Website2.MP3` plays when hovering over navigation links, portfolio category filters, project cards and category-style links. Its long silent tail has been removed, and its cooldown is now 45 milliseconds instead of 150 milliseconds. The original recording is preserved at `assets/audio/Website2-original.MP3`. Two audio voices limit overlap during rapid hovering.
-
-`assets/audio/Website3.MP3` plays when clicking anywhere on the website. The SOUND ON/OFF toggle is retained and saved in your browser.
-
-You can change the hover cooldown at `minimumGap.hover` in `assets/sounds.js`. Browser reduced-motion preferences are respected.
+Foallow coordinates communication, disputes, payments and relationships. Nishino remains responsible for the technical work and deliverables. No fixed fee, refund policy, escrow arrangement, or guaranteed timeline has been invented; those belong in the individual written agreement.

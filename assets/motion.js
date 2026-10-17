@@ -47,7 +47,7 @@
   },{passive:true});
   updateScroll();
   if (!reduce) {
-    const groups = ['.section-heading','.metric','.studio-row','.route-tile','.project-card','.feature-showcase','.education-card','.review-card','.personal-tile','.split-section','.timeline-item','.client-card','.pricing-card','.step','.proof-card','.faq-item','.term-entry','.info-card','.stats-showcase > div','.review-summary','.faq-group','.dual-cards'];
+    const groups = ['.section-heading','.sfx-card','.management-card','.management-contact-card','.role-panel','.metric','.studio-row','.route-tile','.project-card','.feature-showcase','.education-card','.review-card','.personal-tile','.split-section','.timeline-item','.client-card','.pricing-card','.step','.proof-card','.faq-item','.term-entry','.info-card','.stats-showcase > div','.review-summary','.faq-group','.dual-cards'];
     const observed = new WeakSet();
     const observer = 'IntersectionObserver' in window ? new IntersectionObserver(entries=>{
       entries.forEach(entry=>{
@@ -96,7 +96,7 @@
       requestAnimationFrame(render);
     };
     attachReveals();
-    const tiltSelector = '.identity-card,.project-card,.route-tile,.pricing-card,.client-card,.step,.education-card,.review-card,.personal-tile,.proof-card';
+    const tiltSelector = '.identity-card,.project-card,.route-tile,.pricing-card,.sfx-card,.management-card,.management-contact-card,.role-panel,.client-card,.step,.education-card,.review-card,.personal-tile,.proof-card';
     const finePointer = matchMedia('(hover:hover) and (pointer:fine)').matches;
     let tiltEl = null;
     if (finePointer) {
