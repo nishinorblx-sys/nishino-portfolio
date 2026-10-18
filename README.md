@@ -1,4 +1,4 @@
-# Foallow — Roblox & Audio Portfolio
+# Foallow, Roblox & Audio Portfolio
 
 Full static site built around Foallow's Roblox scripting, systems, VFX and SFX projects.
 
@@ -31,3 +31,11 @@ Discord: `foallow`
 The Contact page provides a copyable username and an Open Discord link. No unrelated public profile or email is listed.
 
 The audio files are preserved under `assets/audio/` and work independently of the YouTube showcase videos.
+
+## V10 pricing and content
+
+The SFX page contains only the two video showcases. Interface sounds still work across the site, but their preview cards have been removed. The home page no longer has the slogan or the remote/worldwide text. FAQ answers were rewritten to avoid the word previously used for project extent.
+
+Edit `assets/data.js` under `pricingCatalog` to adjust quoted prices. The extra service and policy layout is in `assets/app.js`, with styling in `assets/pricing-v10.css`.
+
+Advertised price examples are intended as editable starting rates, not binding offers.

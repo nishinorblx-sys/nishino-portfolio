@@ -47,7 +47,7 @@
   },{passive:true});
   updateScroll();
   if (!reduce) {
-    const groups = ['.section-heading','.sfx-card','.foallow-video-card','.foallow-contact-panel','.metric','.studio-row','.route-tile','.project-card','.feature-showcase','.education-card','.review-card','.personal-tile','.split-section','.timeline-item','.client-card','.pricing-card','.step','.proof-card','.faq-item','.term-entry','.info-card','.stats-showcase > div','.review-summary','.faq-group','.dual-cards'];
+    const groups = ['.section-heading','.sfx-card','.foallow-video-card','.foallow-contact-panel','.metric','.studio-row','.route-tile','.project-card','.feature-showcase','.education-card','.review-card','.personal-tile','.split-section','.timeline-item','.client-card','.pricing-card','.step','.proof-card','.faq-item','.term-entry','.info-card','.stats-showcase > div','.review-summary','.faq-group','.dual-cards','.rate-card','.rate-step','.rate-option'];
     const observed = new WeakSet();
     const observer = 'IntersectionObserver' in window ? new IntersectionObserver(entries=>{
       entries.forEach(entry=>{

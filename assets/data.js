@@ -2,7 +2,7 @@ window.SITE = {
   "brand": "Foallow",
   "location": "Worldwide",
   "tagline": "Roblox developer, SFX designer & creator",
-  "description": "I build Roblox experiences from the ground up — scripting the systems, designing the interfaces, shaping the effects, and crafting the sounds that bring them to life.",
+  "description": "I build Roblox experiences from the ground up, scripting game systems, designing interfaces, creating visual effects, and crafting sounds that bring every moment to life.",
   "discord": "contact.html",
   "discordHandle": "foallow",
   "email": "",
@@ -337,7 +337,7 @@ window.SITE = {
         ],
         [
           "Can I request a custom system?",
-          "Yes. A scoped design helps define what needs building and how the pieces fit together."
+          "Yes. A clear feature list and references help me determine how each part should work and connect."
         ],
         [
           "Do you work on existing games?",
@@ -358,7 +358,7 @@ window.SITE = {
         ],
         [
           "How are project details, payment and revisions handled?",
-          "Scope, price, schedule, payment terms, deliverables, and revision limits should be agreed in writing before work starts."
+          "We agree on the features, price, timeline, payment arrangements, what will be delivered, and the number of revisions before I begin."
         ]
       ]
     },
@@ -367,11 +367,11 @@ window.SITE = {
       "items": [
         [
           "How much does a project cost?",
-          "Pricing depends on scope, complexity and available assets. The pricing page lists services for which a custom quote can be requested."
+          "The pricing page shows starting rates. Your final quote depends on the features requested, technical difficulty, and any existing materials you provide."
         ],
         [
           "Do you take milestone projects?",
-          "Milestones can be discussed when the scope is substantial."
+          "Yes. Larger commissions can be divided into smaller deliveries with agreed prices and checkpoints."
         ],
         [
           "How long will my project take?",
@@ -405,11 +405,11 @@ window.SITE = {
         ],
         [
           "Are revisions possible?",
-          "Revision scope and timelines should be established during planning."
+          "Yes. We decide how many revision rounds are included and when changes can be requested before starting the commission."
         ],
         [
           "Can you provide future updates?",
-          "Maintenance and follow-up work can be scoped as separate milestones."
+          "Yes. Future updates or ongoing maintenance can be quoted as additional work after delivery."
         ]
       ]
     }
@@ -584,5 +584,209 @@ window.SITE = {
         "subtitle": "Driving physics and vehicle gameplay demonstration"
       }
     ]
+  },
+  "pricingCatalog": [
+    {
+      "group": "Core gameplay systems",
+      "caption": "Combat, movement and ability foundations",
+      "items": [
+        {
+          "name": "Combat system",
+          "starting": "$145+",
+          "type": "SINGLE SYSTEM",
+          "desc": "Combos, hit reactions, guarding and parries. Built to fit your game’s combat style.",
+          "features": [
+            "Server-side hit validation",
+            "Combo and defensive states",
+            "Modular combat logic"
+          ],
+          "tiers": [
+            [
+              "Basic combat system",
+              "$145+"
+            ],
+            [
+              "Advanced combat system",
+              "$295+"
+            ]
+          ]
+        },
+        {
+          "name": "Movement system",
+          "starting": "$65+",
+          "type": "SINGLE SYSTEM",
+          "desc": "Player movement with responsive input, including sprinting, sliding, dashes or traversal mechanics.",
+          "features": [
+            "Tunable movement speeds",
+            "Responsive client controls",
+            "Movement state handling"
+          ],
+          "tiers": [
+            [
+              "Basic movement",
+              "$65+"
+            ],
+            [
+              "Advanced movement",
+              "$135+"
+            ]
+          ]
+        },
+        {
+          "name": "Ability framework",
+          "starting": "$125+",
+          "type": "SINGLE SYSTEM",
+          "desc": "Reusable ability infrastructure for activation, cooldowns, restrictions and client-server execution.",
+          "features": [
+            "Cooldown management",
+            "Server-side checks",
+            "Expandable ability modules"
+          ],
+          "tiers": [
+            [
+              "Ability framework",
+              "$125+"
+            ],
+            [
+              "Single skill add-on",
+              "$30+"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "group": "Abilities, UI and AI",
+      "caption": "Individual abilities, interfaces, characters and enemies",
+      "items": [
+        {
+          "name": "Ability or skill",
+          "starting": "$30+",
+          "type": "PER ABILITY",
+          "desc": "One custom move built for your existing game. The animation, visuals and complexity influence the quote.",
+          "features": [
+            "Custom activation behavior",
+            "Animation and effect hooks",
+            "Gameplay integration"
+          ],
+          "tiers": [
+            [
+              "Basic ability",
+              "$30+"
+            ],
+            [
+              "Complex ability",
+              "Custom quote"
+            ]
+          ]
+        },
+        {
+          "name": "UI scripting",
+          "starting": "$65+",
+          "type": "SINGLE SYSTEM",
+          "desc": "Bring menus, HUDs, inventories and shops to life with functional and responsive interactions.",
+          "features": [
+            "Interactive elements",
+            "Smooth transitions",
+            "Roblox integration"
+          ],
+          "tiers": [
+            [
+              "UI scripting",
+              "$65+"
+            ]
+          ]
+        },
+        {
+          "name": "Avatar customizer",
+          "starting": "$40+",
+          "type": "SINGLE SYSTEM",
+          "desc": "Character appearance controls, outfit selection and customizable player presentation.",
+          "features": [
+            "Character appearance options",
+            "Customization UI",
+            "Saved choices when requested"
+          ],
+          "tiers": [
+            [
+              "Basic customizer",
+              "$40+"
+            ],
+            [
+              "Advanced customizer",
+              "$135+"
+            ]
+          ]
+        },
+        {
+          "name": "Boss and enemy AI",
+          "starting": "$215+",
+          "type": "SINGLE SYSTEM",
+          "desc": "Enemies with targeting, pathfinding and attacks, including boss encounters with multiple phases.",
+          "features": [
+            "Target selection",
+            "Navigation and attack states",
+            "Boss phase behaviors"
+          ],
+          "tiers": [
+            [
+              "Enemy AI",
+              "$215+"
+            ],
+            [
+              "Advanced boss encounter",
+              "$445+"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "group": "Sound and visual effects",
+      "caption": "Standalone game-ready sound and VFX creation",
+      "items": [
+        {
+          "name": "SFX creation",
+          "starting": "$2",
+          "type": "PER SOUND",
+          "desc": "Custom effects for UI, footsteps, hits, abilities, environments and cinematic moments.",
+          "features": [
+            "Minimum $2 per sound",
+            "Maximum typical rate $5 per sound",
+            "Complexity determines price"
+          ],
+          "tiers": [
+            [
+              "Sound effects",
+              "$2 to $5 USD"
+            ]
+          ]
+        },
+        {
+          "name": "VFX creation",
+          "starting": "$5",
+          "type": "PER EFFECT",
+          "desc": "Custom Roblox particle and visual effects, ranging from simple impacts to layered abilities.",
+          "features": [
+            "Minimum $5 per VFX",
+            "Up to $50 for complex effects",
+            "Designed for Roblox Studio"
+          ],
+          "tiers": [
+            [
+              "Visual effects",
+              "$5 to $50 USD"
+            ]
+          ]
+        }
+      ]
+    }
+  ],
+  "rushPolicy": {
+    "priority": "12% to 16% extra",
+    "priorityTime": "3 to 4 days when available",
+    "dropAll": "24% extra",
+    "consult": "$22",
+    "consultTime": "Up to 1 hour"
   }
 };

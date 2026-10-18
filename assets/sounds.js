@@ -133,7 +133,7 @@
       if (enabled) { unlock(); play('click', true) }
     });
   }
-  const hoverTargets = '.desktop-nav a,.mobile-nav a,.filter-btn,.faq-aside a,.studio-row,.route-tile,.project-card,.client-card,.proof-chips span,.mini-tags span,.footer-links a,.foallow-video-card,.foallow-contact-panel,.foallow-video-launch,.sfx-card,.sfx-preview-button,.foallow-explore-card';
+  const hoverTargets = '.desktop-nav a,.mobile-nav a,.filter-btn,.faq-aside a,.studio-row,.route-tile,.project-card,.client-card,.proof-chips span,.mini-tags span,.footer-links a,.foallow-video-card,.foallow-contact-panel,.foallow-video-launch,.foallow-explore-card';
   document.addEventListener('pointerover', event => {
     if (!entered || loader && !loader.classList.contains('ns-loader-hidden')) return;
     if (event.pointerType && event.pointerType !== 'mouse' && event.pointerType !== 'pen') return;
@@ -144,24 +144,9 @@
   }, {passive: true});
   document.addEventListener('click', event => {
     if (!entered || loader && !loader.classList.contains('ns-loader-hidden')) return;
-    if (!(event.target instanceof Element) || event.target.closest('.ns-sound-toggle,[data-sfx-preview],[disabled],[aria-disabled="true"]')) return;
+    if (!(event.target instanceof Element) || event.target.closest('.ns-sound-toggle,[disabled],[aria-disabled="true"]')) return;
     play('click');
   }, {capture: true});
-  document.querySelectorAll('[data-sfx-preview]').forEach(button => {
-    button.addEventListener('click', () => {
-      if (!enabled) {
-        const toggle = document.querySelector('.ns-sound-toggle');
-        if (toggle) { toggle.focus(); toggle.title = 'Enable SOUND ON to hear previews' }
-        return;
-      }
-      unlock();
-      const type = button.dataset.sfxPreview;
-      const result = play(type, true);
-      if (!result) return;
-      button.classList.add('is-playing');
-      setTimeout(() => button.classList.remove('is-playing'), type === 'loading' ? 1550 : 300);
-    });
-  });
   const finish = () => {
     if (!loader || finishing) return;
     finishing = true;
