@@ -592,65 +592,35 @@ window.SITE = {
       "items": [
         {
           "name": "Combat system",
-          "starting": "$145+",
+          "starting": "$145",
           "type": "SINGLE SYSTEM",
           "desc": "Combos, hit reactions, guarding and parries. Built to fit your game’s combat style.",
           "features": [
             "Server-side hit validation",
             "Combo and defensive states",
             "Modular combat logic"
-          ],
-          "tiers": [
-            [
-              "Basic combat system",
-              "$145+"
-            ],
-            [
-              "Advanced combat system",
-              "$295+"
-            ]
           ]
         },
         {
           "name": "Movement system",
-          "starting": "$65+",
+          "starting": "$65",
           "type": "SINGLE SYSTEM",
           "desc": "Player movement with responsive input, including sprinting, sliding, dashes or traversal mechanics.",
           "features": [
             "Tunable movement speeds",
             "Responsive client controls",
             "Movement state handling"
-          ],
-          "tiers": [
-            [
-              "Basic movement",
-              "$65+"
-            ],
-            [
-              "Advanced movement",
-              "$135+"
-            ]
           ]
         },
         {
           "name": "Ability framework",
-          "starting": "$125+",
+          "starting": "$125",
           "type": "SINGLE SYSTEM",
           "desc": "Reusable ability infrastructure for activation, cooldowns, restrictions and client-server execution.",
           "features": [
             "Cooldown management",
             "Server-side checks",
             "Expandable ability modules"
-          ],
-          "tiers": [
-            [
-              "Ability framework",
-              "$125+"
-            ],
-            [
-              "Single skill add-on",
-              "$30+"
-            ]
           ]
         }
       ]
@@ -661,82 +631,46 @@ window.SITE = {
       "items": [
         {
           "name": "Ability or skill",
-          "starting": "$30+",
+          "starting": "$30",
           "type": "PER ABILITY",
           "desc": "One custom move built for your existing game. The animation, visuals and complexity influence the quote.",
           "features": [
             "Custom activation behavior",
             "Animation and effect hooks",
             "Gameplay integration"
-          ],
-          "tiers": [
-            [
-              "Basic ability",
-              "$30+"
-            ],
-            [
-              "Complex ability",
-              "Custom quote"
-            ]
           ]
         },
         {
           "name": "UI scripting",
-          "starting": "$65+",
+          "starting": "$65",
           "type": "SINGLE SYSTEM",
           "desc": "Bring menus, HUDs, inventories and shops to life with functional and responsive interactions.",
           "features": [
             "Interactive elements",
             "Smooth transitions",
             "Roblox integration"
-          ],
-          "tiers": [
-            [
-              "UI scripting",
-              "$65+"
-            ]
           ]
         },
         {
           "name": "Avatar customizer",
-          "starting": "$40+",
+          "starting": "$40",
           "type": "SINGLE SYSTEM",
           "desc": "Character appearance controls, outfit selection and customizable player presentation.",
           "features": [
             "Character appearance options",
             "Customization UI",
             "Saved choices when requested"
-          ],
-          "tiers": [
-            [
-              "Basic customizer",
-              "$40+"
-            ],
-            [
-              "Advanced customizer",
-              "$135+"
-            ]
           ]
         },
         {
           "name": "Boss and enemy AI",
-          "starting": "$215+",
+          "starting": "$215",
           "type": "SINGLE SYSTEM",
           "desc": "Enemies with targeting, pathfinding and attacks, including boss encounters with multiple phases.",
           "features": [
             "Target selection",
             "Navigation and attack states",
             "Boss phase behaviors"
-          ],
-          "tiers": [
-            [
-              "Enemy AI",
-              "$215+"
-            ],
-            [
-              "Advanced boss encounter",
-              "$445+"
-            ]
           ]
         }
       ]
@@ -752,14 +686,8 @@ window.SITE = {
           "desc": "Custom effects for UI, footsteps, hits, abilities, environments and cinematic moments.",
           "features": [
             "Minimum $2 per sound",
-            "Maximum typical rate $5 per sound",
-            "Complexity determines price"
-          ],
-          "tiers": [
-            [
-              "Sound effects",
-              "$2 to $5 USD"
-            ]
+            "Price depends on sound complexity and production time",
+            "Custom sound design for your project"
           ]
         },
         {
@@ -768,15 +696,9 @@ window.SITE = {
           "type": "PER EFFECT",
           "desc": "Custom Roblox particle and visual effects, ranging from simple impacts to layered abilities.",
           "features": [
-            "Minimum $5 per VFX",
-            "Up to $50 for complex effects",
-            "Designed for Roblox Studio"
-          ],
-          "tiers": [
-            [
-              "Visual effects",
-              "$5 to $50 USD"
-            ]
+            "Minimum $5 per effect",
+            "Price depends on effect complexity and work required",
+            "Made for Roblox Studio"
           ]
         }
       ]

@@ -39,3 +39,7 @@ The SFX page contains only the two video showcases. Interface sounds still work 
 Edit `assets/data.js` under `pricingCatalog` to adjust quoted prices. The extra service and policy layout is in `assets/app.js`, with styling in `assets/pricing-v10.css`.
 
 Advertised price examples are intended as editable starting rates, not binding offers.
+
+## V11 Pricing Update
+
+Pricing cards now show only a minimum starting price for each service. Higher-priced tiers and SFX/VFX maximums are no longer displayed. Final prices depend on complexity and work required; the agreed custom quote is supplied before development begins.

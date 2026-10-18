@@ -47,3 +47,9 @@
 @media(max-width:700px){.rate-section{padding:26px 16px 35px 16px}.rate-heading{padding-left:0}.rate-heading::before{left:-22px}.rate-heading>div{gap:13px}.rate-heading h2{font-size:25px}.rate-number{font-size:9px}.rate-grid,.rate-options,.rate-process,.rate-payment-content{margin-left:0}.rate-grid,.rate-options{grid-template-columns:1fr}.rate-process{grid-template-columns:1fr 1fr}.rate-step{padding:16px;min-height:145px}.rate-card{padding:23px 20px}.rate-description{min-height:0}}
 @media(max-width:390px){.rate-process{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){.rate-card,.rate-option{transition:none}}
+
+.rate-minimum{border:1px solid #694584;background:linear-gradient(110deg,#261332,#1c1126);padding:16px 17px;margin-top:auto;margin-bottom:20px;display:flex;flex-direction:column;gap:7px}
+.rate-minimum>span{font:800 10px ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.1em;color:#b789f2}
+.rate-minimum>strong{font:700 29px var(--display);color:#f1d6ff;letter-spacing:-.06em}
+.rate-minimum>strong small{font:700 11px var(--font);letter-spacing:.08em;color:#bca0d1}
+.rate-minimum>p{font-size:12px;line-height:1.5;color:#a99ab8;margin:0}
