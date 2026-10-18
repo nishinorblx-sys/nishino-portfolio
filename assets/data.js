@@ -43,15 +43,15 @@ window.SITE = {
   ],
   "metrics": [
     {
-      "value": "13",
+      "value": "22",
       "label": "Showcase projects",
-      "detail": "Games, systems, UI and VFX",
+      "detail": "Gameplay, scripting, UI, VFX and FPS footage",
       "icon": "✦"
     },
     {
-      "value": "04",
+      "value": "5",
       "label": "Project categories",
-      "detail": "From gameplay to visual effects",
+      "detail": "Explore systems, effects and demo reels",
       "icon": "↗"
     },
     {
@@ -320,6 +320,168 @@ window.SITE = {
       "tone": "amber",
       "code": "13",
       "time": "FOALLOW / ROBLOX"
+    },
+    {
+      "name": "Scripting + VFX Showcase 01",
+      "category": "Scripting + VFX",
+      "type": "RECORDED SHOWCASE",
+      "for": "PROJECT SHOWCASE",
+      "desc": "A video from Foallow’s scripting and visual effects showcase collection.",
+      "focus": [
+        "Scripting",
+        "VFX",
+        "Video showcase"
+      ],
+      "icon": "combat",
+      "tone": "amber",
+      "code": "14",
+      "time": "FOALLOW / ROBLOX",
+      "youtube": "OhZ8M6UczSQ",
+      "img": "https://i.ytimg.com/vi/OhZ8M6UczSQ/hqdefault.jpg"
+    },
+    {
+      "name": "Scripting + VFX Showcase 02",
+      "category": "Scripting + VFX",
+      "type": "RECORDED SHOWCASE",
+      "for": "PROJECT SHOWCASE",
+      "desc": "A video from Foallow’s scripting and visual effects showcase collection.",
+      "focus": [
+        "Scripting",
+        "VFX",
+        "Video showcase"
+      ],
+      "icon": "vfx",
+      "tone": "copper",
+      "code": "15",
+      "time": "FOALLOW / ROBLOX",
+      "youtube": "oEjWxZo0ooI",
+      "img": "https://i.ytimg.com/vi/oEjWxZo0ooI/hqdefault.jpg"
+    },
+    {
+      "name": "Scripting + VFX Showcase 03",
+      "category": "Scripting + VFX",
+      "type": "RECORDED SHOWCASE",
+      "for": "PROJECT SHOWCASE",
+      "desc": "A video from Foallow’s scripting and visual effects showcase collection.",
+      "focus": [
+        "Scripting",
+        "VFX",
+        "Video showcase"
+      ],
+      "icon": "combat",
+      "tone": "fire",
+      "code": "16",
+      "time": "FOALLOW / ROBLOX",
+      "youtube": "B8IU8fIAqjY",
+      "img": "https://i.ytimg.com/vi/B8IU8fIAqjY/hqdefault.jpg"
+    },
+    {
+      "name": "Scripting + VFX Showcase 04",
+      "category": "Scripting + VFX",
+      "type": "RECORDED SHOWCASE",
+      "for": "PROJECT SHOWCASE",
+      "desc": "A video from Foallow’s scripting and visual effects showcase collection.",
+      "focus": [
+        "Scripting",
+        "VFX",
+        "Video showcase"
+      ],
+      "icon": "vfx",
+      "tone": "gold",
+      "code": "17",
+      "time": "FOALLOW / ROBLOX",
+      "youtube": "X7QoovXpDxc",
+      "img": "https://i.ytimg.com/vi/X7QoovXpDxc/hqdefault.jpg"
+    },
+    {
+      "name": "Scripting + VFX Showcase 05",
+      "category": "Scripting + VFX",
+      "type": "RECORDED SHOWCASE",
+      "for": "PROJECT SHOWCASE",
+      "desc": "A video from Foallow’s scripting and visual effects showcase collection.",
+      "focus": [
+        "Scripting",
+        "VFX",
+        "Video showcase"
+      ],
+      "icon": "combat",
+      "tone": "amber",
+      "code": "18",
+      "time": "FOALLOW / ROBLOX",
+      "youtube": "6Iv0hpyr3nM",
+      "img": "https://i.ytimg.com/vi/6Iv0hpyr3nM/hqdefault.jpg"
+    },
+    {
+      "name": "Scripting + VFX Showcase 06",
+      "category": "Scripting + VFX",
+      "type": "RECORDED SHOWCASE",
+      "for": "PROJECT SHOWCASE",
+      "desc": "A video from Foallow’s scripting and visual effects showcase collection.",
+      "focus": [
+        "Scripting",
+        "VFX",
+        "Video showcase"
+      ],
+      "icon": "vfx",
+      "tone": "copper",
+      "code": "19",
+      "time": "FOALLOW / ROBLOX",
+      "youtube": "SgKd6-Vc1vY",
+      "img": "https://i.ytimg.com/vi/SgKd6-Vc1vY/hqdefault.jpg"
+    },
+    {
+      "name": "Scripting + VFX Showcase 07",
+      "category": "Scripting + VFX",
+      "type": "RECORDED SHOWCASE",
+      "for": "PROJECT SHOWCASE",
+      "desc": "A video from Foallow’s scripting and visual effects showcase collection.",
+      "focus": [
+        "Scripting",
+        "VFX",
+        "Video showcase"
+      ],
+      "icon": "combat",
+      "tone": "fire",
+      "code": "20",
+      "time": "FOALLOW / ROBLOX",
+      "youtube": "l7RWrMH_fsg",
+      "img": "https://i.ytimg.com/vi/l7RWrMH_fsg/hqdefault.jpg"
+    },
+    {
+      "name": "Scripting + VFX Showcase 08",
+      "category": "Scripting + VFX",
+      "type": "RECORDED SHOWCASE",
+      "for": "PROJECT SHOWCASE",
+      "desc": "A video from Foallow’s scripting and visual effects showcase collection.",
+      "focus": [
+        "Scripting",
+        "VFX",
+        "Video showcase"
+      ],
+      "icon": "vfx",
+      "tone": "gold",
+      "code": "21",
+      "time": "FOALLOW / ROBLOX",
+      "youtube": "09ctaAPuhwk",
+      "img": "https://i.ytimg.com/vi/09ctaAPuhwk/hqdefault.jpg"
+    },
+    {
+      "name": "FPS Weapon & Target Demo",
+      "category": "Scripting + VFX",
+      "type": "FPS COMBAT DEMONSTRATION",
+      "for": "PROJECT SHOWCASE",
+      "desc": "An FPS shooting demonstration with equippable weapons, target hits, ammo display and in-game hit feedback.",
+      "focus": [
+        "First-person weapons",
+        "Target hits",
+        "Gameplay feedback"
+      ],
+      "icon": "combat",
+      "tone": "fire",
+      "code": "22",
+      "time": "FOALLOW / ROBLOX",
+      "video": "assets/media/fps-weapon-showcase.mp4",
+      "img": "assets/media/fps-weapon-preview.jpg"
     }
   ],
   "reviews": [],
@@ -588,7 +750,55 @@ window.SITE = {
         "title": "Car Driving System",
         "subtitle": "Driving physics and vehicle gameplay demonstration"
       }
-    ]
+    ],
+    "scriptingVfx": [
+      {
+        "id": "OhZ8M6UczSQ",
+        "title": "Scripting + VFX Showcase 01",
+        "subtitle": "Scripting and visual effects showcase footage"
+      },
+      {
+        "id": "oEjWxZo0ooI",
+        "title": "Scripting + VFX Showcase 02",
+        "subtitle": "Scripting and visual effects showcase footage"
+      },
+      {
+        "id": "B8IU8fIAqjY",
+        "title": "Scripting + VFX Showcase 03",
+        "subtitle": "Scripting and visual effects showcase footage"
+      },
+      {
+        "id": "X7QoovXpDxc",
+        "title": "Scripting + VFX Showcase 04",
+        "subtitle": "Scripting and visual effects showcase footage"
+      },
+      {
+        "id": "6Iv0hpyr3nM",
+        "title": "Scripting + VFX Showcase 05",
+        "subtitle": "Scripting and visual effects showcase footage"
+      },
+      {
+        "id": "SgKd6-Vc1vY",
+        "title": "Scripting + VFX Showcase 06",
+        "subtitle": "Scripting and visual effects showcase footage"
+      },
+      {
+        "id": "l7RWrMH_fsg",
+        "title": "Scripting + VFX Showcase 07",
+        "subtitle": "Scripting and visual effects showcase footage"
+      },
+      {
+        "id": "09ctaAPuhwk",
+        "title": "Scripting + VFX Showcase 08",
+        "subtitle": "Scripting and visual effects showcase footage"
+      }
+    ],
+    "fpsDemo": {
+      "title": "FPS Weapon & Target Demo",
+      "subtitle": "First-person weapons, target hits and gameplay feedback",
+      "video": "assets/media/fps-weapon-showcase.mp4",
+      "poster": "assets/media/fps-weapon-preview.jpg"
+    }
   },
   "pricingCatalog": [
     {
