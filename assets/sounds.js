@@ -28,8 +28,8 @@
   const savePreference = (store, key, value) => {
     try { window[store].setItem(key, value) } catch {}
   };
-  enabled = readPreference('localStorage', 'nishino-sfx') !== 'off';
-  entered = readPreference('sessionStorage', 'nishino-entered') === 'yes';
+  enabled = readPreference('localStorage', 'foallow-sfx') !== 'off';
+  entered = readPreference('sessionStorage', 'foallow-entered') === 'yes';
   const createContext = () => {
     if (audioContext) return audioContext;
     const Ctor = window.AudioContext || window.webkitAudioContext;
@@ -102,7 +102,7 @@
   document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'visible' && enabled && audioContext?.state === 'suspended') audioContext.resume().catch(() => {});
   });
-  window.NISHINO_AUDIO = { play, unlock, get enabled() { return enabled } };
+  window.FOALLOW_AUDIO = { play, unlock, get enabled() { return enabled } };
   const stopLoading = () => {
     if (!loadingInstance) return;
     loadingInstance.pause();
@@ -127,13 +127,13 @@
     sync();
     toggle.addEventListener('click', () => {
       enabled = !enabled;
-      savePreference('localStorage', 'nishino-sfx', enabled ? 'on' : 'off');
+      savePreference('localStorage', 'foallow-sfx', enabled ? 'on' : 'off');
       if (!enabled) stopLoading();
       sync();
       if (enabled) { unlock(); play('click', true) }
     });
   }
-  const hoverTargets = '.desktop-nav a,.mobile-nav a,.filter-btn,.faq-aside a,.studio-row,.route-tile,.project-card,.client-card,.proof-chips span,.mini-tags span,.footer-links a,.management-card,.management-contact-card,.role-panel,.sfx-card,.sfx-preview-button,.nishino-explore-card';
+  const hoverTargets = '.desktop-nav a,.mobile-nav a,.filter-btn,.faq-aside a,.studio-row,.route-tile,.project-card,.client-card,.proof-chips span,.mini-tags span,.footer-links a,.foallow-video-card,.foallow-contact-panel,.foallow-video-launch,.sfx-card,.sfx-preview-button,.foallow-explore-card';
   document.addEventListener('pointerover', event => {
     if (!entered || loader && !loader.classList.contains('ns-loader-hidden')) return;
     if (event.pointerType && event.pointerType !== 'mouse' && event.pointerType !== 'pen') return;
@@ -176,7 +176,7 @@
     if (opening) return;
     opening = true;
     entered = true;
-    savePreference('sessionStorage', 'nishino-entered', 'yes');
+    savePreference('sessionStorage', 'foallow-entered', 'yes');
     loader.dataset.stage = 'loading';
     document.body.classList.add('ns-loading-active');
     if (hint) hint.textContent = 'INITIALIZING THE EXPERIENCE';

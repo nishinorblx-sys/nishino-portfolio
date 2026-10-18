@@ -13,7 +13,7 @@
   if (hero) {
     const title = hero.querySelector('h1');
     if (title) {
-      title.innerHTML = `<span class="hero-line"><span>Hey, I'm <em>Nishino.</em></span></span><span class="hero-line"><span>Full-stack Roblox</span></span><span class="hero-line"><span class="hero-muted">developer.</span></span>`;
+      title.innerHTML = `<span class="hero-line"><span>Hey, I'm <em>Foallow.</em></span></span><span class="hero-line"><span>Scripts, visuals</span></span><span class="hero-line"><span class="hero-muted">and sound.</span></span>`;
     }
     const art = hero.querySelector('.identity-art');
     if (art) {
@@ -26,7 +26,7 @@
       const ticker = document.createElement('div');
       ticker.className = 'motion-ticker';
       ticker.setAttribute('aria-hidden', 'true');
-      const sequence = ['ROBLOX DEVELOPMENT', 'FULL STACK LUAU', 'COMBAT SYSTEMS', 'UI & ANIMATION', 'HIGH PERFORMANCE', 'BUILT TO SHIP'];
+      const sequence = ['ROBLOX DEVELOPMENT', 'LUAU SCRIPTING', 'COMBAT SYSTEMS', 'VFX & UI', 'SOUND DESIGN', 'BUILT TO SHIP'];
       const piece = sequence.map((item,i)=>`<span class="motion-ticker-piece"><i></i>${i%2===0?`<b>${item}</b>`:item}</span>`).join('');
       ticker.innerHTML = `<div class="motion-ticker-track">${piece}${piece}${piece}${piece}</div>`;
       metrics.before(ticker);
@@ -47,7 +47,7 @@
   },{passive:true});
   updateScroll();
   if (!reduce) {
-    const groups = ['.section-heading','.sfx-card','.management-card','.management-contact-card','.role-panel','.metric','.studio-row','.route-tile','.project-card','.feature-showcase','.education-card','.review-card','.personal-tile','.split-section','.timeline-item','.client-card','.pricing-card','.step','.proof-card','.faq-item','.term-entry','.info-card','.stats-showcase > div','.review-summary','.faq-group','.dual-cards'];
+    const groups = ['.section-heading','.sfx-card','.foallow-video-card','.foallow-contact-panel','.metric','.studio-row','.route-tile','.project-card','.feature-showcase','.education-card','.review-card','.personal-tile','.split-section','.timeline-item','.client-card','.pricing-card','.step','.proof-card','.faq-item','.term-entry','.info-card','.stats-showcase > div','.review-summary','.faq-group','.dual-cards'];
     const observed = new WeakSet();
     const observer = 'IntersectionObserver' in window ? new IntersectionObserver(entries=>{
       entries.forEach(entry=>{

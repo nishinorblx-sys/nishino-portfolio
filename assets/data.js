@@ -1,10 +1,10 @@
 window.SITE = {
-  "brand": "Nishino",
+  "brand": "Foallow",
   "location": "Worldwide",
-  "tagline": "Roblox game developer & systems designer",
-  "description": "I turn ideas into playable Roblox experiences — from fluid combat and movement to responsive interfaces and complete game systems.",
-  "discord": "management.html#contact-options",
-  "discordHandle": "Add your Discord handle in assets/data.js",
+  "tagline": "Roblox developer, SFX designer & creator",
+  "description": "I build Roblox experiences from the ground up — scripting the systems, designing the interfaces, shaping the effects, and crafting the sounds that bring them to life.",
+  "discord": "contact.html",
+  "discordHandle": "foallow",
   "email": "",
   "availability": "Open for projects",
   "navigation": [
@@ -29,28 +29,16 @@ window.SITE = {
       "pricing.html"
     ],
     [
-      "Management",
-      "management.html"
-    ],
-    [
       "About",
       "about.html"
-    ],
-    [
-      "Clients",
-      "clients.html"
-    ],
-    [
-      "Reviews",
-      "reviews.html"
     ],
     [
       "FAQ",
       "faq.html"
     ],
     [
-      "Terms",
-      "terms.html"
+      "Contact",
+      "contact.html"
     ]
   ],
   "metrics": [
@@ -67,9 +55,9 @@ window.SITE = {
       "icon": "↗"
     },
     {
-      "value": "09",
+      "value": "10",
       "label": "Development areas",
-      "detail": "Different ways to build and create",
+      "detail": "From LuaU scripting to sound design",
       "icon": "⌘"
     },
     {
@@ -115,6 +103,10 @@ window.SITE = {
     [
       "Visual effects creation",
       "VFX"
+    ],
+    [
+      "Sound effects & game audio",
+      "SFX"
     ]
   ],
   "projects": [
@@ -132,7 +124,8 @@ window.SITE = {
       "icon": "wave",
       "tone": "ember",
       "code": "01",
-      "time": "NISHINO / ROBLOX"
+      "time": "FOALLOW / ROBLOX",
+      "youtube": "MckUlpPrPH0"
     },
     {
       "name": "Combat System",
@@ -148,7 +141,8 @@ window.SITE = {
       "icon": "combat",
       "tone": "fire",
       "code": "02",
-      "time": "NISHINO / ROBLOX"
+      "time": "FOALLOW / ROBLOX",
+      "youtube": "MckUlpPrPH0"
     },
     {
       "name": "Boss Battle",
@@ -164,7 +158,7 @@ window.SITE = {
       "icon": "boss",
       "tone": "gold",
       "code": "03",
-      "time": "NISHINO / ROBLOX"
+      "time": "FOALLOW / ROBLOX"
     },
     {
       "name": "Shop UI",
@@ -180,7 +174,7 @@ window.SITE = {
       "icon": "shop",
       "tone": "bronze",
       "code": "04",
-      "time": "NISHINO / ROBLOX"
+      "time": "FOALLOW / ROBLOX"
     },
     {
       "name": "NPC Dialogue UI",
@@ -196,7 +190,7 @@ window.SITE = {
       "icon": "dialogue",
       "tone": "amber",
       "code": "05",
-      "time": "NISHINO / ROBLOX"
+      "time": "FOALLOW / ROBLOX"
     },
     {
       "name": "Car Driving System",
@@ -212,7 +206,8 @@ window.SITE = {
       "icon": "car",
       "tone": "copper",
       "code": "06",
-      "time": "NISHINO / ROBLOX"
+      "time": "FOALLOW / ROBLOX",
+      "youtube": "7JPqTRmJWTI"
     },
     {
       "name": "Skill Trees",
@@ -228,7 +223,7 @@ window.SITE = {
       "icon": "skills",
       "tone": "gold",
       "code": "07",
-      "time": "NISHINO / ROBLOX"
+      "time": "FOALLOW / ROBLOX"
     },
     {
       "name": "Inventory Systems",
@@ -244,7 +239,7 @@ window.SITE = {
       "icon": "inventory",
       "tone": "bronze",
       "code": "08",
-      "time": "NISHINO / ROBLOX"
+      "time": "FOALLOW / ROBLOX"
     },
     {
       "name": "Cutscene Abilities",
@@ -260,7 +255,7 @@ window.SITE = {
       "icon": "cutscene",
       "tone": "ember",
       "code": "09",
-      "time": "NISHINO / ROBLOX"
+      "time": "FOALLOW / ROBLOX"
     },
     {
       "name": "Anime Abilities",
@@ -276,7 +271,7 @@ window.SITE = {
       "icon": "anime",
       "tone": "fire",
       "code": "10",
-      "time": "NISHINO / ROBLOX"
+      "time": "FOALLOW / ROBLOX"
     },
     {
       "name": "Anime Transformations",
@@ -292,7 +287,7 @@ window.SITE = {
       "icon": "transform",
       "tone": "gold",
       "code": "11",
-      "time": "NISHINO / ROBLOX"
+      "time": "FOALLOW / ROBLOX"
     },
     {
       "name": "Roblox Sports Physics Games",
@@ -308,7 +303,7 @@ window.SITE = {
       "icon": "sports",
       "tone": "copper",
       "code": "12",
-      "time": "NISHINO / ROBLOX"
+      "time": "FOALLOW / ROBLOX"
     },
     {
       "name": "VFX Creation",
@@ -324,7 +319,7 @@ window.SITE = {
       "icon": "vfx",
       "tone": "amber",
       "code": "13",
-      "time": "NISHINO / ROBLOX"
+      "time": "FOALLOW / ROBLOX"
     }
   ],
   "reviews": [],
@@ -334,7 +329,7 @@ window.SITE = {
       "items": [
         [
           "What do you develop?",
-          "Gameplay systems, full game architecture, movement, combat, UI and Roblox-specific backend features."
+          "Roblox gameplay, full game architecture, movement, combat, UI, back-end systems, VFX and custom sound effects."
         ],
         [
           "How should I describe my idea?",
@@ -351,19 +346,19 @@ window.SITE = {
       ]
     },
     {
-      "group": "Management & Contact",
+      "group": "Working with Foallow",
       "items": [
         [
-          "Who handles commission communication?",
-          "Foallow manages inquiries, updates and client-facing coordination. Nishino remains responsible for technical implementation and project deliverables."
+          "Who will I be working with?",
+          "Foallow is the creator and direct contact for scripting, gameplay, UI, VFX, audio, and commission discussions."
         ],
         [
-          "Who should I contact if something goes wrong?",
-          "Raise payment, schedule or communication concerns with Foallow first. Technical questions can be discussed with Nishino through the agreed project channel."
+          "How do I contact Foallow?",
+          "Add foallow on Discord. You can copy the username from the Contact page."
         ],
         [
-          "Does management guarantee a refund or delivery date?",
-          "No guarantee is implied. Payment schedules, refund terms, milestone dates, responsibilities and escalation steps must be written into the individual commission agreement."
+          "How are project details, payment and revisions handled?",
+          "Scope, price, schedule, payment terms, deliverables, and revision limits should be agreed in writing before work starts."
         ]
       ]
     },
@@ -527,44 +522,67 @@ window.SITE = {
           ]
         ]
       ]
+    },
+    {
+      "group": "Visuals & audio",
+      "caption": "Sound design · VFX · Cinematics",
+      "items": [
+        [
+          "Sound effect design",
+          "Custom quote",
+          "Game-ready sound effects for abilities, impacts, interfaces and environment interactions.",
+          [
+            "UI feedback sounds",
+            "Ability and impact cues",
+            "Audio iteration"
+          ]
+        ],
+        [
+          "VFX & cinematic abilities",
+          "Custom quote",
+          "Visual effects and animated ability sequences designed to fit the gameplay and style of your Roblox experience.",
+          [
+            "Ability VFX",
+            "Cinematic presentation",
+            "Visual polish"
+          ]
+        ]
+      ]
     }
   ],
   "contacts": {
-    "developer": {
-      "name": "Nishino",
-      "role": "Roblox Developer",
-      "platform": "GitHub",
-      "label": "@nishinorblx-sys",
-      "url": "https://github.com/nishinorblx-sys"
-    },
-    "manager": {
+    "creator": {
       "name": "Foallow",
-      "role": "Commission Manager",
-      "platform": "Direct contact",
-      "label": "Contact link to be added",
+      "role": "Game developer, VFX & sound designer",
+      "platform": "Discord",
+      "label": "foallow",
       "url": ""
     }
   },
-  "managementServices": [
-    {
-      "title": "Commission coordination",
-      "description": "Manage commission inquiries, track project updates, and keep communication smooth between the client and the development team."
-    },
-    {
-      "title": "Dispute resolution",
-      "description": "Handle disputes, concerns and difficult conversations on Nishino’s behalf, seeking an agreed resolution before escalating when needed."
-    },
-    {
-      "title": "Payment coordination",
-      "description": "Track agreed milestones, invoices and payment deadlines, and coordinate the proper and timely distribution of payments."
-    },
-    {
-      "title": "Relationships & networking",
-      "description": "Maintain productive relationships with clients, collaborators and team members, and help connect new commissions with the right people."
-    },
-    {
-      "title": "First point of escalation",
-      "description": "Act as a communication bridge when a client is dissatisfied. Foallow steps in first to hear the issue and work toward a solution rather than directing conflict at the developer."
-    }
-  ]
+  "media": {
+    "sfx": [
+      {
+        "id": "34SKzpWsx5g",
+        "title": "SFX Showcase 01",
+        "subtitle": "Audio design showcase"
+      },
+      {
+        "id": "ykqqHQ9Fcwc",
+        "title": "SFX Showcase 02",
+        "subtitle": "Audio design showcase"
+      }
+    ],
+    "gameplay": [
+      {
+        "id": "MckUlpPrPH0",
+        "title": "Combat System & Zombie Wave",
+        "subtitle": "Combat and survival gameplay demonstration"
+      },
+      {
+        "id": "7JPqTRmJWTI",
+        "title": "Car Driving System",
+        "subtitle": "Driving physics and vehicle gameplay demonstration"
+      }
+    ]
+  }
 };
