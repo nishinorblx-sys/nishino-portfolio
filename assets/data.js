@@ -570,6 +570,11 @@ window.SITE = {
         "id": "ykqqHQ9Fcwc",
         "title": "SFX Showcase 02",
         "subtitle": "Audio design showcase"
+      },
+      {
+        "id": "fZO_idRM3Bk",
+        "title": "SFX Showcase 03",
+        "subtitle": "Audio design showcase"
       }
     ],
     "gameplay": [

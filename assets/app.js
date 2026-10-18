@@ -77,7 +77,7 @@ function home() {
 }
 
 function sfx() {
-  return `${pageIntro('FOALLOW / SOUND DESIGN','Sound that <em>hits.</em>','Two showcase videos featuring Foallow’s sound design work.')}
+  return `${pageIntro('FOALLOW / SOUND DESIGN','Sound that <em>hits.</em>','Three showcase videos featuring Foallow’s sound design work.')}
   <section class="section wrap foallow-video-section">${sectionHead('01 / SOUND DESIGN SHOWREELS','SFX showcase.','Watch the sound design showcases below.')}
   <div class="foallow-video-grid">${S.media.sfx.map((video,i)=>videoCard(video,'SOUND DESIGN',i+1)).join('')}</div></section>`;
 }
