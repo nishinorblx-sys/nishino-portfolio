@@ -181,7 +181,12 @@ local function run()
     assert(Combat.Request(attacker, "GuardEnd"))
     assert(not State.Get(ac).Guarding, "GuardEnd must work while stunned and anchored")
     ac:SetAttribute("Stunned", nil)
-    checks += 1
+    State.Cleanup(ac)
+    local probeTime = os.clock()
+    assert(State.BeginParry(ac, probeTime), "Parry fixture failed")
+    assert(not State.KeepGuard(ac, probeTime + 0.05), "Parry must never accept held-guard renewal")
+    assert(not State.Get(ac).Guarding, "A rejected parry renewal must not leave held guard active")
+    checks += 2
     local now = os.clock()
     local pending = State.BeginAttack(dc, "Light", Config.Weapons.TrainingSword, now)
     assert(pending)

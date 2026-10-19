@@ -1,123 +1,29 @@
-# Foallow, Roblox & Audio Portfolio
+# Foallow Portfolio V25
 
-Full static site built around Foallow's Roblox scripting, systems, VFX and SFX projects.
+This is a single synchronized Foallow portfolio release. The site includes portfolio videos, pricing, SFX showcases, and five downloadable Luau engineering examples. The Discord contact is `foallow`.
 
-## Publish to the existing website
+## Publish to GitHub and Vercel
 
-Extract this ZIP. Upload its contents directly to the root of `nishinorblx-sys/nishino-portfolio` on GitHub, preserving the `assets` directory. Commit the files on `main`. Vercel should automatically deploy to the existing linked project.
+Upload this archive's contents to the root of `nishinorblx-sys/nishino-portfolio` on the `main` branch, preserving all `assets` paths. Vercel should redeploy the static website after the commit. The smaller V25 GitHub archive includes the complete current code folder and relevant website files; it does not replace unrelated website media.
 
-The former `management.html` URL now redirects to `contact.html` so older links do not expose obsolete management text.
+## Proof section: one canonical version
 
-## Customize
+Use `assets/code/COMBAT-V25-MANIFEST.md` as the source-of-truth index and hash list for the Luau modules in this release. Do not submit older module copies under the same names. `assets/code/COMBAT-SETUP.md` describes module and script placement. `assets/code/COMBAT-V25-VERIFICATION.md` defines the correctness and performance acceptance checklist. Historical versions of the test and review guides are not part of the current proof set.
 
-- `assets/data.js`: project data, video IDs, navigation, copy, Discord username
-- `assets/app.js`: layouts, contact interaction, YouTube players
-- `assets/foallow-theme.css`: brand colors, video and contact styling
-- `assets/sounds.js`: background interface audio, loading/hover/click
+V25 fixes held-guard renewal authorization and prevents a parry from being extended using the held-guard keepalive. It retains the M1 light, M2 parry, G heavy, F guard controls and the existing five/four-attack weapon definitions. `CombatHitboxService.Diagnostics` distinguishes scan CPU measurements, total per-attack processing CPU measurements and scheduler interval measurements. The Studio-only live E2E test scripts use real RemoteEvents, while requiring an explicit Workspace opt-in.
 
-## Showcase videos
+The movement API explicitly distinguishes an instant server-authorized teleport (`AuthorizeTeleport`) from budgeted gradual movement (`AuthorizeTravel` or `AuthorizeImpulse`). A gradual dash should never rely on the instantaneous teleport API.
 
-- SFX 01: https://youtu.be/34SKzpWsx5g
-- SFX 02: https://youtu.be/ykqqHQ9Fcwc
-- SFX 03: https://youtu.be/fZO_idRM3Bk
-- Combat System and Zombie Wave: https://youtu.be/MckUlpPrPH0
-- Car Driving System: https://youtu.be/7JPqTRmJWTI
+## Important verification boundary
 
-YouTube videos open in place when clicked. A direct YouTube link is provided in case embedding is restricted by the video's settings.
+Source links and JavaScript syntax can be checked outside Roblox Studio. The Luau files have not been run in Roblox Studio here, and no performance or end-to-end pass results are claimed. Capture the real Studio output before presenting a rating or production-readiness conclusion.
 
-## Contact
+## Other website configuration
 
-Discord: `foallow`
+- `assets/data.js`: project entries, videos, pricing and Discord display name
+- `assets/app.js`: main page layout and project video viewers
+- `assets/proof-code.js`: the five Proof samples and supporting source-file links
+- `assets/sounds.js`: interface loading, hover and click sounds
+- `assets/foallow-theme.css`: brand styling
 
-The Contact page provides a copyable username and an Open Discord link. No unrelated public profile or email is listed.
-
-The audio files are preserved under `assets/audio/` and work independently of the YouTube showcase videos.
-
-## V10 pricing and content
-
-The SFX page contains only the SFX video showcases. Interface sounds still work across the site, but their preview cards have been removed. The home page no longer has the slogan or the remote/worldwide text. FAQ answers were rewritten to avoid the word previously used for project extent.
-
-Edit `assets/data.js` under `pricingCatalog` to adjust quoted prices. The extra service and policy layout is in `assets/app.js`, with styling in `assets/pricing-v10.css`.
-
-Advertised price examples are intended as editable starting rates, not binding offers.
-
-## V11 Pricing Update
-
-Pricing cards now show only a minimum starting price for each service. Higher-priced tiers and SFX/VFX maximums are no longer displayed. Final prices depend on complexity and work required; the agreed custom quote is supplied before development begins.
-
-## V13 SFX Update
-
-Added SFX Showcase 03, https://youtu.be/fZO_idRM3Bk, to the SFX page. The third video card uses the same design and click-to-play YouTube player as the first two videos.
-
-## V17: Updated Portfolio Project Videos
-
-- **Zombie Wave** is a separate project using the original YouTube video at https://youtu.be/MckUlpPrPH0.
-- **Combat System** is a standalone project with `assets/media/zombie-combat-showcase.mp4` and its gameplay thumbnail.
-- **Boss Battle + NPC Dialogue UI** remains one project with its recorded video.
-- **Anime Abilities** contains eight selectable YouTube ability demonstrations inside one project popup. Each video can be opened individually.
-- **FPS Weapon & Target Demo** remains a standalone project in the portfolio with an embedded MP4.
-- **Inventory Systems** now includes the supplied 15-second recorded interface video and a frame extracted as its project thumbnail.
-- Project thumbnails use video stills or matching YouTube thumbnails when media is available.
-- The portfolio now has 13 project cards. The eight anime ability videos are grouped inside one card rather than counted as eight separate projects.
-
-### Upload update archive
-
-Unzip `Foallow-V17-Project-Videos-GitHub-Update.zip` into your repository root, overwriting `assets/data.js`, `assets/app.js`, and `assets/foallow-theme.css` while adding the two Inventory Systems media files under `assets/media/`.
-
-Do not delete the existing `assets/media/` files. The previously uploaded Combat System, Boss Battle, Shop UI, Skill Trees and FPS MP4s are still used by the website.
-
-## V18: Five source-code examples on Proof
-
-The Proof page has five original, downloadable Roblox Luau ModuleScript examples in `assets/code/`, together with a syntax-highlighted preview, source expansion and copy/download controls.
-
-- `CombatHitboxService.luau` is the core of a multi-module server-controlled combat example with timed melee hits, validated player actions, shared defense resolution and zone-aware PvP. Use `CombatServer.server.luau` for the network entry point and see `assets/code/COMBAT-SETUP.md` for setup details.
-- `AbilityRunner.luau` registers server callbacks and executes them through a re-entrancy guard, cooldown check and `pcall`. Register each ability once, then call `Execute(player, abilityName)` on the server.
-- `InventoryService.luau` handles session item counts, stack limits, allowlisted IDs and immutable snapshots. Call `Open(player)` when the player's inventory session is created; connect a real datastore and purchase validation before shipping.
-- `NPCTargetSelector.luau` caches player targets and refreshes at controlled intervals. Use `GetNearest(npcModel, maxDistance)` from the AI decision loop and `Forget(npcModel)` when removing an NPC.
-- `DeltaReplicator.luau` tracks selected player state values and sends changed fields over one server-owned `RemoteEvent` at 10 Hz. Call `Track`, `Set` and `Sync` from trusted server logic. Clients must listen to `FoallowStateDelta` and request a snapshot from a separately validated join/ready flow.
-
-Place the modules as ModuleScripts in `ServerScriptService` or another server-only container and connect them to your own game services. They are reference implementations, not drop-in complete games or a claim of measured production benchmarks. They have not been run inside Roblox Studio in this environment. The original commissioned work and the reference website's code are not included.
-
-To publish, upload `proof.html`, `README.md`, `assets/app.js`, `assets/proof-code.js`, `assets/proof-code.css` and all five files in `assets/code/`, preserving their paths.
-
-## V19: Combat code architecture
-
-The Proof page now exposes the main combat module plus seven supporting source files. The headline Proof gallery still has five separate programming systems. The combat implementation has M1 combos, M2 heavy attacks, guarded action input, parries, clashes, guard meter and guardbreak, server-timed attacks, optional server animation markers, collision sampling, line-of-sight tests, distance-sorted target selection, PvP zone decisions and centralized damage calculations. A zone consequence adapter is provided with replaceable example values.
-
-The specific disclaimer panel requested for removal is no longer rendered on the Proof page. The downloadable combat folder includes `COMBAT-SETUP.md` with placement instructions and test cases. Run `CombatSmokeTests.luau` in Roblox Studio and validate in your actual game before production use. No Studio runtime test or external rating has been obtained here.
-
-## V20 Combat Reliability and Review Package
-
-The Proof page still contains five programming showcases. The combat showcase exposes the full server-side module graph and the server RemoteEvent handler. Two additional modules, `CombatTimeline` and `CombatHurtboxIndex`, support deterministic animation fallback and lean target queries.
-
-Changes since V19:
-
-- Animation failures or missing HitStart markers can no longer leave a pending attack without a scheduled damage window. Missing or unplayable assets use the configured windup; marker-based attacks have a bounded 90 ms fallback grace.
-- Each accepted swing owns one timeline and token. It cannot open another hit window after the first has started. Interrupted, unequipped, dead or otherwise invalid attackers cannot continue a pending swing.
-- All active attacks are serviced by one temporary Heartbeat connection. The connection disconnects when no attacks remain.
-- Overlap filtering uses one registered root per character, with a target membership index updated on character and NPC lifecycle events. This avoids returning every limb and piece of map geometry during every sample. Nearby candidates are still distance sorted; no measured throughput guarantee is implied.
-- All core dependencies, PvP zone checks, combat resolver, server entry point, smoke tests and the integration guide are available in `assets/code/` and the source viewer.
-- A small server input throttle suppresses excessively frequent remote requests.
-
-The included smoke script verifies several state and timeline invariants but does not substitute for Studio integration, latency testing or MicroProfiler benchmarks. See `assets/code/COMBAT-SETUP.md` for installation, timing, expected behavior and the recommended test matrix.
-
-## V21: Shared Combat and Ability Lifecycle
-
-The combat module and ability module now share `CombatState` for action ownership, status restrictions, guard conflicts and Essence reservations. `AbilityRunner` no longer releases ownership when `Run` returns. It requires an explicit commit, holds ownership for delayed hit windows, validates tokens and required weapons, and runs registered cleanup handlers on interruption.
-
-Added `AbilityDefinitions.luau`, `AbilityServer.server.luau`, `AbilityStateTests.luau` and `ABILITY-SETUP.md`. The Proof page exposes the complete ability adapter and all related combat modules. The setup file documents cooldown/refund semantics and a multi-client test matrix. See `assets/code/ABILITY-SETUP.md` for installation details.
-
-The files have been checked for references and JavaScript syntax, but have not been benchmarked or executed in Roblox Studio. The combat server and ability server are demonstration entry points and require game-specific setup before shipping.
-
-## V22 proof-source revisions
-
-The Proof page now includes a server-owned movement validation module, expanded combat regression and profiler scripts, PvP policy changes, guard-release resilience, and updated modules for inventory transactions, NPC targeting, and state replication. See assets/code/COMBAT-SETUP.md, assets/code/COMBAT-REVIEW-AND-TESTING.md, and assets/code/NETWORKING-SETUP.md. These are inspectable sources; integration tests and benchmarks must still be run in Roblox Studio.
-
-
-## V23 Combat Proof
-
-This version adds finite movement budgets, server recovery, trusted zone positions, read-only state, Soul Seas input bindings, five/four-hit combos, real resolver regression scripts and a measured attack-pipeline profiler. See `assets/code/COMBAT-V23-VERIFICATION.md`. Test results must be obtained in Roblox Studio.
-
-## V24 review fixes and reproducible tests
-
-Movement impulses now support optional directional budgets, and pending teleports survive ordinary movement samples until consumed or expired. Combat test fixtures have guaranteed teardown after failures. PvP assertions use real nearby Studio players and the real resolver, while the load harness uses server-owned NPC attackers so the 1/5/10/20 scenario matrix does not require twenty human clients. See `assets/code/COMBAT-V24-VERIFICATION.md`. The Studio evidence column remains pending until these tests are run.
+Your existing project videos, SFX clips and media assets are included in the full-site archive, and not duplicated in the smaller GitHub source update.

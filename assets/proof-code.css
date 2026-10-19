@@ -65,3 +65,5 @@
 .proof-dependency-code code{display:block;width:max-content;min-width:100%;font:500 12px/1.75 monospace}
 .proof-code-overview{justify-content:flex-start;padding:16px 22px}
 @media(max-width:600px){.proof-architecture{padding:15px}.proof-dependency summary{align-items:start;flex-direction:column}.proof-dependency summary b{margin-top:6px}}
+
+.proof-canonical-banner{border:1px solid #7862b64f;background:linear-gradient(120deg,#181021,#0f0c18);padding:22px 26px;margin:25px 0 36px;display:grid;grid-template-columns:1fr auto;gap:7px 20px;align-items:center}.proof-canonical-banner span{font-size:10px;color:#ba91ff;letter-spacing:.13em;font-weight:700;grid-column:1/-1}.proof-canonical-banner strong{font-size:21px;color:#eee6f7}.proof-canonical-banner p{font-size:12px;line-height:1.6;color:#a99ab9;margin:0;grid-column:1}.proof-canonical-banner a{font-size:11px;color:#bc99ff;font-weight:700;text-decoration:underline;text-underline-offset:4px;grid-column:2;grid-row:2/4}.proof-canonical-banner a:hover{color:#fff}@media(max-width:650px){.proof-canonical-banner{display:flex;flex-direction:column;align-items:flex-start}.proof-canonical-banner a{margin-top:6px}}

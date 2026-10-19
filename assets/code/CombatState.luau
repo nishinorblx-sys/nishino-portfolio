@@ -11,6 +11,7 @@ local function get(character)
             Guard = Config.Guard.Max,
             GuardAt = os.clock(),
             Guarding = false,
+            GuardMode = nil,
             ParryUntil = 0,
             ParryReadyAt = 0,
             DisabledUntil = 0,
@@ -37,6 +38,7 @@ end
 local function refreshGuard(state, now)
     if state.Guarding and (now >= state.GuardLeaseUntil or state.Guard <= 0) then
         state.Guarding = false
+        state.GuardMode = nil
         state.ParryUntil = 0
         state.GuardAt = math.min(now, state.GuardLeaseUntil)
     end
@@ -50,6 +52,7 @@ local function snapshot(state)
     return table.freeze({
         Guard = state.Guard,
         Guarding = state.Guarding,
+        GuardMode = state.GuardMode,
         ParryUntil = state.ParryUntil,
         ParryReadyAt = state.ParryReadyAt,
         DisabledUntil = state.DisabledUntil,
@@ -113,6 +116,7 @@ function State.BeginGuard(character, now)
         return false
     end
     state.Guarding = true
+    state.GuardMode = "Hold"
     state.GuardLeaseUntil = now + 2.25
     scheduleGuardExpiry(character, state.GuardLeaseUntil)
     state.ParryUntil = 0
@@ -129,6 +133,7 @@ function State.BeginParry(character, now)
         return false
     end
     state.Guarding = true
+    state.GuardMode = "Parry"
     state.GuardLeaseUntil = now + Config.Guard.ParryWindow
     state.ParryUntil = state.GuardLeaseUntil
     state.ParryReadyAt = now + Config.Guard.ParryRearm
@@ -139,7 +144,7 @@ end
 function State.KeepGuard(character, now)
     local state = get(character)
     refreshGuard(state, now)
-    if not state.Guarding or state.Action ~= nil or now < state.DisabledUntil or disabled(character) then
+    if not finite(now, 0, math.huge) or not state.Guarding or state.GuardMode ~= "Hold" or state.Action ~= nil or now < state.DisabledUntil or disabled(character) then
         State.EndGuard(character, now)
         return false
     end
@@ -152,6 +157,7 @@ function State.EndGuard(character, now)
     local state = get(character)
     refreshGuard(state, now)
     state.Guarding = false
+    state.GuardMode = nil
     state.ParryUntil = 0
     state.GuardLeaseUntil = 0
 end
@@ -264,6 +270,7 @@ function State.Interrupt(character, untilTime)
     state.LockUntil = math.max(state.LockUntil, untilTime)
     state.DisabledUntil = math.max(state.DisabledUntil, untilTime)
     state.Guarding = false
+    state.GuardMode = nil
     state.ParryUntil = 0
     state.GuardLeaseUntil = 0
     state.ComboIndex = 0

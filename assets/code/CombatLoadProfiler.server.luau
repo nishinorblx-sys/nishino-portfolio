@@ -171,8 +171,8 @@ local function runScenario(scenario)
     frameConnection:Disconnect()
     frameConnection = nil
     local frameP95 = percentile(measuredFrames, 0.95)
-    local status = accepted == scenario.Attackers and diagnostics.Scans > 0 and diagnostics.Queries > 0 and diagnostics.Resolutions > 0 and diagnostics.Faults == 0
-    print(string.format("Combat load %s | attackers=%d npcTargets=%d playerTargets=%d accepted=%d rejected=%d scans=%d queries=%d rays=%d resolutions=%d hits=%d activePeak=%d avgSample=%.3fms p95Sample=%.3fms p95Frame=%.3fms faults=%d", status and "PASS" or "FAIL", scenario.Attackers, scenario.Targets, playersIncluded, accepted, rejected, diagnostics.Scans, diagnostics.Queries, diagnostics.Rays, diagnostics.Resolutions, diagnostics.Hits, diagnostics.ActivePeak, diagnostics.AverageMs, diagnostics.P95Ms, frameP95, diagnostics.Faults))
+    local status = accepted == scenario.Attackers and diagnostics.Scans > 0 and diagnostics.Queries > 0 and diagnostics.Resolutions > 0 and diagnostics.ProcessingSamples > 0 and diagnostics.TotalProcessingMs > 0 and diagnostics.Faults == 0
+    print(string.format("Combat load %s | attackers=%d npcTargets=%d playerTargets=%d accepted=%d rejected=%d scans=%d queries=%d rays=%d resolutions=%d hits=%d activePeak=%d avgSample=%.3fms p95Sample=%.3fms avgProcessing=%.3fms p95Processing=%.3fms totalProcessing=%.3fms p95HeartbeatInterval=%.3fms faults=%d", status and "PASS" or "FAIL", scenario.Attackers, scenario.Targets, playersIncluded, accepted, rejected, diagnostics.Scans, diagnostics.Queries, diagnostics.Rays, diagnostics.Resolutions, diagnostics.Hits, diagnostics.ActivePeak, diagnostics.AverageMs, diagnostics.P95Ms, diagnostics.AverageProcessingMs, diagnostics.P95ProcessingMs, diagnostics.TotalProcessingMs, frameP95, diagnostics.Faults))
     assert(status, "Combat profiler reported missing real resolutions, rejected attacks or faults")
     restorePlayers()
     for _, item in ipairs(attackers) do

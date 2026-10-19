@@ -72,9 +72,12 @@ local function run()
     local defNow = now + 4
     assert(State.BeginParry(target, defNow))
     assert(State.Defense(target, defNow).ParryUntil > defNow)
+    assert(State.Defense(target, defNow).GuardMode == "Parry")
+    assert(not State.KeepGuard(target, defNow + 0.01))
     State.EndGuard(target, defNow + 0.18)
     assert(State.BeginGuard(target, defNow + 0.19))
     assert(State.Defense(target, defNow + 0.2).ParryUntil == 0)
+    assert(State.Defense(target, defNow + 0.2).GuardMode == "Hold")
     State.EndGuard(target, defNow + 0.3)
     assert(not State.OpenAbilityWindow(target, 0, 0 / 0, 0.1))
 

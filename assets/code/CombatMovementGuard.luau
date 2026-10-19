@@ -73,6 +73,10 @@ function Guard.AuthorizeTeleport(character, destination, radius, duration)
     return true
 end
 
+function Guard.AuthorizeTravel(character, totalDistance, duration, direction)
+    return Guard.AuthorizeImpulse(character, totalDistance, duration, direction)
+end
+
 function Guard.AuthorizeImpulse(character, distance, duration, direction)
     local entry = tracked[character]
     return entry ~= nil and entry.Budget ~= nil and Budget.GrantImpulse(entry.Budget, distance, duration, os.clock(), direction) or false

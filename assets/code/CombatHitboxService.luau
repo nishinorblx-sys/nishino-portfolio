@@ -14,16 +14,26 @@ local Combat = {}
 local active = {}
 local heartbeat = nil
 local lastRemote = setmetatable({}, { __mode = "k" })
-local metrics = { Requests = 0, Accepted = 0, Scans = 0, Queries = 0, Rays = 0, Resolutions = 0, Hits = 0, Faults = 0, ActivePeak = 0, Samples = {}, SampleIndex = 0 }
+local metrics = { Requests = 0, Accepted = 0, Scans = 0, Queries = 0, Rays = 0, Resolutions = 0, Hits = 0, Faults = 0, ActivePeak = 0, Samples = {}, SampleIndex = 0, ProcessingSamples = {}, ProcessingIndex = 0, ProcessingTotal = 0 }
 
 local function measureSample(elapsed)
     metrics.SampleIndex = metrics.SampleIndex % 2048 + 1
     metrics.Samples[metrics.SampleIndex] = elapsed * 1000
 end
 
+local function describe(values)
+    local ordered = table.clone(values)
+    table.sort(ordered)
+    local total = 0
+    for _, value in ipairs(ordered) do
+        total += value
+    end
+    return #ordered > 0 and total / #ordered or 0, #ordered > 0 and ordered[math.ceil(#ordered * 0.95)] or 0
+end
+
 function Combat.Diagnostics(reset)
-    local samples = table.clone(metrics.Samples)
-    table.sort(samples)
+    local scanAverage, scanP95 = describe(metrics.Samples)
+    local processingAverage, processingP95 = describe(metrics.ProcessingSamples)
     local result = {
         Requests = metrics.Requests,
         Accepted = metrics.Accepted,
@@ -34,15 +44,13 @@ function Combat.Diagnostics(reset)
         Hits = metrics.Hits,
         Faults = metrics.Faults,
         ActivePeak = metrics.ActivePeak,
-        P95Ms = #samples > 0 and samples[math.ceil(#samples * 0.95)] or 0,
-        AverageMs = 0,
+        P95Ms = scanP95,
+        AverageMs = scanAverage,
+        P95ProcessingMs = processingP95,
+        AverageProcessingMs = processingAverage,
+        TotalProcessingMs = metrics.ProcessingTotal,
+        ProcessingSamples = #metrics.ProcessingSamples,
     }
-    for _, value in ipairs(samples) do
-        result.AverageMs += value
-    end
-    if #samples > 0 then
-        result.AverageMs /= #samples
-    end
     if reset then
         for key, value in pairs(metrics) do
             metrics[key] = type(value) == "table" and {} or 0
@@ -242,6 +250,7 @@ local function update(dt)
     local now = os.clock()
     for _, context in pairs(active) do
         if not context.Stopped then
+            local processingStart = os.clock()
             local ok, err = xpcall(stepContext, debug.traceback, context, now, dt)
             if not ok then
                 metrics.Faults += 1
@@ -254,6 +263,10 @@ local function update(dt)
                     State.Interrupt(context.Character, now + 0.2)
                 end
             end
+            local milliseconds = (os.clock() - processingStart) * 1000
+            metrics.ProcessingTotal += milliseconds
+            metrics.ProcessingIndex = metrics.ProcessingIndex % 2048 + 1
+            metrics.ProcessingSamples[metrics.ProcessingIndex] = milliseconds
         end
     end
     if heartbeat and next(active) == nil then
@@ -406,7 +419,15 @@ function Combat.Request(player, action)
         return false, "Invalid character"
     end
     if action == "GuardKeepAlive" then
-        return State.KeepGuard(character, now), "Guard heartbeat"
+        local weapon = equippedWeapon(character)
+        local physical = not root.Anchored and not humanoid.Sit and (root.AssemblyLinearVelocity.Magnitude <= Config.MaxLinearSpeed or Movement.IsImpulseAuthorized(character, now))
+        local trusted = Movement.Validate(character, now)
+        if not weapon or not physical or not trusted then
+            State.EndGuard(character, now)
+            return false, "Guard renewal rejected"
+        end
+        local renewed = State.KeepGuard(character, now)
+        return renewed, renewed and "Guard renewed" or "Guard not eligible"
     end
     if root.Anchored or humanoid.Sit or (root.AssemblyLinearVelocity.Magnitude > Config.MaxLinearSpeed and not Movement.IsImpulseAuthorized(character, now)) then
         return false, "Invalid character"
