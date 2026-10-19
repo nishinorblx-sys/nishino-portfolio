@@ -70,7 +70,7 @@ Do not delete the existing `assets/media/` files. The previously uploaded Combat
 
 The Proof page has five original, downloadable Roblox Luau ModuleScript examples in `assets/code/`, together with a syntax-highlighted preview, source expansion and copy/download controls.
 
-- `CombatHitboxService.luau` is a server-owned box-hit query with configured damage, attack cooldowns, humanoid deduplication and capped queries. Call `Perform(player, attackName)` from validated server gameplay flow.
+- `CombatHitboxService.luau` is the core of a multi-module server-controlled combat example with timed melee hits, validated player actions, shared defense resolution and zone-aware PvP. Use `CombatServer.server.luau` for the network entry point and see `assets/code/COMBAT-SETUP.md` for setup details.
 - `AbilityRunner.luau` registers server callbacks and executes them through a re-entrancy guard, cooldown check and `pcall`. Register each ability once, then call `Execute(player, abilityName)` on the server.
 - `InventoryService.luau` handles session item counts, stack limits, allowlisted IDs and immutable snapshots. Call `Open(player)` when the player's inventory session is created; connect a real datastore and purchase validation before shipping.
 - `NPCTargetSelector.luau` caches player targets and refreshes at controlled intervals. Use `GetNearest(npcModel, maxDistance)` from the AI decision loop and `Forget(npcModel)` when removing an NPC.
@@ -79,3 +79,9 @@ The Proof page has five original, downloadable Roblox Luau ModuleScript examples
 Place the modules as ModuleScripts in `ServerScriptService` or another server-only container and connect them to your own game services. They are reference implementations, not drop-in complete games or a claim of measured production benchmarks. They have not been run inside Roblox Studio in this environment. The original commissioned work and the reference website's code are not included.
 
 To publish, upload `proof.html`, `README.md`, `assets/app.js`, `assets/proof-code.js`, `assets/proof-code.css` and all five files in `assets/code/`, preserving their paths.
+
+## V19: Combat code architecture
+
+The Proof page now exposes the main combat module plus seven supporting source files. The headline Proof gallery still has five separate programming systems. The combat implementation has M1 combos, M2 heavy attacks, guarded action input, parries, clashes, guard meter and guardbreak, server-timed attacks, optional server animation markers, collision sampling, line-of-sight tests, distance-sorted target selection, PvP zone decisions and centralized damage calculations. A zone consequence adapter is provided with replaceable example values.
+
+The specific disclaimer panel requested for removal is no longer rendered on the Proof page. The downloadable combat folder includes `COMBAT-SETUP.md` with placement instructions and test cases. Run `CombatSmokeTests.luau` in Roblox Studio and validate in your actual game before production use. No Studio runtime test or external rating has been obtained here.
