@@ -2,11 +2,11 @@
 
 ## Module arrangement
 
-In ServerScriptService create a folder named Combat. Install these as server ModuleScripts: CombatConfig, CombatState, CombatMovementGuard, CombatTimeline, CombatHurtboxIndex, CombatPolicy, CombatZoneConsequences, CombatResolver, CombatHitboxService, AbilityRunner, AbilityDefinitions. Install CombatServer.server.luau and AbilityServer.server.luau as Scripts. Roblox Instance names should omit the .luau extension. StarterPlayerScripts can use CombatClientInput.client.luau as a sample LocalScript.
+In ServerScriptService create a folder named Combat. Install these as server ModuleScripts: CombatConfig, CombatState, CombatMovementBudget, CombatMovementGuard, CombatTimeline, CombatHurtboxIndex, CombatPolicy, CombatZoneConsequences, CombatResolver, CombatHitboxService, AbilityRunner, AbilityDefinitions. Install CombatServer.server.luau and AbilityServer.server.luau as Scripts. Roblox Instance names should omit the .luau extension. StarterPlayerScripts can use CombatClientInput.client.luau as a sample LocalScript.
 
 Tag server-authorized weapons CombatWeapon. Give each Tool a CombatWeaponId attribute matching CombatConfig.Weapons, such as TrainingSword. Add Animation children inside CombatAnimations on each weapon Tool if available. HitStart and HitEnd marker timing is optional; the server timeline owns fallback timing. Player and tagged CombatNPC models need a Humanoid and HumanoidRootPart. Set combat zone parts to the CombatZone tag and set ZoneType to Safe, Yellow, Red or Dark.
 
-The game client only sends action names over ReplicatedStorage.CombatNet.Action: Light, Heavy, GuardStart, GuardKeepAlive and GuardEnd. Light/Heavy actions must pass live-character, equipment, timing, movement and shared-state checks. GuardEnd deliberately bypasses movement restrictions and request throttling. GuardKeepAlive is sent while a guard key remains held and extends the server-side guard lease. If keepalives stop, the lease expires automatically when guard state is refreshed.
+M1 triggers Light (five hits with TrainingSword, four with HeavySword), M2 triggers Parry, G triggers Heavy, and F holds guard through GuardStart, GuardKeepAlive and GuardEnd. The game client only sends action names over ReplicatedStorage.CombatNet.Action: Light, Heavy, Parry, GuardStart, GuardKeepAlive and GuardEnd. Light/Heavy actions must pass live-character, equipment, timing, movement and shared-state checks. GuardEnd deliberately bypasses movement restrictions and request throttling. GuardKeepAlive is sent while a guard key remains held and extends the server-side guard lease. If keepalives stop, the lease expires automatically when guard state is refreshed.
 
 ## Combat movement and side effects
 
@@ -32,3 +32,5 @@ AbilityRunner shares CombatState tokens, recovery locks and Essence reservation 
 See COMBAT-REVIEW-AND-TESTING.md for specific rules, failure policies and the release checklist.
 
 The code is not independently Studio-tested or benchmarked here. Production approval requires passing the scripts in a real place and documenting measured outcomes.
+
+See COMBAT-V23-VERIFICATION.md for the current specification, test sequence, expected results, and acceptance evidence.

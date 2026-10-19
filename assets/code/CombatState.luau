@@ -46,8 +46,26 @@ local function refreshGuard(state, now)
     state.GuardAt = now
 end
 
+local function snapshot(state)
+    return table.freeze({
+        Guard = state.Guard,
+        Guarding = state.Guarding,
+        ParryUntil = state.ParryUntil,
+        ParryReadyAt = state.ParryReadyAt,
+        DisabledUntil = state.DisabledUntil,
+        LockUntil = state.LockUntil,
+        ComboIndex = state.ComboIndex,
+        ComboExpiresAt = state.ComboExpiresAt,
+        Token = state.Token,
+        Action = state.Action,
+        ActiveFrom = state.ActiveFrom,
+        ActiveUntil = state.ActiveUntil,
+        Essence = state.Essence,
+    })
+end
+
 function State.Get(character)
-    return get(character)
+    return snapshot(get(character))
 end
 
 function State.Cleanup(character)
@@ -97,12 +115,24 @@ function State.BeginGuard(character, now)
     state.Guarding = true
     state.GuardLeaseUntil = now + 2.25
     scheduleGuardExpiry(character, state.GuardLeaseUntil)
-    if now >= state.ParryReadyAt then
-        state.ParryUntil = now + Config.Guard.ParryWindow
-        state.ParryReadyAt = now + Config.Guard.ParryRearm
-    else
-        state.ParryUntil = 0
+    state.ParryUntil = 0
+    return true
+end
+
+function State.BeginParry(character, now)
+    local state = get(character)
+    if not finite(now, 0, math.huge) then
+        return false
     end
+    refreshGuard(state, now)
+    if state.Guarding or state.Action ~= nil or now < state.DisabledUntil or now < state.LockUntil or now < state.ParryReadyAt or state.Guard <= 0 or disabled(character) then
+        return false
+    end
+    state.Guarding = true
+    state.GuardLeaseUntil = now + Config.Guard.ParryWindow
+    state.ParryUntil = state.GuardLeaseUntil
+    state.ParryReadyAt = now + Config.Guard.ParryRearm
+    scheduleGuardExpiry(character, state.GuardLeaseUntil)
     return true
 end
 
@@ -180,7 +210,7 @@ end
 
 function State.SetActiveWindow(character, token, startTime, duration)
     local state = get(character)
-    if state.Token ~= token or state.Action == nil or startTime > state.RequestedAt + Config.MaxAttackLifetime - duration - state.Recovery then
+    if not finite(startTime, 0, math.huge) or not finite(duration, 0.01, Config.MaxAttackLifetime) or state.Token ~= token or state.Action == nil or startTime > state.RequestedAt + Config.MaxAttackLifetime - duration - state.Recovery then
         return false
     end
     state.ActiveFrom = startTime
@@ -287,7 +317,7 @@ end
 
 function State.OpenAbilityWindow(character, token, now, duration)
     local state = get(character)
-    if not State.IsAbilityCurrent(character, token, now) or state.ActiveFrom ~= math.huge or duration <= 0 or duration > 0.5 or now + duration > state.LockUntil then
+    if not finite(now, 0, math.huge) or not finite(duration, 0.01, 0.5) or not State.IsAbilityCurrent(character, token, now) or state.ActiveFrom ~= math.huge or now + duration > state.LockUntil then
         return false
     end
     state.ActiveFrom = now
@@ -329,7 +359,7 @@ end
 function State.Defense(character, now)
     local state = get(character)
     refreshGuard(state, now)
-    return state
+    return snapshot(state)
 end
 
 function State.DrainGuard(character, amount, now)

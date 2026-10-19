@@ -14,6 +14,42 @@ local Combat = {}
 local active = {}
 local heartbeat = nil
 local lastRemote = setmetatable({}, { __mode = "k" })
+local metrics = { Requests = 0, Accepted = 0, Scans = 0, Queries = 0, Rays = 0, Resolutions = 0, Hits = 0, Faults = 0, ActivePeak = 0, Samples = {}, SampleIndex = 0 }
+
+local function measureSample(elapsed)
+    metrics.SampleIndex = metrics.SampleIndex % 2048 + 1
+    metrics.Samples[metrics.SampleIndex] = elapsed * 1000
+end
+
+function Combat.Diagnostics(reset)
+    local samples = table.clone(metrics.Samples)
+    table.sort(samples)
+    local result = {
+        Requests = metrics.Requests,
+        Accepted = metrics.Accepted,
+        Scans = metrics.Scans,
+        Queries = metrics.Queries,
+        Rays = metrics.Rays,
+        Resolutions = metrics.Resolutions,
+        Hits = metrics.Hits,
+        Faults = metrics.Faults,
+        ActivePeak = metrics.ActivePeak,
+        P95Ms = #samples > 0 and samples[math.ceil(#samples * 0.95)] or 0,
+        AverageMs = 0,
+    }
+    for _, value in ipairs(samples) do
+        result.AverageMs += value
+    end
+    if #samples > 0 then
+        result.AverageMs /= #samples
+    end
+    if reset then
+        for key, value in pairs(metrics) do
+            metrics[key] = type(value) == "table" and {} or 0
+        end
+    end
+    return table.freeze(result)
+end
 
 Players.PlayerRemoving:Connect(function(player)
     lastRemote[player] = nil
@@ -53,6 +89,8 @@ local function visible(fromRoot, targetRoot, target, raycast)
 end
 
 local function scan(context, now)
+    local started = os.clock()
+    metrics.Scans += 1
     local character = context.Character
     local root = living(character)
     if not root then
@@ -65,11 +103,13 @@ local function scan(context, now)
         context.IndexVersion = version
     end
     if #roots == 0 then
+        measureSample(os.clock() - started)
         return true
     end
     local center = root.CFrame * CFrame.new(0, 0, -definition.Reach * 0.5)
     local region = Vector3.new(definition.Width, definition.Height, definition.Reach)
     local parts = Workspace:GetPartBoundsInBox(center, region, context.Overlap)
+    metrics.Queries += 1
     local candidates = context.Candidates
     table.clear(candidates)
     local radius = definition.Reach + Config.MaxTargetRadiusAllowance
@@ -94,17 +134,23 @@ local function scan(context, now)
         return a.Distance < b.Distance
     end)
     for _, candidate in ipairs(candidates) do
+        if not context.Seen[candidate.Character] then
+            metrics.Rays += 1
+        end
         if not context.Seen[candidate.Character] and visible(root, candidate.Root, candidate.Character, context.Raycast) then
             context.Seen[candidate.Character] = true
             local outcome = Resolver.Apply(character, candidate.Character, root, candidate.Root, candidate.Humanoid, definition, now)
+            metrics.Resolutions += 1
             if outcome == "Hit" or outcome == "Blocked" or outcome == "Parried" or outcome == "Clashed" or outcome == "GuardBroken" then
                 context.Hits += 1
+                metrics.Hits += 1
             end
             if context.Hits >= definition.MaxTargets or not State.IsCurrent(character, context.Attack.Token, os.clock()) then
                 break
             end
         end
     end
+    measureSample(os.clock() - started)
     return true
 end
 
@@ -198,6 +244,7 @@ local function update(dt)
         if not context.Stopped then
             local ok, err = xpcall(stepContext, debug.traceback, context, now, dt)
             if not ok then
+                metrics.Faults += 1
                 warn("Combat attack aborted safely:", err)
                 local cleaned, cleanupErr = pcall(stop, context, true)
                 if not cleaned then
@@ -276,10 +323,11 @@ local function attachAnimation(context, humanoid, action)
 end
 
 function Combat.Request(player, action)
+    metrics.Requests += 1
     if typeof(player) ~= "Instance" or not player:IsA("Player") or not player.Parent then
         return false, "Invalid player"
     end
-    if type(action) ~= "string" or (action ~= "Light" and action ~= "Heavy" and action ~= "GuardStart" and action ~= "GuardEnd" and action ~= "GuardKeepAlive") then
+    if type(action) ~= "string" or (action ~= "Light" and action ~= "Heavy" and action ~= "Parry" and action ~= "GuardStart" and action ~= "GuardEnd" and action ~= "GuardKeepAlive") then
         return false, "Invalid action"
     end
     local now = os.clock()
@@ -318,6 +366,9 @@ function Combat.Request(player, action)
     if action == "GuardStart" then
         return State.BeginGuard(character, now), "Guard"
     end
+    if action == "Parry" then
+        return State.BeginParry(character, now), "Parry"
+    end
     local attack, attackReason = State.BeginAttack(character, action, weapon, now)
     if not attack then
         return false, attackReason
@@ -352,6 +403,11 @@ function Combat.Request(player, action)
         stop(older, true)
     end
     active[character] = context
+    local running = 0
+    for _ in pairs(active) do
+        running += 1
+    end
+    metrics.ActivePeak = math.max(metrics.ActivePeak, running)
     local setupOk = pcall(attachAnimation, context, humanoid, action)
     if not setupOk then
         for _, connection in ipairs(context.Connections) do
@@ -367,6 +423,7 @@ function Combat.Request(player, action)
         context.Timing.FallbackAt = context.Timing.PlannedStart
     end
     ensureHeartbeat()
+    metrics.Accepted += 1
     return true, table.freeze({ Action = action, Combo = attack.Combo, StartsAt = context.Timing.PlannedStart, EndsAt = attack.EndsAt })
 end
 

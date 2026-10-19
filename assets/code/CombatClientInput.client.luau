@@ -17,6 +17,8 @@ UserInputService.InputBegan:Connect(function(input, processed)
     if input.UserInputType == Enum.UserInputType.MouseButton1 then
         request("Light")
     elseif input.UserInputType == Enum.UserInputType.MouseButton2 then
+        request("Parry")
+    elseif input.KeyCode == Enum.KeyCode.G then
         request("Heavy")
     elseif input.KeyCode == Enum.KeyCode.F and not holding then
         holding = true

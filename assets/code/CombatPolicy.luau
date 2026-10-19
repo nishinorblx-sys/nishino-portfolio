@@ -2,6 +2,7 @@ local Players = game:GetService("Players")
 local CollectionService = game:GetService("CollectionService")
 
 local Config = require(script.Parent.CombatConfig)
+local Movement = require(script.Parent.CombatMovementGuard)
 local Policy = {}
 local severity = table.freeze({ Safe = 4, Yellow = 1, Red = 2, Dark = 3 })
 local volumes = {}
@@ -63,8 +64,13 @@ function Policy.Authorize(attacker, defender, attackerRoot, defenderRoot)
     if not dp and not CollectionService:HasTag(defender, Config.NPCTag) then
         return false, nil
     end
-    local attackerZone = Policy.ZoneAt(attackerRoot.Position)
-    local defenderZone = Policy.ZoneAt(defenderRoot.Position)
+    local attackerPosition = Movement.GetAcceptedPosition(attacker)
+    local defenderPosition = Movement.GetAcceptedPosition(defender)
+    if not attackerPosition or not defenderPosition then
+        return false, nil
+    end
+    local attackerZone = Policy.ZoneAt(attackerPosition)
+    local defenderZone = Policy.ZoneAt(defenderPosition)
     if attackerZone == "Safe" or defenderZone == "Safe" then
         return false, nil
     end
@@ -72,7 +78,7 @@ function Policy.Authorize(attacker, defender, attackerRoot, defenderRoot)
         if not attackerZone or not defenderZone or consequenceHandler == nil then
             return false, nil
         end
-        if ap.Team ~= nil and ap.Team == dp.Team then
+        if not ap.Neutral and not dp.Neutral and ap.Team ~= nil and ap.Team == dp.Team then
             return false, nil
         end
         if (attackerZone == "Yellow" or defenderZone == "Yellow") and (ap:GetAttribute("PvPEnabled") ~= true or dp:GetAttribute("PvPEnabled") ~= true) then

@@ -112,3 +112,8 @@ The files have been checked for references and JavaScript syntax, but have not b
 ## V22 proof-source revisions
 
 The Proof page now includes a server-owned movement validation module, expanded combat regression and profiler scripts, PvP policy changes, guard-release resilience, and updated modules for inventory transactions, NPC targeting, and state replication. See assets/code/COMBAT-SETUP.md, assets/code/COMBAT-REVIEW-AND-TESTING.md, and assets/code/NETWORKING-SETUP.md. These are inspectable sources; integration tests and benchmarks must still be run in Roblox Studio.
+
+
+## V23 Combat Proof
+
+This version adds finite movement budgets, server recovery, trusted zone positions, read-only state, Soul Seas input bindings, five/four-hit combos, real resolver regression scripts and a measured attack-pipeline profiler. See `assets/code/COMBAT-V23-VERIFICATION.md`. Test results must be obtained in Roblox Studio.

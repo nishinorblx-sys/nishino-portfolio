@@ -46,7 +46,9 @@ remote.OnServerEvent:Connect(function(player, action)
         local localNow = os.clock()
         remote:FireAllClients("AttackStarted", player, details.Action, details.Combo, serverNow + math.max(0, details.StartsAt - localNow), serverNow + math.max(0, details.EndsAt - localNow))
     elseif accepted and type(details) == "string" then
-        if action ~= "GuardKeepAlive" then
+        if action == "Parry" then
+            remote:FireAllClients("ParryStarted", player, require(script.Parent.CombatConfig).Guard.ParryWindow)
+        elseif action ~= "GuardKeepAlive" then
             remote:FireAllClients("GuardChanged", player, action == "GuardStart")
         end
     elseif not accepted and type(action) == "string" and #action < 20 and details ~= "Rate limited" and details ~= "Invalid action" then

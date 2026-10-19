@@ -44,6 +44,7 @@ function Resolver.Apply(attacker, defender, attackerRoot, defenderRoot, humanoid
     local defended = state.Guarding and now >= state.DisabledUntil and not (defender:GetAttribute("Stunned") == true or defender:GetAttribute("Knocked") == true or defender:GetAttribute("Dodging") == true) and facing(attackerRoot, defenderRoot)
     if defended and now <= state.ParryUntil then
         State.Interrupt(attacker, now + Config.Guard.StunOnParry)
+        State.EndGuard(defender, now)
         return "Parried", 0
     end
     if State.IsActive(defender, now) and facing(attackerRoot, defenderRoot) and facing(defenderRoot, attackerRoot) then
