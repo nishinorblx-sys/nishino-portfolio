@@ -1,4 +1,5 @@
 local Config = require(script.Parent.CombatConfig)
+local Movement = require(script.Parent.CombatMovementGuard)
 
 local states = setmetatable({}, { __mode = "k" })
 local State = {}
@@ -25,8 +26,7 @@ local function get(character)
             RequestedAt = 0,
             Recovery = 0,
             LastRequest = -math.huge,
-            LastPosition = nil,
-            LastPositionAt = 0,
+            GuardLeaseUntil = 0,
             Essence = nil,
         }
         states[character] = state
@@ -35,6 +35,11 @@ local function get(character)
 end
 
 local function refreshGuard(state, now)
+    if state.Guarding and (now >= state.GuardLeaseUntil or state.Guard <= 0) then
+        state.Guarding = false
+        state.ParryUntil = 0
+        state.GuardAt = math.min(now, state.GuardLeaseUntil)
+    end
     if not state.Guarding then
         state.Guard = math.min(Config.Guard.Max, state.Guard + math.max(0, now - state.GuardAt) * Config.Guard.Regeneration)
     end
@@ -59,33 +64,39 @@ function State.CanRequest(character, now)
 end
 
 function State.ResetMovement(character)
-    local state = get(character)
-    state.LastPosition = nil
-    state.LastPositionAt = 0
+    Movement.Reset(character)
 end
 
-function State.UpdateMovement(character, position, now)
-    local state = get(character)
-    local previous = state.LastPosition
-    local elapsed = now - state.LastPositionAt
-    state.LastPosition = position
-    state.LastPositionAt = now
-    if previous and elapsed > 0.015 and elapsed < 1 then
-        local displacement = (position - previous).Magnitude
-        if displacement > Config.DisplacementAllowance + Config.MaxDisplacementSpeed * elapsed then
-            return false
+function State.UpdateMovement(character, now)
+    return Movement.Validate(character, now)
+end
+
+local function disabled(character)
+    return character:GetAttribute("Stunned") == true or character:GetAttribute("Knocked") == true or character:GetAttribute("Dodging") == true or character:GetAttribute("Blocking") == true
+end
+
+local function finite(value, minimum, maximum)
+    return type(value) == "number" and value == value and value > -math.huge and value < math.huge and value >= minimum and value <= maximum
+end
+
+local function scheduleGuardExpiry(character, lease)
+    task.delay(math.max(0, lease - os.clock()), function()
+        local current = states[character]
+        if current and current.Guarding and os.clock() >= current.GuardLeaseUntil then
+            refreshGuard(current, os.clock())
         end
-    end
-    return true
+    end)
 end
 
 function State.BeginGuard(character, now)
     local state = get(character)
     refreshGuard(state, now)
-    if state.Guarding or state.Action ~= nil or now < state.DisabledUntil or now < state.LockUntil or state.Guard <= 0 then
+    if state.Guarding or state.Action ~= nil or now < state.DisabledUntil or now < state.LockUntil or state.Guard <= 0 or disabled(character) then
         return false
     end
     state.Guarding = true
+    state.GuardLeaseUntil = now + 2.25
+    scheduleGuardExpiry(character, state.GuardLeaseUntil)
     if now >= state.ParryReadyAt then
         state.ParryUntil = now + Config.Guard.ParryWindow
         state.ParryReadyAt = now + Config.Guard.ParryRearm
@@ -95,16 +106,30 @@ function State.BeginGuard(character, now)
     return true
 end
 
+function State.KeepGuard(character, now)
+    local state = get(character)
+    refreshGuard(state, now)
+    if not state.Guarding or state.Action ~= nil or now < state.DisabledUntil or disabled(character) then
+        State.EndGuard(character, now)
+        return false
+    end
+    state.GuardLeaseUntil = now + 2.25
+    scheduleGuardExpiry(character, state.GuardLeaseUntil)
+    return true
+end
+
 function State.EndGuard(character, now)
     local state = get(character)
     refreshGuard(state, now)
     state.Guarding = false
     state.ParryUntil = 0
+    state.GuardLeaseUntil = 0
 end
 
 function State.CanAttack(character, now)
     local state = get(character)
-    return state.Action == nil and not state.Guarding and now >= state.DisabledUntil and now >= state.LockUntil and character:GetAttribute("Stunned") ~= true and character:GetAttribute("Knocked") ~= true and character:GetAttribute("Dodging") ~= true and character:GetAttribute("Blocking") ~= true
+    refreshGuard(state, now)
+    return state.Action == nil and not state.Guarding and now >= state.DisabledUntil and now >= state.LockUntil and not disabled(character)
 end
 
 function State.BeginAttack(character, kind, weapon, now)
@@ -150,7 +175,7 @@ end
 
 function State.IsCurrent(character, token, now)
     local state = get(character)
-    return state.Token == token and state.Action ~= nil and not state.Guarding and now >= state.DisabledUntil and character:GetAttribute("Stunned") ~= true and character:GetAttribute("Knocked") ~= true and character:GetAttribute("Dodging") ~= true and character:GetAttribute("Blocking") ~= true
+    return state.Token == token and state.Action ~= nil and not state.Guarding and now >= state.DisabledUntil and not disabled(character)
 end
 
 function State.SetActiveWindow(character, token, startTime, duration)
@@ -173,7 +198,7 @@ end
 
 function State.IsActive(character, now)
     local state = get(character)
-    return state.Action ~= nil and now >= state.ActiveFrom and now <= state.ActiveUntil and now >= state.DisabledUntil and character:GetAttribute("Stunned") ~= true and character:GetAttribute("Knocked") ~= true
+    return state.Action ~= nil and not state.Guarding and now >= state.ActiveFrom and now <= state.ActiveUntil and now >= state.DisabledUntil and not disabled(character)
 end
 
 function State.CompleteAttack(character, token)
@@ -210,6 +235,7 @@ function State.Interrupt(character, untilTime)
     state.DisabledUntil = math.max(state.DisabledUntil, untilTime)
     state.Guarding = false
     state.ParryUntil = 0
+    state.GuardLeaseUntil = 0
     state.ComboIndex = 0
     state.ComboExpiresAt = 0
 end
@@ -217,7 +243,7 @@ end
 local function essence(state, character)
     if state.Essence == nil then
         local value = character:GetAttribute("Essence")
-        if type(value) ~= "number" or value ~= value then
+        if type(value) ~= "number" or value ~= value or math.abs(value) == math.huge then
             value = 0
         end
         state.Essence = math.clamp(value, 0, 100000)
@@ -238,6 +264,9 @@ end
 
 function State.BeginAbility(character, duration, cost, now)
     local state = get(character)
+    if not finite(duration, 0.1, 10) or not finite(cost, 0, 100000) or not finite(now, 0, math.huge) then
+        return nil, "Invalid ability parameters"
+    end
     if not State.CanAttack(character, now) then
         return nil, "Action locked"
     end
@@ -280,14 +309,21 @@ function State.EndAbility(character, token, now, recovery)
     state.Action = nil
     state.ActiveFrom = math.huge
     state.ActiveUntil = 0
+    if not finite(recovery, 0, 5) then
+        recovery = 0
+    end
     state.LockUntil = math.max(state.DisabledUntil, now + recovery)
     return true
 end
 
 function State.RefundEssence(character, amount)
+    if not finite(amount, 0, 100000) then
+        return false
+    end
     local state = get(character)
     state.Essence = math.min(100000, essence(state, character) + amount)
     character:SetAttribute("Essence", state.Essence)
+    return true
 end
 
 function State.Defense(character, now)

@@ -1,16 +1,15 @@
-local CollectionService = game:GetService("CollectionService")
 local Players = game:GetService("Players")
+local CollectionService = game:GetService("CollectionService")
 
 local Config = require(script.Parent.CombatConfig)
 local Policy = {}
-
-local ZONES = table.freeze({ Safe = 4, Yellow = 3, Red = 2, Dark = 1 })
+local severity = table.freeze({ Safe = 4, Yellow = 1, Red = 2, Dark = 3 })
 local volumes = {}
 local consequenceHandler = nil
 
-local function register(instance)
-    if instance:IsA("BasePart") then
-        volumes[instance] = true
+local function register(part)
+    if part:IsA("BasePart") then
+        volumes[part] = true
     end
 end
 
@@ -18,75 +17,86 @@ for _, part in ipairs(CollectionService:GetTagged(Config.ZoneTag)) do
     register(part)
 end
 CollectionService:GetInstanceAddedSignal(Config.ZoneTag):Connect(register)
-CollectionService:GetInstanceRemovedSignal(Config.ZoneTag):Connect(function(instance)
-    volumes[instance] = nil
+CollectionService:GetInstanceRemovedSignal(Config.ZoneTag):Connect(function(part)
+    volumes[part] = nil
 end)
 
 function Policy.SetConsequenceHandler(callback)
-    assert(type(callback) == "function", "PvP consequences must have a server handler")
+    assert(type(callback) == "function")
     consequenceHandler = callback
 end
 
-local function zoneAt(position)
-    local name
-    local priority = 0
+function Policy.ZoneAt(position)
+    local chosen = nil
+    local highest = 0
     for part in pairs(volumes) do
         if part.Parent then
-            local zoneType = part:GetAttribute("ZoneType")
-            local order = ZONES[zoneType]
-            if order and order > priority then
+            local zone = part:GetAttribute("ZoneType")
+            local priority = severity[zone]
+            if priority and priority > highest then
                 local localPosition = part.CFrame:PointToObjectSpace(position)
-                local halfSize = part.Size * 0.5
-                if math.abs(localPosition.X) <= halfSize.X and math.abs(localPosition.Y) <= halfSize.Y and math.abs(localPosition.Z) <= halfSize.Z then
-                    name = zoneType
-                    priority = order
+                local half = part.Size * 0.5
+                if math.abs(localPosition.X) <= half.X and math.abs(localPosition.Y) <= half.Y and math.abs(localPosition.Z) <= half.Z then
+                    chosen = zone
+                    highest = priority
                 end
             end
         end
     end
-    return name
+    return chosen
 end
 
-function Policy.Authorize(attacker, target, attackerRoot, targetRoot)
-    if attacker == target then
+function Policy.Authorize(attacker, defender, attackerRoot, defenderRoot)
+    if attacker == defender or not attacker.Parent or not defender.Parent then
         return false, nil
     end
-    local attackerFaction = attacker:GetAttribute("CombatFaction")
-    local targetFaction = target:GetAttribute("CombatFaction")
-    if attackerFaction ~= nil and attackerFaction == targetFaction then
+    local af = attacker:GetAttribute("CombatFaction")
+    local df = defender:GetAttribute("CombatFaction")
+    if af ~= nil and af == df then
         return false, nil
     end
-    local attackerPlayer = Players:GetPlayerFromCharacter(attacker)
-    local targetPlayer = Players:GetPlayerFromCharacter(target)
-    if not targetPlayer then
-        return CollectionService:HasTag(target, Config.NPCTag), nil
-    end
-    if not attackerPlayer or not consequenceHandler then
+    local ap = Players:GetPlayerFromCharacter(attacker)
+    local dp = Players:GetPlayerFromCharacter(defender)
+    if not ap and not CollectionService:HasTag(attacker, Config.NPCTag) then
         return false, nil
     end
-    if attackerPlayer.Team ~= nil and attackerPlayer.Team == targetPlayer.Team then
+    if not dp and not CollectionService:HasTag(defender, Config.NPCTag) then
         return false, nil
     end
-    local attackerZone = zoneAt(attackerRoot.Position)
-    local targetZone = zoneAt(targetRoot.Position)
-    if not attackerZone or not targetZone or attackerZone == "Safe" or targetZone == "Safe" then
+    local attackerZone = Policy.ZoneAt(attackerRoot.Position)
+    local defenderZone = Policy.ZoneAt(defenderRoot.Position)
+    if attackerZone == "Safe" or defenderZone == "Safe" then
         return false, nil
     end
-    if (attackerZone == "Yellow" or targetZone == "Yellow") and (attackerPlayer:GetAttribute("PvPEnabled") ~= true or targetPlayer:GetAttribute("PvPEnabled") ~= true) then
-        return false, nil
+    if ap and dp then
+        if not attackerZone or not defenderZone or consequenceHandler == nil then
+            return false, nil
+        end
+        if ap.Team ~= nil and ap.Team == dp.Team then
+            return false, nil
+        end
+        if (attackerZone == "Yellow" or defenderZone == "Yellow") and (ap:GetAttribute("PvPEnabled") ~= true or dp:GetAttribute("PvPEnabled") ~= true) then
+            return false, nil
+        end
+        local chosen = severity[attackerZone] >= severity[defenderZone] and attackerZone or defenderZone
+        return true, { Attacker = ap, Target = dp, Zone = chosen }
     end
-    local zone = ZONES[attackerZone] > ZONES[targetZone] and attackerZone or targetZone
-    return true, table.freeze({ Attacker = attackerPlayer, Target = targetPlayer, Zone = zone })
+    return true, nil
 end
 
-function Policy.RecordConsequence(info, damage, result)
+function Policy.RecordConsequence(info)
     if not info then
-        return
+        return true
     end
-    local ok, response = pcall(consequenceHandler, info, damage, result)
-    if not ok then
-        warn("Combat PvP consequence handler failed:", response)
+    if consequenceHandler == nil then
+        return false
     end
+    local succeeded, result = pcall(consequenceHandler, info)
+    if not succeeded then
+        warn("Combat PvP consequence transaction failed:", result)
+        return false
+    end
+    return result == true
 end
 
 return Policy

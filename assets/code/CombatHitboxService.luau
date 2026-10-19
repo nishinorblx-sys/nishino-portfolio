@@ -5,6 +5,7 @@ local Players = game:GetService("Players")
 
 local Config = require(script.Parent.CombatConfig)
 local State = require(script.Parent.CombatState)
+local Movement = require(script.Parent.CombatMovementGuard)
 local Resolver = require(script.Parent.CombatResolver)
 local Timeline = require(script.Parent.CombatTimeline)
 local Hurtboxes = require(script.Parent.CombatHurtboxIndex)
@@ -158,36 +159,52 @@ local function validContext(context, now)
     if not weapon or tool ~= context.Tool or weapon ~= context.Weapon then
         return false
     end
-    if root.Anchored or humanoid.Sit or root.AssemblyLinearVelocity.Magnitude > Config.MaxLinearSpeed then
+    if root.Anchored or humanoid.Sit or (root.AssemblyLinearVelocity.Magnitude > Config.MaxLinearSpeed and not Movement.IsImpulseAuthorized(context.Character, now)) then
         return false
     end
-    return State.UpdateMovement(context.Character, root.Position, now)
+    return State.UpdateMovement(context.Character, now)
+end
+
+local function stepContext(context, now, dt)
+    if now > context.Timing.Deadline or not validContext(context, now) then
+        stop(context, true)
+        return
+    end
+    local timeline = context.Timing
+    if timeline.Phase == "Pending" then
+        openWindow(context, now, false)
+    end
+    if context.Stopped then
+        return
+    end
+    if timeline.Phase == "Active" then
+        if now >= timeline.EndAt then
+            stop(context, false)
+            return
+        end
+        context.Elapsed += dt
+        if context.Elapsed >= context.Attack.Definition.SampleInterval then
+            context.Elapsed = 0
+            if not scan(context, now) or context.Hits >= context.Attack.Definition.MaxTargets then
+                stop(context, false)
+            end
+        end
+    end
 end
 
 local function update(dt)
     local now = os.clock()
     for _, context in pairs(active) do
-        if context.Stopped then
-            continue
-        end
-        if now > context.Timing.Deadline or not validContext(context, now) then
-            stop(context, true)
-            continue
-        end
-        local timeline = context.Timing
-        if timeline.Phase == "Pending" then
-            openWindow(context, now, false)
-        end
-        if timeline.Phase == "Active" then
-            if now >= timeline.EndAt then
-                stop(context, false)
-                continue
-            end
-            context.Elapsed += dt
-            if context.Elapsed >= context.Attack.Definition.SampleInterval then
-                context.Elapsed = 0
-                if not scan(context, now) or context.Hits >= context.Attack.Definition.MaxTargets then
-                    stop(context, false)
+        if not context.Stopped then
+            local ok, err = xpcall(stepContext, debug.traceback, context, now, dt)
+            if not ok then
+                warn("Combat attack aborted safely:", err)
+                local cleaned, cleanupErr = pcall(stop, context, true)
+                if not cleaned then
+                    warn("Combat cleanup failed:", cleanupErr)
+                    context.Stopped = true
+                    active[context.Character] = nil
+                    State.Interrupt(context.Character, now + 0.2)
                 end
             end
         end
@@ -262,28 +279,36 @@ function Combat.Request(player, action)
     if typeof(player) ~= "Instance" or not player:IsA("Player") or not player.Parent then
         return false, "Invalid player"
     end
-    if type(action) ~= "string" or (action ~= "Light" and action ~= "Heavy" and action ~= "GuardStart" and action ~= "GuardEnd") then
+    if type(action) ~= "string" or (action ~= "Light" and action ~= "Heavy" and action ~= "GuardStart" and action ~= "GuardEnd" and action ~= "GuardKeepAlive") then
         return false, "Invalid action"
     end
     local now = os.clock()
+    local character = player.Character
+    if action == "GuardEnd" then
+        if character then
+            State.EndGuard(character, now)
+        end
+        return true, "Guard released"
+    end
     if now - (lastRemote[player] or -math.huge) < 0.03 then
         return false, "Rate limited"
     end
     lastRemote[player] = now
-    local character = player.Character
     local root, humanoid = living(character)
-    if not root or root.Anchored or humanoid.Sit or root.AssemblyLinearVelocity.Magnitude > Config.MaxLinearSpeed then
+    if not root then
         return false, "Invalid character"
     end
-    if action == "GuardEnd" then
-        State.EndGuard(character, now)
-        return true, "Guard released"
+    if action == "GuardKeepAlive" then
+        return State.KeepGuard(character, now), "Guard heartbeat"
+    end
+    if root.Anchored or humanoid.Sit or (root.AssemblyLinearVelocity.Magnitude > Config.MaxLinearSpeed and not Movement.IsImpulseAuthorized(character, now)) then
+        return false, "Invalid character"
     end
     local allowed, reason = State.CanRequest(character, now)
     if not allowed then
         return false, reason
     end
-    if not State.UpdateMovement(character, root.Position, now) then
+    if not State.UpdateMovement(character, now) then
         return false, "Implausible movement"
     end
     local weapon, tool = equippedWeapon(character)

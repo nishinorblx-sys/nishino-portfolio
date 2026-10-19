@@ -4,6 +4,7 @@ local CollectionService = game:GetService("CollectionService")
 local Workspace = game:GetService("Workspace")
 
 local State = require(script.Parent.CombatState)
+local Movement = require(script.Parent.CombatMovementGuard)
 local Config = require(script.Parent.CombatConfig)
 local Resolver = require(script.Parent.CombatResolver)
 
@@ -73,7 +74,7 @@ local function validContext(context)
         return false
     end
     local humanoid, root = live(context.Character)
-    if not humanoid or root.AssemblyLinearVelocity.Magnitude > Config.MaxLinearSpeed then
+    if not humanoid or (root.AssemblyLinearVelocity.Magnitude > Config.MaxLinearSpeed and not Movement.IsImpulseAuthorized(context.Character, os.clock())) then
         return false
     end
     if not requiredWeapon(context.Character, context.Definition.RequiredWeaponId) then
@@ -83,7 +84,7 @@ local function validContext(context)
     if not State.IsAbilityCurrent(context.Character, context.Token, now) then
         return false
     end
-    return State.UpdateMovement(context.Character, root.Position, now)
+    return State.UpdateMovement(context.Character, now)
 end
 
 local function finish(context, completed, reason)
@@ -295,9 +296,12 @@ function AbilityRunner.Execute(player, name)
     if not token then
         return false, reason
     end
-    State.ResetMovement(character)
     local root = character:FindFirstChild("HumanoidRootPart")
-    State.UpdateMovement(character, root.Position, now)
+    if not State.UpdateMovement(character, now) then
+        State.EndAbility(character, token, now, 0)
+        State.RefundEssence(character, definition.Cost)
+        return false, "Movement invalid"
+    end
     local context = setmetatable({
         Player = player,
         Character = character,

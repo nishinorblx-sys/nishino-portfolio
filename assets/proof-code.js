@@ -1,23 +1,28 @@
 (() => {
   const files = [
-    { name: 'CombatHitboxService.luau', label: '01 / SERVER COMBAT PIPELINE', title: 'Server-authoritative melee combat', summary: 'Server-owned combos and hit windows with marker fallback, indexed target queries, centralized guard/parry/clash resolution, and PvP zone policy. Ability attacks share the same combat state and resolver.', chips: ['Marker fallback', 'Shared action state', 'Central damage rules', 'Server RemoteEvent'], note: 'Explore every combat dependency below, including the server entry point and test harness.' },
+    { name: 'CombatHitboxService.luau', label: '01 / SERVER COMBAT PIPELINE', title: 'Server-authoritative melee combat', summary: 'Server-owned combos and hit windows with marker fallback, continuous movement validation, fault-isolated hit detection, centralized defense resolution and explicit PvP policy. Ability attacks share the same combat state and resolver.', chips: ['Movement guard', 'Fault isolation', 'Unified PvP consequences', 'Server RemoteEvent'], note: 'Inspect the server handler, policy modules, regression assertions and profiling harness below.' },
     { name: 'AbilityRunner.luau', label: '02 / ABILITY ENGINE', title: 'Server-owned ability lifecycle', summary: 'Persistent per-player action ownership, shared combat locks, resource reservation, explicit cooldown commit, bounded callbacks, interruption cancellation, and damage through the centralized combat resolver.', chips: ['Shared combat state', 'Essence reservation', 'Token cancellation', 'Unified PvP rules'], note: 'See the complete server adapter, ability definitions and state tests below. Partial external side effects still need registered cleanup handlers.' },
-    { name: 'InventoryService.luau', label: '03 / INVENTORY BACKEND', title: 'Constant-time item transactions', summary: 'Server-owned session inventories with item allowlists, stack limits, transaction checks, immutable snapshots and version numbers.', chips: ['Item lookup', 'Stack limits', 'Immutable snapshot'], note: 'Session-only module. Wire persistence and an authoritative purchase flow into your game.' },
-    { name: 'NPCTargetSelector.luau', label: '04 / NPC AI', title: 'Throttled target acquisition', summary: 'NPCs reuse their current target between scans, compare squared distances and avoid per-frame player searches.', chips: ['0.45s refresh', 'Target cache', 'Squared distance'], note: 'This chooses a candidate, not a navigation path. Integrate with pathfinding and line-of-sight rules.' },
-    { name: 'DeltaReplicator.luau', label: '05 / NETWORKING', title: 'Batched state replication', summary: 'Only changed, allowlisted values are sent in a 10 Hz server-side batch. Repeated values never generate packets.', chips: ['Dirty fields', '10 Hz batching', 'Server-owned state'], note: 'Client must listen to FoallowStateDelta and obtain a full initial snapshot when ready.' },
+    { name: 'InventoryService.luau', label: '03 / INVENTORY BACKEND', title: 'Versioned atomic inventory transactions', summary: 'Server-owned inventory sessions with atomic batches, version checks, bounded replay handling, strict item limits and immutable snapshots.', chips: ['Atomic batches', 'Replay guard', 'Version checks'], note: 'Session-only module. Wire persistence and an authoritative purchase flow into your game.' },
+    { name: 'NPCTargetSelector.luau', label: '04 / NPC AI', title: 'Throttled target acquisition', summary: 'NPCs reuse valid targets between scans, enforce combat permissions, check visibility and use squared-distance comparisons.', chips: ['PvE permissions', 'Line-of-sight', 'Target cache'], note: 'This selects targets, not navigation routes. Pathfinding and NPC action scheduling remain separate responsibilities.' },
+    { name: 'DeltaReplicator.luau', label: '05 / NETWORKING', title: 'Batched state replication', summary: 'Versioned, allowlisted state updates are batched at 10 Hz, with snapshot recovery for late-joining clients and delivery-error recovery.', chips: ['Versioned deltas', 'Snapshot resync', '10 Hz batching'], note: 'A companion client script publishes replicated values as Foallow_* local player attributes for UI use.' },
   ];
 
 
   const combatDependencies = [
     { name: 'CombatConfig.luau', title: 'Weapon Profiles', purpose: 'Server-controlled M1 chains, M2 attacks and timing definitions' },
+    { name: 'CombatMovementGuard.luau', title: 'Movement Validation', purpose: 'Continuous server sampling, rejected baselines and explicit server-authorized displacement' },
     { name: 'CombatState.luau', title: 'Action State', purpose: 'Combo sequencing, guard meter, status locks, interrupts and cooldowns' },
     { name: 'CombatPolicy.luau', title: 'PvP Permission Checks', purpose: 'Safe, Yellow, Red and Dark zones, opt-in, teams and NPC factions' },
     { name: 'CombatResolver.luau', title: 'Damage Resolution', purpose: 'Shared block, parry, clash, guardbreak and damage pipeline' },
     { name: 'CombatZoneConsequences.luau', title: 'Zone Consequences', purpose: 'Server-owned PvP flags and configurable zone penalties' },
     { name: 'CombatServer.server.luau', title: 'Server Entry Point', purpose: 'Only approved remote actions enter the combat server' },
+    { name: 'CombatClientInput.client.luau', title: 'Manual Test Controls', purpose: 'Client input example with Light, Heavy, Guard and guard keepalive' },
     { name: 'CombatTimeline.luau', title: 'Hit-window State Machine', purpose: 'A single-use window with bounded marker timing, fallback deadlines and closure' },
     { name: 'CombatHurtboxIndex.luau', title: 'Indexed Targets', purpose: 'Tracks one queryable root per character and rebuilds the filter only when membership changes' },
     { name: 'CombatSmokeTests.luau', title: 'State & Fallback Tests', purpose: 'Checks combo ordering, timeout fallback, marker single-use, interrupts, guard and NPC permission' },
+    { name: 'CombatRegressionTests.server.luau', title: 'Combat Regression Tests', purpose: 'Studio assertions for movement rejection, teleport authorization, parry, guardbreak and damage modifiers' },
+    { name: 'CombatLoadProfiler.server.luau', title: 'Studio Load Profiler', purpose: 'Measure overlap query timing with the currently indexed combat roots' },
+    { name: 'CombatPvPIntegrationTests.server.luau', title: 'Two-player PvP Checks', purpose: 'Studio assertions for safe zones, mixed-zone severity and two-sided PvP flags' },
   ];
 
   const abilityDependencies = [
@@ -39,9 +44,9 @@
 
   const combatArchitecture = `
     <section class="proof-architecture" aria-label="Combat system architecture">
-      <div class="proof-architecture-head"><span>SERVER PIPELINE / NINE SUPPORTING FILES</span><h4>One combat flow. Shared rules.</h4><p>Client request → validated weapon and combo → animation marker or timed fallback → indexed hit detection → shared PvP and defense rules → damage resolution.</p></div>
+      <div class="proof-architecture-head"><span>SERVER PIPELINE / FOURTEEN SUPPORTING FILES</span><h4>One combat flow. Shared rules.</h4><p>Client request → trusted movement and state authorization → marker or timed fallback → indexed hit detection → engagement flagging → shared defense and damage resolution.</p></div>
       <div class="proof-architecture-flow"><span>REQUEST</span><i>→</i><span>VALIDATE</span><i>→</i><span>HIT WINDOW</span><i>→</i><span>RESOLVE</span><i>→</i><span>REPLICATE</span></div>
-      <div class="proof-dependencies">${combatDependencies.map(entry => `<details class="proof-dependency" data-combat-source="${entry.name}"><summary><span>${entry.title}<small>${entry.purpose}</small></span><b>VIEW SOURCE ＋</b></summary><div class="proof-dependency-code"><div class="proof-dependency-controls"><a href="assets/code/${entry.name}" download>Download .luau ↗</a><button type="button" data-copy-source="${entry.name}" disabled>Copy source</button></div><pre aria-label="${entry.name} source"><code>Expand to load source</code></pre></div></details>`).join('')}</div><p class="proof-code-note"><a href="assets/code/COMBAT-SETUP.md" download>Download the complete integration and test guide ↗</a> · <a href="assets/code/EVALUATOR-RESPONSE.md" download>Read the code review response ↗</a></p>
+      <div class="proof-dependencies">${combatDependencies.map(entry => `<details class="proof-dependency" data-combat-source="${entry.name}"><summary><span>${entry.title}<small>${entry.purpose}</small></span><b>VIEW SOURCE ＋</b></summary><div class="proof-dependency-code"><div class="proof-dependency-controls"><a href="assets/code/${entry.name}" download>Download .luau ↗</a><button type="button" data-copy-source="${entry.name}" disabled>Copy source</button></div><pre aria-label="${entry.name} source"><code>Expand to load source</code></pre></div></details>`).join('')}</div><p class="proof-code-note"><a href="assets/code/COMBAT-SETUP.md" download>Download the complete integration and test guide ↗</a> · <a href="assets/code/EVALUATOR-RESPONSE.md" download>Read the code review response ↗</a> · <a href="assets/code/COMBAT-REVIEW-AND-TESTING.md" download>Review verification checklist ↗</a></p>
     </section>
   `;
 
@@ -74,7 +79,7 @@
       <div class="proof-editor"><div class="proof-editor-bar"><div class="proof-editor-circles"><i></i><i></i><i></i></div><span>assets/code/${entry.name}</span><span class="proof-editor-language">Luau</span></div><div class="proof-editor-scroller"><pre aria-label="Code sample for ${entry.title}"><code class="proof-code-lines">Loading source...</code></pre></div></div>
       <div class="proof-code-actions"><button type="button" class="proof-code-button" data-action="expand" disabled>View full source</button><button type="button" class="proof-code-button" data-action="copy" disabled>Copy code</button><a class="proof-code-link" href="assets/code/${entry.name}" download>Download .luau ↗</a></div>
       <p class="proof-code-note">${entry.note}</p>
-      ${index === 0 ? combatArchitecture : index === 1 ? abilityArchitecture : ''}
+      ${index === 0 ? combatArchitecture : index === 1 ? abilityArchitecture : index === 4 ? '<p class="proof-code-note"><a href="assets/code/DeltaReplicatorClient.client.luau" download>Download companion client receiver ↗</a> · <a href="assets/code/NETWORKING-SETUP.md" download>Integration guide ↗</a></p>' : index === 2 ? '<p class="proof-code-note"><a href="assets/code/InventoryConsistencyTests.server.luau" download>Download inventory regression checks ↗</a></p>' : ''}
     </article>
   `).join('');
 

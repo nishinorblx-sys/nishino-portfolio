@@ -14,17 +14,35 @@ local function facing(attackerRoot, defenderRoot)
     return direction:Dot(horizontal.Unit) >= Config.Guard.FacingDot
 end
 
+local function damageMultiplier(defender)
+    local value = defender:GetAttribute("CombatDamageTakenMultiplier")
+    if type(value) ~= "number" or value ~= value or math.abs(value) == math.huge then
+        value = 1
+    end
+    return math.clamp(value, 0, 3)
+end
+
+local function deal(humanoid, base, defender)
+    local amount = math.max(0, math.floor(base * damageMultiplier(defender) + 0.5))
+    if amount == 0 then
+        return 0
+    end
+    local before = humanoid.Health
+    humanoid:TakeDamage(amount)
+    return math.max(0, before - humanoid.Health)
+end
+
 function Resolver.Apply(attacker, defender, attackerRoot, defenderRoot, humanoid, definition, now)
-    if humanoid.Health <= 0 then
+    if not humanoid or humanoid.Health <= 0 then
         return "Invalid", 0
     end
     local permitted, consequence = Policy.Authorize(attacker, defender, attackerRoot, defenderRoot)
-    if not permitted then
+    if not permitted or not Policy.RecordConsequence(consequence) then
         return "Forbidden", 0
     end
-    local defenderState = State.Defense(defender, now)
-    local defended = defenderState.Guarding and now >= defenderState.DisabledUntil and facing(attackerRoot, defenderRoot)
-    if defended and now <= defenderState.ParryUntil then
+    local state = State.Defense(defender, now)
+    local defended = state.Guarding and now >= state.DisabledUntil and not (defender:GetAttribute("Stunned") == true or defender:GetAttribute("Knocked") == true or defender:GetAttribute("Dodging") == true) and facing(attackerRoot, defenderRoot)
+    if defended and now <= state.ParryUntil then
         State.Interrupt(attacker, now + Config.Guard.StunOnParry)
         return "Parried", 0
     end
@@ -34,33 +52,12 @@ function Resolver.Apply(attacker, defender, attackerRoot, defenderRoot, humanoid
         return "Clashed", 0
     end
     if defended then
-        local broken = State.DrainGuard(defender, definition.PostureDamage, now)
-        if broken then
-            local overflowDamage = math.floor(definition.Damage * 0.25)
-            if overflowDamage > 0 then
-                local before = humanoid.Health
-                humanoid:TakeDamage(overflowDamage)
-                overflowDamage = math.max(0, before - humanoid.Health)
-            end
-            Policy.RecordConsequence(consequence, overflowDamage, "GuardBroken")
-            return "GuardBroken", overflowDamage
+        if State.DrainGuard(defender, definition.PostureDamage, now) then
+            return "GuardBroken", deal(humanoid, definition.Damage * 0.25, defender)
         end
-        Policy.RecordConsequence(consequence, 0, "Blocked")
         return "Blocked", 0
     end
-    local multiplier = defender:GetAttribute("CombatDamageTakenMultiplier")
-    if type(multiplier) ~= "number" or multiplier ~= multiplier then
-        multiplier = 1
-    end
-    multiplier = math.clamp(multiplier, 0, 3)
-    local damage = math.max(0, math.floor(definition.Damage * multiplier + 0.5))
-    if damage > 0 then
-        local before = humanoid.Health
-        humanoid:TakeDamage(damage)
-        damage = math.max(0, before - humanoid.Health)
-    end
-    Policy.RecordConsequence(consequence, damage, "Hit")
-    return "Hit", damage
+    return "Hit", deal(humanoid, definition.Damage, defender)
 end
 
 return Resolver

@@ -1,82 +1,91 @@
 local Players = game:GetService("Players")
+local CollectionService = game:GetService("CollectionService")
+local Workspace = game:GetService("Workspace")
 
+local Config = require(script.Parent.CombatConfig)
+local Policy = require(script.Parent.CombatPolicy)
 local NPCTargetSelector = {}
-
-local REFRESH_SECONDS = 0.45
-local MAX_RANGE = 100
 local cache = setmetatable({}, { __mode = "k" })
+local REFRESH = 0.35
+local MAX_RANGE = 120
 
-local function resolveTarget(player)
-    local character = player.Character
-    if not character then
-        return nil, nil
+local function living(character)
+    if not character or not character.Parent then
+        return nil
     end
-
     local humanoid = character:FindFirstChildOfClass("Humanoid")
     local root = character:FindFirstChild("HumanoidRootPart")
     if not humanoid or humanoid.Health <= 0 or not root or not root:IsA("BasePart") then
-        return nil, nil
+        return nil
     end
-
-    return humanoid, root
+    return root
 end
 
-function NPCTargetSelector.GetNearest(npcModel, maxDistance)
-    if typeof(npcModel) ~= "Instance" or not npcModel:IsA("Model") then
+local function visible(npc, origin, target, root)
+    local offset = root.Position - origin.Position
+    local params = RaycastParams.new()
+    params.FilterType = Enum.RaycastFilterType.Exclude
+    params.FilterDescendantsInstances = { npc }
+    params.IgnoreWater = true
+    local hit = Workspace:Raycast(origin.Position, offset, params)
+    return hit == nil or hit.Instance:IsDescendantOf(target)
+end
+
+local function valid(npc, npcRoot, player, limit)
+    if not player or not player.Parent or not player.Character then
         return nil
     end
-
-    local npcRoot = npcModel:FindFirstChild("HumanoidRootPart")
-    if not npcRoot or not npcRoot:IsA("BasePart") then
+    local character = player.Character
+    local root = living(character)
+    if not root then
         return nil
     end
+    local delta = root.Position - npcRoot.Position
+    local distance = delta:Dot(delta)
+    if distance > limit or not Policy.Authorize(npc, character, npcRoot, root) or not visible(npc, npcRoot, character, root) then
+        return nil
+    end
+    return distance
+end
 
+function NPCTargetSelector.GetNearest(npc, maxRange)
+    if typeof(npc) ~= "Instance" or not npc:IsA("Model") or not CollectionService:HasTag(npc, Config.NPCTag) then
+        return nil
+    end
+    local root = living(npc)
+    if not root then
+        return nil
+    end
     local radius = MAX_RANGE
-    if type(maxDistance) == "number" and maxDistance == maxDistance then
-        radius = math.clamp(maxDistance, 1, MAX_RANGE)
+    if type(maxRange) == "number" and maxRange == maxRange and math.abs(maxRange) < math.huge then
+        radius = math.clamp(maxRange, 1, MAX_RANGE)
     end
-
+    local limit = radius * radius
     local now = os.clock()
-    local stored = cache[npcModel]
-    if stored and now < stored.NextRefresh and stored.Radius == radius then
-        local player = stored.Player
-        if not player then
+    local stored = cache[npc]
+    if stored and stored.Radius == radius and now < stored.Expires then
+        if stored.Player and valid(npc, root, stored.Player, limit) then
+            return stored.Player
+        end
+        if not stored.Player then
             return nil
         end
-
-        local humanoid, root = resolveTarget(player)
-        if humanoid and root and (root.Position - npcRoot.Position).Magnitude <= radius then
-            return player
-        end
     end
-
-    local nearestPlayer = nil
-    local nearestDistanceSquared = radius * radius
-    local origin = npcRoot.Position
-
+    local selected = nil
+    local best = limit
     for _, player in ipairs(Players:GetPlayers()) do
-        local humanoid, root = resolveTarget(player)
-        if humanoid and root then
-            local offset = root.Position - origin
-            local distanceSquared = offset:Dot(offset)
-            if distanceSquared < nearestDistanceSquared then
-                nearestDistanceSquared = distanceSquared
-                nearestPlayer = player
-            end
+        local distance = valid(npc, root, player, limit)
+        if distance and (distance < best or (distance == best and (not selected or player.UserId < selected.UserId))) then
+            selected = player
+            best = distance
         end
     end
-
-    cache[npcModel] = {
-        Player = nearestPlayer,
-        Radius = radius,
-        NextRefresh = now + REFRESH_SECONDS,
-    }
-
-    return nearestPlayer
+    cache[npc] = { Player = selected, Expires = now + REFRESH, Radius = radius }
+    return selected
 end
 
-function NPCTargetSelector.Forget(npcModel)
-    cache[npcModel] = nil
+function NPCTargetSelector.Forget(npc)
+    cache[npc] = nil
 end
 
 return NPCTargetSelector

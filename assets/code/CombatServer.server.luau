@@ -36,6 +36,9 @@ remote.OnServerEvent:Connect(function(player, action)
     local executed, accepted, details = pcall(Combat.Request, player, action)
     if not executed then
         warn("Combat.Request failed:", accepted)
+        if player.Character then
+            Combat.Cancel(player.Character)
+        end
         return
     end
     if accepted and type(details) == "table" then
@@ -43,7 +46,9 @@ remote.OnServerEvent:Connect(function(player, action)
         local localNow = os.clock()
         remote:FireAllClients("AttackStarted", player, details.Action, details.Combo, serverNow + math.max(0, details.StartsAt - localNow), serverNow + math.max(0, details.EndsAt - localNow))
     elseif accepted and type(details) == "string" then
-        remote:FireAllClients("GuardChanged", player, action == "GuardStart")
+        if action ~= "GuardKeepAlive" then
+            remote:FireAllClients("GuardChanged", player, action == "GuardStart")
+        end
     elseif not accepted and type(action) == "string" and #action < 20 and details ~= "Rate limited" and details ~= "Invalid action" then
         remote:FireClient(player, "Rejected", details)
     end

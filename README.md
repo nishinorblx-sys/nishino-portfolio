@@ -108,3 +108,7 @@ The combat module and ability module now share `CombatState` for action ownershi
 Added `AbilityDefinitions.luau`, `AbilityServer.server.luau`, `AbilityStateTests.luau` and `ABILITY-SETUP.md`. The Proof page exposes the complete ability adapter and all related combat modules. The setup file documents cooldown/refund semantics and a multi-client test matrix. See `assets/code/ABILITY-SETUP.md` for installation details.
 
 The files have been checked for references and JavaScript syntax, but have not been benchmarked or executed in Roblox Studio. The combat server and ability server are demonstration entry points and require game-specific setup before shipping.
+
+## V22 proof-source revisions
+
+The Proof page now includes a server-owned movement validation module, expanded combat regression and profiler scripts, PvP policy changes, guard-release resilience, and updated modules for inventory transactions, NPC targeting, and state replication. See assets/code/COMBAT-SETUP.md, assets/code/COMBAT-REVIEW-AND-TESTING.md, and assets/code/NETWORKING-SETUP.md. These are inspectable sources; integration tests and benchmarks must still be run in Roblox Studio.
