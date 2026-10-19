@@ -33,4 +33,4 @@ See COMBAT-REVIEW-AND-TESTING.md for specific rules, failure policies and the re
 
 The code is not independently Studio-tested or benchmarked here. Production approval requires passing the scripts in a real place and documenting measured outcomes.
 
-See COMBAT-V23-VERIFICATION.md for the current specification, test sequence, expected results, and acceptance evidence.
+See COMBAT-V24-VERIFICATION.md for the current setup, test matrix, and outstanding execution evidence.

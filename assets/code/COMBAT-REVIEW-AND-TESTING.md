@@ -30,7 +30,7 @@ For server-driven teleports call Movement.AuthorizeTeleport(character, destinati
 3. Run CombatPvPIntegrationTests.server.luau with at least two Studio players in an isolated place. Confirm both players receive flags on authorized Red-versus-Dark combat, and Safe-zone interactions are rejected.
 4. Run AbilityIntegrationTests.server.luau for pre-commit refunds, post-commit cleanup, ability exclusion and cooldowns.
 5. Run InventoryConsistencyTests.server.luau to verify that multi-item updates are atomic, replay requests are not double-charged, stale versions fail, and failed transactions leave state unchanged.
-6. Run CombatLoadProfiler.server.luau with Studio clients and nearby tagged NPCs. It exercises live attacks and reports accepted requests, scans, overlap queries, rays, resolved hits, failures, average and p95 processing cost. Client counts that are not available are explicitly skipped. Capture MicroProfiler frames and network latency separately before making performance claims.
+6. Run CombatLoadProfiler.server.luau in an isolated Studio session. It generates 1, 5, 10, and 20 server-owned NPC attackers and nearby tagged targets, includes up to two tester players when available, and reports accepted/rejected attacks, scans, queries, rays, resolutions, failures, average and p95 processing time and server frame-time p95. Capture MicroProfiler frames and network latency separately before making performance claims.
 
 ## Additional release gates
 
@@ -39,4 +39,4 @@ Test missing/early/late animation markers, invalid Animator, cancellation and un
 This implementation has not been run in Roblox Studio in this environment. Static code and path checks cannot establish an 8/10 rating or zero bugs. A lead-programmer approval also requires evidence from integration tests, profiling and a live technical review.
 
 
-For the current comprehensive acceptance criteria, read COMBAT-V23-VERIFICATION.md.
+For the current comprehensive acceptance criteria, read COMBAT-V24-VERIFICATION.md.

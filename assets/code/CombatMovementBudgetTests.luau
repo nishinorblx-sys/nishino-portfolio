@@ -47,4 +47,23 @@ assert(tolerance.Tolerance < Config.Movement.Tolerance)
 assert(not Budget.Sample(tolerance, Vector3.new(9, 0, 0), 0.02))
 assert(not Budget.Sample(tolerance, Vector3.new(9, 0, 0), 0.03))
 
+local directed = Budget.New(Vector3.zero, 0)
+assert(not Budget.GrantImpulse(directed, 12, 0.5, 0, Vector3.zero))
+assert(Budget.GrantImpulse(directed, 12, 0.5, 0, Vector3.new(1, 0, 0)))
+assert(not Budget.Sample(directed, Vector3.new(0, 0, 9), 0.01))
+assert(directed.Accepted == Vector3.zero)
+assert(Budget.Sample(directed, Vector3.new(9, 0, 0), 0.02))
+assert(directed.Impulse.Remaining < 12)
+
+local sustained = Budget.New(Vector3.zero, 0)
+local stopped = false
+for frame = 1, 180 do
+    local time = frame / 60
+    if not Budget.Sample(sustained, Vector3.new(85 * time, 0, 0), time) then
+        stopped = true
+        break
+    end
+end
+assert(stopped, "A repeated excess above MaxSpeed must exhaust tolerance")
+
 print("CombatMovementBudgetTests passed")

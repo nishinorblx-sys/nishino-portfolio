@@ -117,3 +117,7 @@ The Proof page now includes a server-owned movement validation module, expanded 
 ## V23 Combat Proof
 
 This version adds finite movement budgets, server recovery, trusted zone positions, read-only state, Soul Seas input bindings, five/four-hit combos, real resolver regression scripts and a measured attack-pipeline profiler. See `assets/code/COMBAT-V23-VERIFICATION.md`. Test results must be obtained in Roblox Studio.
+
+## V24 review fixes and reproducible tests
+
+Movement impulses now support optional directional budgets, and pending teleports survive ordinary movement samples until consumed or expired. Combat test fixtures have guaranteed teardown after failures. PvP assertions use real nearby Studio players and the real resolver, while the load harness uses server-owned NPC attackers so the 1/5/10/20 scenario matrix does not require twenty human clients. See `assets/code/COMBAT-V24-VERIFICATION.md`. The Studio evidence column remains pending until these tests are run.

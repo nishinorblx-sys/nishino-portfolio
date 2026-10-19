@@ -9,9 +9,9 @@
 
 
   const combatDependencies = [
-    { name: 'CombatConfig.luau', title: 'Weapon Profiles', purpose: 'Server-controlled M1 chains, M2 attacks and timing definitions' },
+    { name: 'CombatConfig.luau', title: 'Weapon Profiles', purpose: 'Server-controlled M1 chains, G heavy attacks and timing definitions' },
     { name: 'CombatMovementGuard.luau', title: 'Movement Recovery Service', purpose: 'Continuous sampling, trusted-position corrections and server-authorized displacement' },
-    { name: 'CombatMovementBudget.luau', title: 'Finite Movement Budgets', purpose: 'Consumable tolerance and impulse budgets with bounded elapsed time and no per-frame replenishment' },
+    { name: 'CombatMovementBudget.luau', title: 'Finite Movement Budgets', purpose: 'Finite movement tolerance and direction-limited impulses, with server recovery' },
     { name: 'CombatMovementBudgetTests.luau', title: 'Movement Budget Regression Suite', purpose: 'Sustained speed abuse, failed teleport, impulse exhaustion and normal movement tests' },
     { name: 'CombatState.luau', title: 'Action State', purpose: 'Combo sequencing, guard meter, status locks, interrupts and cooldowns' },
     { name: 'CombatPolicy.luau', title: 'PvP Permission Checks', purpose: 'Safe, Yellow, Red and Dark zones, opt-in, teams and NPC factions' },
@@ -23,8 +23,8 @@
     { name: 'CombatHurtboxIndex.luau', title: 'Indexed Targets', purpose: 'Tracks one queryable root per character and rebuilds the filter only when membership changes' },
     { name: 'CombatSmokeTests.luau', title: 'State & Fallback Tests', purpose: 'Checks combo ordering, timeout fallback, marker single-use, interrupts, guard and NPC permission' },
     { name: 'CombatRegressionTests.server.luau', title: 'Combat Regression Tests', purpose: 'Studio assertions for movement rejection, teleport authorization, parry, guardbreak and damage modifiers' },
-    { name: 'CombatLoadProfiler.server.luau', title: 'Combat Pipeline Load Profiler', purpose: 'Live attack requests, nearby indexed targets, scan timing, p95 latency, hit counts and fault counts' },
-    { name: 'CombatPvPIntegrationTests.server.luau', title: 'Two-player PvP Checks', purpose: 'Studio assertions for safe zones, mixed-zone severity and two-sided PvP flags' },
+    { name: 'CombatLoadProfiler.server.luau', title: 'Combat Pipeline Load Profiler', purpose: 'Real NPC attack contexts across 1/5/10/20 attackers, mixed targets, scan and frame p95, faults' },
+    { name: 'CombatPvPIntegrationTests.server.luau', title: 'Two-player PvP Checks', purpose: 'Real resolver tests for hit, block, parry, clash, guardbreak, safe-zone rejection and separate two-sided flags' },
   ];
 
   const abilityDependencies = [
@@ -48,7 +48,7 @@
     <section class="proof-architecture" aria-label="Combat system architecture">
       <div class="proof-architecture-head"><span>SERVER PIPELINE / SOURCE AND VERIFICATION FILES</span><h4>One combat flow. Shared rules.</h4><p>Client request → trusted movement and state authorization → marker or timed fallback → indexed hit detection → engagement flagging → shared defense and damage resolution.</p></div>
       <div class="proof-architecture-flow"><span>REQUEST</span><i>→</i><span>VALIDATE</span><i>→</i><span>HIT WINDOW</span><i>→</i><span>RESOLVE</span><i>→</i><span>REPLICATE</span></div>
-      <div class="proof-dependencies">${combatDependencies.map(entry => `<details class="proof-dependency" data-combat-source="${entry.name}"><summary><span>${entry.title}<small>${entry.purpose}</small></span><b>VIEW SOURCE ＋</b></summary><div class="proof-dependency-code"><div class="proof-dependency-controls"><a href="assets/code/${entry.name}" download>Download .luau ↗</a><button type="button" data-copy-source="${entry.name}" disabled>Copy source</button></div><pre aria-label="${entry.name} source"><code>Expand to load source</code></pre></div></details>`).join('')}</div><p class="proof-code-note"><a href="assets/code/COMBAT-SETUP.md" download>Download the complete integration and test guide ↗</a> · <a href="assets/code/EVALUATOR-RESPONSE.md" download>Read the code review response ↗</a> · <a href="assets/code/COMBAT-REVIEW-AND-TESTING.md" download>Review verification checklist ↗</a></p>
+      <div class="proof-dependencies">${combatDependencies.map(entry => `<details class="proof-dependency" data-combat-source="${entry.name}"><summary><span>${entry.title}<small>${entry.purpose}</small></span><b>VIEW SOURCE ＋</b></summary><div class="proof-dependency-code"><div class="proof-dependency-controls"><a href="assets/code/${entry.name}" download>Download .luau ↗</a><button type="button" data-copy-source="${entry.name}" disabled>Copy source</button></div><pre aria-label="${entry.name} source"><code>Expand to load source</code></pre></div></details>`).join('')}</div><p class="proof-code-note"><a href="assets/code/COMBAT-SETUP.md" download>Download the complete integration and test guide ↗</a> · <a href="assets/code/EVALUATOR-RESPONSE.md" download>Read the code review response ↗</a> · <a href="assets/code/COMBAT-REVIEW-AND-TESTING.md" download>Review verification checklist ↗</a> · <a href="assets/code/COMBAT-V24-VERIFICATION.md" download>V24 test plan and evidence status ↗</a></p>
     </section>
   `;
 

@@ -73,9 +73,9 @@ function Guard.AuthorizeTeleport(character, destination, radius, duration)
     return true
 end
 
-function Guard.AuthorizeImpulse(character, distance, duration)
+function Guard.AuthorizeImpulse(character, distance, duration, direction)
     local entry = tracked[character]
-    return entry ~= nil and entry.Budget ~= nil and Budget.GrantImpulse(entry.Budget, distance, duration, os.clock()) or false
+    return entry ~= nil and entry.Budget ~= nil and Budget.GrantImpulse(entry.Budget, distance, duration, os.clock(), direction) or false
 end
 
 local function correct(character, root, entry, now)
@@ -114,8 +114,10 @@ local function inspect(character, now)
     end
     local pending = entry.Teleport
     if pending then
-        entry.Teleport = nil
-        if now <= pending.Expires and (root.Position - pending.Position).Magnitude <= pending.Radius then
+        if now > pending.Expires then
+            entry.Teleport = nil
+        elseif (root.Position - pending.Position).Magnitude <= pending.Radius then
+            entry.Teleport = nil
             entry.Budget = Budget.New(root.Position, now)
             entry.CFrame = root.CFrame
             entry.BlockedUntil = 0

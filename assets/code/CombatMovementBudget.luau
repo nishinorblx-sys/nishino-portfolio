@@ -16,14 +16,20 @@ function Budget.New(position, now)
     }
 end
 
-function Budget.GrantImpulse(entry, distance, duration, now)
+function Budget.GrantImpulse(entry, distance, duration, now, direction)
     if not finite(distance) or distance <= 0 or distance > Config.Movement.MaxImpulse or not finite(duration) or duration <= 0 or duration > Config.Movement.MaxImpulseDuration or not finite(now) then
         return false
     end
-    if entry.Impulse and entry.Impulse.Expires > now then
+    if direction ~= nil then
+        if typeof(direction) ~= "Vector3" or not finite(direction.X) or not finite(direction.Y) or not finite(direction.Z) or direction.Magnitude < 0.001 then
+            return false
+        end
+        direction = direction.Unit
+    end
+    if entry.Impulse and entry.Impulse.Expires > now and entry.Impulse.Remaining > 0 then
         return false
     end
-    entry.Impulse = { Remaining = distance, Expires = now + duration }
+    entry.Impulse = { Remaining = distance, Expires = now + duration, Direction = direction }
     return true
 end
 
@@ -40,17 +46,22 @@ function Budget.Sample(entry, position, now)
     if entry.Impulse and now >= entry.Impulse.Expires then
         entry.Impulse = nil
     end
-    local delta = (position - entry.Accepted).Magnitude
+    local displacement = position - entry.Accepted
+    local delta = displacement.Magnitude
     local normalDistance = Config.Movement.MaxSpeed * elapsed
     local excess = math.max(0, delta - normalDistance)
     local impulse = entry.Impulse and entry.Impulse.Remaining or 0
+    if entry.Impulse and entry.Impulse.Direction then
+        local aligned = math.max(0, displacement:Dot(entry.Impulse.Direction))
+        impulse = math.min(impulse, aligned)
+    end
     if excess > entry.Tolerance + impulse + 0.000001 then
         return false, "Movement budget exceeded"
     end
     local usedTolerance = math.min(entry.Tolerance, excess)
     entry.Tolerance -= usedTolerance
     if entry.Impulse then
-        entry.Impulse.Remaining = math.max(0, entry.Impulse.Remaining - (excess - usedTolerance))
+        entry.Impulse.Remaining = math.max(0, entry.Impulse.Remaining - math.max(0, excess - usedTolerance))
     end
     entry.Accepted = position
     return true

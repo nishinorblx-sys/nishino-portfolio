@@ -24,7 +24,7 @@ Run CombatRegressionTests.server.luau with the modules alongside it. It checks c
 
 Run CombatPvPIntegrationTests.server.luau in an isolated Studio session with at least two players. Spawn them at least 20 studs apart, with no overlapping production CombatZone volumes, and ensure no other production CombatServer or PvP tests modify the same state. The script exercises the real Resolver.Apply pathway for Hit, Blocked, Parried, Clashed, GuardBroken and Forbidden outcomes, and checks combat flagging for both players.
 
-Run CombatLoadProfiler.server.luau in a separate session with 1, 5, 10 and 20 Studio clients when available. It attaches temporary tagged training weapons and indexed NPCs, requests real Light attacks, and reports accepted attacks, scans, overlaps, rays, resolutions, hits, peak contexts, average cost, p95 sample time, and faults. Unsupported client counts print skipped, never fabricated performance data.
+For the updated profiler and evidence plan, follow COMBAT-V24-VERIFICATION.md. The V24 profiler uses server-owned NPC attackers for all four load levels and can optionally include up to two Studio player targets.
 
 Test rapid RemoteEvent spam, bad action types, weapon swap, character respawn, canceled or missing animations, missing HitStart markers, guard release while seated, player knockback, cross-zone PvP and NPC aggression manually in a dedicated test place. Record each failure, its fix, and a repeated successful test.
 

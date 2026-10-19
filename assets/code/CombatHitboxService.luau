@@ -322,53 +322,7 @@ local function attachAnimation(context, humanoid, action)
     end
 end
 
-function Combat.Request(player, action)
-    metrics.Requests += 1
-    if typeof(player) ~= "Instance" or not player:IsA("Player") or not player.Parent then
-        return false, "Invalid player"
-    end
-    if type(action) ~= "string" or (action ~= "Light" and action ~= "Heavy" and action ~= "Parry" and action ~= "GuardStart" and action ~= "GuardEnd" and action ~= "GuardKeepAlive") then
-        return false, "Invalid action"
-    end
-    local now = os.clock()
-    local character = player.Character
-    if action == "GuardEnd" then
-        if character then
-            State.EndGuard(character, now)
-        end
-        return true, "Guard released"
-    end
-    if now - (lastRemote[player] or -math.huge) < 0.03 then
-        return false, "Rate limited"
-    end
-    lastRemote[player] = now
-    local root, humanoid = living(character)
-    if not root then
-        return false, "Invalid character"
-    end
-    if action == "GuardKeepAlive" then
-        return State.KeepGuard(character, now), "Guard heartbeat"
-    end
-    if root.Anchored or humanoid.Sit or (root.AssemblyLinearVelocity.Magnitude > Config.MaxLinearSpeed and not Movement.IsImpulseAuthorized(character, now)) then
-        return false, "Invalid character"
-    end
-    local allowed, reason = State.CanRequest(character, now)
-    if not allowed then
-        return false, reason
-    end
-    if not State.UpdateMovement(character, now) then
-        return false, "Implausible movement"
-    end
-    local weapon, tool = equippedWeapon(character)
-    if not weapon then
-        return false, "No authorized weapon"
-    end
-    if action == "GuardStart" then
-        return State.BeginGuard(character, now), "Guard"
-    end
-    if action == "Parry" then
-        return State.BeginParry(character, now), "Parry"
-    end
+local function beginAttack(character, action, now, weapon, tool, humanoid)
     local attack, attackReason = State.BeginAttack(character, action, weapon, now)
     if not attack then
         return false, attackReason
@@ -425,6 +379,79 @@ function Combat.Request(player, action)
     ensureHeartbeat()
     metrics.Accepted += 1
     return true, table.freeze({ Action = action, Combo = attack.Combo, StartsAt = context.Timing.PlannedStart, EndsAt = attack.EndsAt })
+end
+
+function Combat.Request(player, action)
+    metrics.Requests += 1
+    if typeof(player) ~= "Instance" or not player:IsA("Player") or not player.Parent then
+        return false, "Invalid player"
+    end
+    if type(action) ~= "string" or (action ~= "Light" and action ~= "Heavy" and action ~= "Parry" and action ~= "GuardStart" and action ~= "GuardEnd" and action ~= "GuardKeepAlive") then
+        return false, "Invalid action"
+    end
+    local now = os.clock()
+    local character = player.Character
+    if action == "GuardEnd" then
+        if character then
+            State.EndGuard(character, now)
+        end
+        return true, "Guard released"
+    end
+    if now - (lastRemote[player] or -math.huge) < 0.03 then
+        return false, "Rate limited"
+    end
+    lastRemote[player] = now
+    local root, humanoid = living(character)
+    if not root then
+        return false, "Invalid character"
+    end
+    if action == "GuardKeepAlive" then
+        return State.KeepGuard(character, now), "Guard heartbeat"
+    end
+    if root.Anchored or humanoid.Sit or (root.AssemblyLinearVelocity.Magnitude > Config.MaxLinearSpeed and not Movement.IsImpulseAuthorized(character, now)) then
+        return false, "Invalid character"
+    end
+    local allowed, reason = State.CanRequest(character, now)
+    if not allowed then
+        return false, reason
+    end
+    if not State.UpdateMovement(character, now) then
+        return false, "Implausible movement"
+    end
+    local weapon, tool = equippedWeapon(character)
+    if not weapon then
+        return false, "No authorized weapon"
+    end
+    if action == "GuardStart" then
+        return State.BeginGuard(character, now), "Guard"
+    end
+    if action == "Parry" then
+        return State.BeginParry(character, now), "Parry"
+    end
+    return beginAttack(character, action, now, weapon, tool, humanoid)
+end
+
+function Combat.RequestNPC(character, action)
+    metrics.Requests += 1
+    if typeof(character) ~= "Instance" or not character:IsA("Model") or not character:IsDescendantOf(Workspace) or not CollectionService:HasTag(character, Config.NPCTag) then
+        return false, "Unauthorized NPC"
+    end
+    if action ~= "Light" and action ~= "Heavy" then
+        return false, "Invalid action"
+    end
+    local now = os.clock()
+    local root, humanoid = living(character)
+    if not root or root.Anchored or humanoid.Sit then
+        return false, "Invalid NPC"
+    end
+    if not State.UpdateMovement(character, now) then
+        return false, "NPC movement was not trusted"
+    end
+    local weapon, tool = equippedWeapon(character)
+    if not weapon then
+        return false, "Missing server-authorized NPC weapon"
+    end
+    return beginAttack(character, action, now, weapon, tool, humanoid)
 end
 
 function Combat.Cancel(character)
