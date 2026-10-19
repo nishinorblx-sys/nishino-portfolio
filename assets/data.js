@@ -43,9 +43,9 @@ window.SITE = {
   ],
   "metrics": [
     {
-      "value": "20",
+      "value": "13",
       "label": "Showcase projects",
-      "detail": "Gameplay, scripting, UI, VFX and FPS footage",
+      "detail": "Games, combat, UI, VFX and FPS demonstrations",
       "icon": "✦"
     },
     {
@@ -111,19 +111,37 @@ window.SITE = {
   ],
   "projects": [
     {
-      "name": "Zombie Wave + Combat System",
+      "name": "Zombie Wave",
       "category": "Games & Physics",
-      "type": "SURVIVAL COMBAT SYSTEM",
+      "type": "SURVIVAL GAME",
       "for": "PROJECT SHOWCASE",
-      "desc": "A combined project featuring wave-based zombie survival gameplay and a custom combat system built for responsive encounters.",
+      "desc": "Wave-based zombie gameplay with an emphasis on repeatable encounters and survival pacing.",
       "focus": [
-        "Zombie waves",
-        "Combat system",
-        "Encounter gameplay"
+        "Wave survival",
+        "Zombie enemies",
+        "Survival gameplay"
+      ],
+      "icon": "wave",
+      "tone": "ember",
+      "code": "01",
+      "time": "FOALLOW / ROBLOX",
+      "img": "https://i.ytimg.com/vi/MckUlpPrPH0/hqdefault.jpg",
+      "youtube": "MckUlpPrPH0"
+    },
+    {
+      "name": "Combat System",
+      "category": "Combat & Abilities",
+      "type": "COMBAT SYSTEM",
+      "for": "PROJECT SHOWCASE",
+      "desc": "A standalone Roblox combat system demonstrating chained attacks, hit feedback and responsive combat interactions.",
+      "focus": [
+        "Combat combos",
+        "Hit feedback",
+        "Combat systems"
       ],
       "icon": "combat",
       "tone": "ember",
-      "code": "01",
+      "code": "02",
       "time": "FOALLOW / ROBLOX",
       "video": "assets/media/zombie-combat-showcase.mp4",
       "img": "assets/media/zombie-combat-thumb.jpg"
@@ -141,7 +159,7 @@ window.SITE = {
       ],
       "icon": "boss",
       "tone": "gold",
-      "code": "02",
+      "code": "03",
       "time": "FOALLOW / ROBLOX",
       "video": "assets/media/boss-dialogue-showcase.mp4",
       "img": "assets/media/boss-dialogue-thumb.jpg"
@@ -159,7 +177,7 @@ window.SITE = {
       ],
       "icon": "shop",
       "tone": "bronze",
-      "code": "03",
+      "code": "04",
       "time": "FOALLOW / ROBLOX",
       "video": "assets/media/shop-ui-showcase.mp4",
       "img": "assets/media/shop-ui-thumbnail.jpg"
@@ -177,7 +195,7 @@ window.SITE = {
       ],
       "icon": "car",
       "tone": "copper",
-      "code": "04",
+      "code": "05",
       "time": "FOALLOW / ROBLOX",
       "youtube": "7JPqTRmJWTI",
       "img": "https://i.ytimg.com/vi/7JPqTRmJWTI/hqdefault.jpg"
@@ -195,7 +213,7 @@ window.SITE = {
       ],
       "icon": "skills",
       "tone": "gold",
-      "code": "05",
+      "code": "06",
       "time": "FOALLOW / ROBLOX",
       "video": "assets/media/skill-tree-showcase.mp4",
       "img": "assets/media/skill-tree-thumb.jpg"
@@ -205,16 +223,18 @@ window.SITE = {
       "category": "UI & Systems",
       "type": "INVENTORY SYSTEM",
       "for": "PROJECT SHOWCASE",
-      "desc": "Inventory management and interface systems for organizing and interacting with in-game items.",
+      "desc": "A Roblox inventory interface with item categories, item management and a connected shop experience.",
       "focus": [
-        "Inventory",
-        "Items",
-        "Systems"
+        "Inventory UI",
+        "Item categories",
+        "Shop integration"
       ],
       "icon": "inventory",
       "tone": "bronze",
-      "code": "06",
-      "time": "FOALLOW / ROBLOX"
+      "code": "07",
+      "time": "FOALLOW / ROBLOX",
+      "img": "assets/media/inventory-system-thumbnail.jpg",
+      "video": "assets/media/inventory-system-showcase.mp4"
     },
     {
       "name": "Cutscene Abilities",
@@ -229,7 +249,7 @@ window.SITE = {
       ],
       "icon": "cutscene",
       "tone": "ember",
-      "code": "07",
+      "code": "08",
       "time": "FOALLOW / ROBLOX"
     },
     {
@@ -237,16 +257,51 @@ window.SITE = {
       "category": "Combat & Abilities",
       "type": "ABILITY SYSTEM",
       "for": "PROJECT SHOWCASE",
-      "desc": "Anime-inspired combat abilities emphasizing distinctive actions and dramatic on-screen presentation.",
+      "desc": "A collection of eight anime-inspired Roblox ability showcases with scripted action and cinematic visual effects.",
       "focus": [
-        "Anime",
-        "Abilities",
-        "Combat"
+        "8 ability videos",
+        "Ability scripting",
+        "Visual effects"
       ],
       "icon": "anime",
       "tone": "fire",
-      "code": "08",
-      "time": "FOALLOW / ROBLOX"
+      "code": "09",
+      "time": "FOALLOW / ROBLOX",
+      "abilities": [
+        {
+          "id": "OhZ8M6UczSQ",
+          "title": "Ability Showcase 01"
+        },
+        {
+          "id": "oEjWxZo0ooI",
+          "title": "Ability Showcase 02"
+        },
+        {
+          "id": "B8IU8fIAqjY",
+          "title": "Ability Showcase 03"
+        },
+        {
+          "id": "X7QoovXpDxc",
+          "title": "Ability Showcase 04"
+        },
+        {
+          "id": "6Iv0hpyr3nM",
+          "title": "Ability Showcase 05"
+        },
+        {
+          "id": "SgKd6-Vc1vY",
+          "title": "Ability Showcase 06"
+        },
+        {
+          "id": "l7RWrMH_fsg",
+          "title": "Ability Showcase 07"
+        },
+        {
+          "id": "09ctaAPuhwk",
+          "title": "Ability Showcase 08"
+        }
+      ],
+      "img": "https://i.ytimg.com/vi/OhZ8M6UczSQ/hqdefault.jpg"
     },
     {
       "name": "Anime Transformations",
@@ -261,7 +316,7 @@ window.SITE = {
       ],
       "icon": "transform",
       "tone": "gold",
-      "code": "09",
+      "code": "10",
       "time": "FOALLOW / ROBLOX"
     },
     {
@@ -277,7 +332,7 @@ window.SITE = {
       ],
       "icon": "sports",
       "tone": "copper",
-      "code": "10",
+      "code": "11",
       "time": "FOALLOW / ROBLOX"
     },
     {
@@ -293,152 +348,8 @@ window.SITE = {
       ],
       "icon": "vfx",
       "tone": "amber",
-      "code": "11",
-      "time": "FOALLOW / ROBLOX"
-    },
-    {
-      "name": "Scripting + VFX Showcase 01",
-      "category": "Scripting + VFX",
-      "type": "RECORDED SHOWCASE",
-      "for": "PROJECT SHOWCASE",
-      "desc": "A video from Foallow’s scripting and visual effects showcase collection.",
-      "focus": [
-        "Scripting",
-        "VFX",
-        "Video showcase"
-      ],
-      "icon": "combat",
-      "tone": "amber",
       "code": "12",
-      "time": "FOALLOW / ROBLOX",
-      "youtube": "OhZ8M6UczSQ",
-      "img": "https://i.ytimg.com/vi/OhZ8M6UczSQ/hqdefault.jpg"
-    },
-    {
-      "name": "Scripting + VFX Showcase 02",
-      "category": "Scripting + VFX",
-      "type": "RECORDED SHOWCASE",
-      "for": "PROJECT SHOWCASE",
-      "desc": "A video from Foallow’s scripting and visual effects showcase collection.",
-      "focus": [
-        "Scripting",
-        "VFX",
-        "Video showcase"
-      ],
-      "icon": "vfx",
-      "tone": "copper",
-      "code": "13",
-      "time": "FOALLOW / ROBLOX",
-      "youtube": "oEjWxZo0ooI",
-      "img": "https://i.ytimg.com/vi/oEjWxZo0ooI/hqdefault.jpg"
-    },
-    {
-      "name": "Scripting + VFX Showcase 03",
-      "category": "Scripting + VFX",
-      "type": "RECORDED SHOWCASE",
-      "for": "PROJECT SHOWCASE",
-      "desc": "A video from Foallow’s scripting and visual effects showcase collection.",
-      "focus": [
-        "Scripting",
-        "VFX",
-        "Video showcase"
-      ],
-      "icon": "combat",
-      "tone": "fire",
-      "code": "14",
-      "time": "FOALLOW / ROBLOX",
-      "youtube": "B8IU8fIAqjY",
-      "img": "https://i.ytimg.com/vi/B8IU8fIAqjY/hqdefault.jpg"
-    },
-    {
-      "name": "Scripting + VFX Showcase 04",
-      "category": "Scripting + VFX",
-      "type": "RECORDED SHOWCASE",
-      "for": "PROJECT SHOWCASE",
-      "desc": "A video from Foallow’s scripting and visual effects showcase collection.",
-      "focus": [
-        "Scripting",
-        "VFX",
-        "Video showcase"
-      ],
-      "icon": "vfx",
-      "tone": "gold",
-      "code": "15",
-      "time": "FOALLOW / ROBLOX",
-      "youtube": "X7QoovXpDxc",
-      "img": "https://i.ytimg.com/vi/X7QoovXpDxc/hqdefault.jpg"
-    },
-    {
-      "name": "Scripting + VFX Showcase 05",
-      "category": "Scripting + VFX",
-      "type": "RECORDED SHOWCASE",
-      "for": "PROJECT SHOWCASE",
-      "desc": "A video from Foallow’s scripting and visual effects showcase collection.",
-      "focus": [
-        "Scripting",
-        "VFX",
-        "Video showcase"
-      ],
-      "icon": "combat",
-      "tone": "amber",
-      "code": "16",
-      "time": "FOALLOW / ROBLOX",
-      "youtube": "6Iv0hpyr3nM",
-      "img": "https://i.ytimg.com/vi/6Iv0hpyr3nM/hqdefault.jpg"
-    },
-    {
-      "name": "Scripting + VFX Showcase 06",
-      "category": "Scripting + VFX",
-      "type": "RECORDED SHOWCASE",
-      "for": "PROJECT SHOWCASE",
-      "desc": "A video from Foallow’s scripting and visual effects showcase collection.",
-      "focus": [
-        "Scripting",
-        "VFX",
-        "Video showcase"
-      ],
-      "icon": "vfx",
-      "tone": "copper",
-      "code": "17",
-      "time": "FOALLOW / ROBLOX",
-      "youtube": "SgKd6-Vc1vY",
-      "img": "https://i.ytimg.com/vi/SgKd6-Vc1vY/hqdefault.jpg"
-    },
-    {
-      "name": "Scripting + VFX Showcase 07",
-      "category": "Scripting + VFX",
-      "type": "RECORDED SHOWCASE",
-      "for": "PROJECT SHOWCASE",
-      "desc": "A video from Foallow’s scripting and visual effects showcase collection.",
-      "focus": [
-        "Scripting",
-        "VFX",
-        "Video showcase"
-      ],
-      "icon": "combat",
-      "tone": "fire",
-      "code": "18",
-      "time": "FOALLOW / ROBLOX",
-      "youtube": "l7RWrMH_fsg",
-      "img": "https://i.ytimg.com/vi/l7RWrMH_fsg/hqdefault.jpg"
-    },
-    {
-      "name": "Scripting + VFX Showcase 08",
-      "category": "Scripting + VFX",
-      "type": "RECORDED SHOWCASE",
-      "for": "PROJECT SHOWCASE",
-      "desc": "A video from Foallow’s scripting and visual effects showcase collection.",
-      "focus": [
-        "Scripting",
-        "VFX",
-        "Video showcase"
-      ],
-      "icon": "vfx",
-      "tone": "gold",
-      "code": "19",
-      "time": "FOALLOW / ROBLOX",
-      "youtube": "09ctaAPuhwk",
-      "img": "https://i.ytimg.com/vi/09ctaAPuhwk/hqdefault.jpg"
+      "time": "FOALLOW / ROBLOX"
     },
     {
       "name": "FPS Weapon & Target Demo",
@@ -453,7 +364,7 @@ window.SITE = {
       ],
       "icon": "combat",
       "tone": "fire",
-      "code": "20",
+      "code": "13",
       "time": "FOALLOW / ROBLOX",
       "video": "assets/media/fps-weapon-showcase.mp4",
       "img": "assets/media/fps-weapon-preview.jpg"
@@ -717,8 +628,8 @@ window.SITE = {
     "gameplay": [
       {
         "id": "MckUlpPrPH0",
-        "title": "Combat System & Zombie Wave",
-        "subtitle": "Combat and survival gameplay demonstration"
+        "title": "Zombie Wave",
+        "subtitle": "Zombie survival gameplay demonstration"
       },
       {
         "id": "7JPqTRmJWTI",

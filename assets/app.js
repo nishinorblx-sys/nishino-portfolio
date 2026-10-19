@@ -61,7 +61,7 @@ function projectCard(project) {
   return `<button class="project-card" data-project="${S.projects.indexOf(project)}" aria-label="View ${project.name}">${cover(project)}<div class="project-bottom"><div><span class="card-kicker">${project.category}</span><h3>${project.name}</h3><p>${project.desc}</p></div><div class="project-bottom-meta"><span>${project.focus.slice(0,2).join(' / ')}</span><span>${project.code} / ${S.projects.length}</span></div></div></button>`;
 }
 function home() {
-  return `<section class="hero wrap" id="top"><div class="hero-copy"><div class="hero-overline"><span class="status-dot"></span>${S.availability}<span class="hero-overline-tail">/ ROBLOX DEVELOPMENT</span></div><h1>Hey, I'm <em>Foallow.</em><br>Scripts, visuals<br><span class="hero-muted">and sound.</span></h1><p class="hero-desc">${S.description}</p><div class="hero-ctas">${cta('Let’s build something')}<a href="portfolio.html" class="button button-outline">Explore projects ${svg('arrow',16)}</a><a href="portfolio.html#scripting-vfx" class="button button-ghost-clip">New video showcases ${svg('play',15)}</a></div></div>
+  return `<section class="hero wrap" id="top"><div class="hero-copy"><div class="hero-overline"><span class="status-dot"></span>${S.availability}<span class="hero-overline-tail">/ ROBLOX DEVELOPMENT</span></div><h1>Hey, I'm <em>Foallow.</em><br>Scripts, visuals<br><span class="hero-muted">and sound.</span></h1><p class="hero-desc">${S.description}</p><div class="hero-ctas">${cta('Let’s build something')}<a href="portfolio.html" class="button button-outline">Explore projects ${svg('arrow',16)}</a><a href="portfolio.html#ability-collection" class="button button-ghost-clip">Ability showcases ${svg('play',15)}</a></div></div>
   <div class="hero-side"><div class="identity-card"><div class="identity-top"><span class="identity-no">// 001</span><span class="identity-chip">FOALLOW / CREATOR PROFILE ${svg('diagonal',13)}</span></div><div class="identity-art"><div class="identity-circle"></div><div class="identity-vector">F<span>✦</span></div><div class="identity-grid"></div><div class="identity-bracket bracket-one">[</div><div class="identity-bracket bracket-two">]</div></div><div class="identity-caption"><div><span class="identity-label">FOALLOW PORTFOLIO</span><h3>Foallow</h3></div><span class="status-pill"><i class="status-dot"></i> BUILDING</span></div></div><div class="credentials-row"><div><span>01 / SPECIALITY</span><b>Gameplay systems</b></div><div><span>02 / PLATFORM</span><b>Roblox Studio</b></div><div><span>03 / LANGUAGE</span><b>Luau</b></div></div></div></section>
   <section class="metrics-section"><div class="wrap metrics-grid">${S.metrics.map((m,i)=>`<div class="metric"><div class="metric-top"><span>${String(i+1).padStart(2,'0')} / 04</span><span>${m.icon}</span></div><strong>${m.value}</strong><h3>${m.label}</h3><p>${m.detail}</p></div>`).join('')}</div></section>
   <section class="section wrap">${sectionHead('01 / WHAT I BUILD','Crafted for gameplay.','From the first input to the last effect, systems that feel right.',a(`Explore capabilities ${svg('arrow',16)}`,'clients.html','section-link'))}
@@ -97,11 +97,10 @@ function portfolio() {
   return `${pageIntro('FOALLOW / PROJECT SHOWCASE','The <em>portfolio.</em>','Explore '+S.projects.length+' Roblox showcases across gameplay, UI, scripting, combat, FPS mechanics and visual effects. Filter projects or play a demonstration.')}
   <section class="section wrap portfolio-section">${sectionHead('01 / HIGHLIGHTS','Selected work','Three projects from my showcase.')}
   <div class="projects-grid highlight-grid">${S.projects.slice(0,3).map(projectCard).join('')}</div></section>
-  <section class="section section-separated wrap foallow-video-section">${sectionHead('02 / GAMEPLAY FOOTAGE','See it in motion.','Actual video demonstrations of Foallow’s combat, zombie survival and vehicle systems.')}
+  <section class="section section-separated wrap foallow-video-section">${sectionHead('02 / GAMEPLAY FOOTAGE','See it in motion.','Actual video demonstrations of Foallow’s zombie survival and vehicle systems.')}
   <div class="foallow-video-grid">${S.media.gameplay.map((video,i)=>videoCard(video,'ROBLOX GAMEPLAY',i+1)).join('')}</div></section>
-  <section class="section section-separated wrap foallow-video-section" id="scripting-vfx">${sectionHead('03 / SCRIPTING + VFX SHOWCASES','Scripting + VFX.','Nine additional recorded demonstrations, including an original FPS gameplay clip.')}
-  <div class="foallow-showcase-note"><span>NEW SHOWCASE COLLECTION</span><p>Watch the latest Roblox scripting and visual effects demos, plus an FPS weapon showcase recorded in-game.</p><span>${S.media.scriptingVfx.length + 1} VIDEOS</span></div>
-  <div class="foallow-video-grid">${S.media.scriptingVfx.map((video,i)=>videoCard(video,'SCRIPTING + VFX',i+1)).join('')}${localVideoCard(S.media.fpsDemo,S.media.scriptingVfx.length + 1)}</div></section>
+  <section class="section section-separated wrap foallow-video-section" id="ability-collection">${sectionHead('03 / FEATURED COLLECTIONS','Abilities and FPS.','Eight anime ability demonstrations grouped together, plus a standalone FPS weapon project.')}
+  <div class="projects-grid foallow-collections-grid">${[S.projects.find(p=>p.name==='Anime Abilities'),S.projects.find(p=>p.name==='FPS Weapon & Target Demo')].filter(Boolean).map(projectCard).join('')}</div></section>
   <section class="section section-separated wrap">${sectionHead('04 / THE ARCHIVE','All projects','All '+S.projects.length+' projects, organized by discipline.')}
   <div class="filter-row" id="filters" role="group" aria-label="Filter projects">${['All',...new Set(S.projects.map(p=>p.category))].map((x,i)=>`<button class="filter-btn ${!i?'selected':''}" data-filter="${x}" aria-pressed="${!i}">${x}</button>`).join('')}</div><div class="projects-grid" id="projectGrid">${S.projects.slice(0,8).map(projectCard).join('')}</div><div class="load-more-wrap"><span id="showingCount">Showing ${Math.min(8,S.projects.length)} of ${S.projects.length} projects</span><button class="button button-outline" id="loadMore">Load more projects ${svg('arrow',16)}</button></div></section>`;
 }
@@ -161,20 +160,42 @@ menuToggle.addEventListener('click',()=>{
   menuToggle.innerHTML = svg(opened?'close':'menu',23);
 });
 const modal = document.getElementById('projectModal');
+function abilityGallery(project) {
+  const items = project.abilities || [];
+  if (!items.length) return '';
+  const first = items[0];
+  return `<section class="foallow-ability-gallery" aria-label="Anime ability video collection"><div class="foallow-ability-heading"><div><span>ABILITY SHOWCASE COLLECTION</span><h3>${items.length} recorded abilities</h3><p>Select a video below to view that ability demonstration.</p></div><span class="foallow-ability-count">${String(items.length).padStart(2,'0')} CLIPS</span></div><div class="foallow-ability-player" id="abilityPlayer"><button class="foallow-ability-start" type="button" data-ability-video="${first.id}" aria-label="Play ${first.title}"><img src="https://i.ytimg.com/vi/${first.id}/hqdefault.jpg" alt="Preview of ${first.title}"><span class="foallow-ability-play">${svg('play',28)}</span><span class="foallow-ability-start-label">PLAY SHOWCASE</span></button></div><div class="foallow-ability-grid" role="group" aria-label="Select an ability clip">${items.map((item,i)=>`<button type="button" class="foallow-ability-choice ${i===0?'selected':''}" data-ability-video="${item.id}" aria-pressed="${i===0}" aria-label="Watch ${item.title}"><img src="https://i.ytimg.com/vi/${item.id}/mqdefault.jpg" alt="" loading="lazy"><span><b>${String(i+1).padStart(2,'0')}</b>${item.title}</span></button>`).join('')}</div><a class="foallow-ability-youtube" id="abilityYouTube" target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/watch?v=${first.id}">Watch selected clip on YouTube ${svg('diagonal',15)}</a></section>`;
+}
 function showProject(idx) {
   const p = S.projects[idx];
   if(!p) return;
-  document.getElementById('modalContent').innerHTML = `${cover(p,'modal-cover')}<div class="modal-body"><span class="tag">${p.type} · ${p.category}</span><h2>${p.name}</h2><p>${p.desc}</p>${p.youtube?`<div class="modal-video foallow-modal-video"><iframe src="https://www.youtube-nocookie.com/embed/${p.youtube}?rel=0" title="${p.name} showcase" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe><a href="https://www.youtube.com/watch?v=${p.youtube}" target="_blank" rel="noopener noreferrer">Watch showcase on YouTube ↗</a></div>`:p.video?`<div class="modal-video"><video controls preload="metadata" ${p.img?`poster="${p.img}"`:``}><source src="${p.video}" type="video/mp4">Your browser does not support embedded video.</video></div>`:``}<div class="modal-focus"><span>PROJECT FOCUS</span><div>${p.focus.map(tag=>`<span>${tag}</span>`).join('')}</div></div><div class="modal-stats"><div><small>PROJECT CATEGORY</small><strong>${p.category}</strong></div><div><small>PLATFORM</small><strong>Roblox</strong></div></div><a class="button button-primary" href="${S.discord}">Discuss a similar project ${svg('diagonal',16)}</a></div>`;
+  document.getElementById('modalContent').innerHTML = `${cover(p,'modal-cover')}<div class="modal-body"><span class="tag">${p.type} · ${p.category}</span><h2>${p.name}</h2><p>${p.desc}</p>${p.abilities?.length?abilityGallery(p):p.youtube?`<div class="modal-video foallow-modal-video"><iframe src="https://www.youtube-nocookie.com/embed/${p.youtube}?rel=0" title="${p.name} showcase" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe><a href="https://www.youtube.com/watch?v=${p.youtube}" target="_blank" rel="noopener noreferrer">Watch showcase on YouTube ↗</a></div>`:p.video?`<div class="modal-video"><video controls preload="metadata" ${p.img?`poster="${p.img}"`:``}><source src="${p.video}" type="video/mp4">Your browser does not support embedded video.</video></div>`:``}<div class="modal-focus"><span>PROJECT FOCUS</span><div>${p.focus.map(tag=>`<span>${tag}</span>`).join('')}</div></div><div class="modal-stats"><div><small>PROJECT CATEGORY</small><strong>${p.category}</strong></div><div><small>PLATFORM</small><strong>Roblox</strong></div></div><a class="button button-primary" href="${S.discord}">Discuss a similar project ${svg('diagonal',16)}</a></div>`;
   modal.showModal();
   document.body.classList.add('modal-open');
 }
+document.addEventListener('click',event=>{
+  const button=event.target.closest('[data-ability-video]');
+  if (!button || !modal.contains(button)) return;
+  const id=button.dataset.abilityVideo;
+  if (!/^[A-Za-z0-9_-]{11}$/.test(id)) return;
+  const player=document.getElementById('abilityPlayer');
+  if (!player) return;
+  player.innerHTML=`<iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0" title="Foallow anime ability demonstration" allow="autoplay; encrypted-media; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
+  document.querySelectorAll('.foallow-ability-choice').forEach(choice=>{
+    const selected=choice.dataset.abilityVideo===id;
+    choice.classList.toggle('selected',selected);
+    choice.setAttribute('aria-pressed',String(selected));
+  });
+  const watch=document.getElementById('abilityYouTube');
+  if (watch) watch.href=`https://www.youtube.com/watch?v=${id}`;
+});
 document.addEventListener('click',e=>{
   const project=e.target.closest('[data-project]');
   if(project) showProject(Number(project.dataset.project));
 });
 document.getElementById('closeModal').addEventListener('click',()=>modal.close());
 modal.addEventListener('click',e=>{if(e.target===modal) modal.close()});
-modal.addEventListener('close',()=>document.body.classList.remove('modal-open'));
+modal.addEventListener('close',()=>{document.body.classList.remove('modal-open');document.getElementById('modalContent').replaceChildren()});
 if(currentPage==='portfolio') {
   let category='All', visible=8;
   const grid=document.getElementById('projectGrid'), count=document.getElementById('showingCount'), more=document.getElementById('loadMore');
