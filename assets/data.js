@@ -46,25 +46,25 @@ window.SITE = {
       "value": "20",
       "label": "Showcase projects",
       "detail": "Gameplay, scripting, UI, VFX and FPS footage",
-      "icon": "\u2726"
+      "icon": "✦"
     },
     {
       "value": "5",
       "label": "Project categories",
       "detail": "Explore systems, effects and demo reels",
-      "icon": "\u2197"
+      "icon": "↗"
     },
     {
       "value": "10",
       "label": "Development areas",
       "detail": "From LuaU scripting to sound design",
-      "icon": "\u2318"
+      "icon": "⌘"
     },
     {
       "value": "01",
       "label": "Developer",
       "detail": "One portfolio. Many disciplines.",
-      "icon": "\u25c8"
+      "icon": "◈"
     }
   ],
   "studios": [
@@ -151,7 +151,7 @@ window.SITE = {
       "category": "UI & Systems",
       "type": "INTERFACE",
       "for": "PROJECT SHOWCASE",
-      "desc": "An in-game shop interface for browsing items and making choices inside a Roblox experience.",
+      "desc": "Roblox shop UI with item categories, purchase options, currency display and separate tabs for supplies, abilities and bundles.",
       "focus": [
         "UI",
         "Shop",
@@ -160,7 +160,9 @@ window.SITE = {
       "icon": "shop",
       "tone": "bronze",
       "code": "03",
-      "time": "FOALLOW / ROBLOX"
+      "time": "FOALLOW / ROBLOX",
+      "video": "assets/media/shop-ui-showcase.mp4",
+      "img": "assets/media/shop-ui-thumbnail.jpg"
     },
     {
       "name": "Car Driving System",
@@ -299,7 +301,7 @@ window.SITE = {
       "category": "Scripting + VFX",
       "type": "RECORDED SHOWCASE",
       "for": "PROJECT SHOWCASE",
-      "desc": "A video from Foallow\u2019s scripting and visual effects showcase collection.",
+      "desc": "A video from Foallow’s scripting and visual effects showcase collection.",
       "focus": [
         "Scripting",
         "VFX",
@@ -317,7 +319,7 @@ window.SITE = {
       "category": "Scripting + VFX",
       "type": "RECORDED SHOWCASE",
       "for": "PROJECT SHOWCASE",
-      "desc": "A video from Foallow\u2019s scripting and visual effects showcase collection.",
+      "desc": "A video from Foallow’s scripting and visual effects showcase collection.",
       "focus": [
         "Scripting",
         "VFX",
@@ -335,7 +337,7 @@ window.SITE = {
       "category": "Scripting + VFX",
       "type": "RECORDED SHOWCASE",
       "for": "PROJECT SHOWCASE",
-      "desc": "A video from Foallow\u2019s scripting and visual effects showcase collection.",
+      "desc": "A video from Foallow’s scripting and visual effects showcase collection.",
       "focus": [
         "Scripting",
         "VFX",
@@ -353,7 +355,7 @@ window.SITE = {
       "category": "Scripting + VFX",
       "type": "RECORDED SHOWCASE",
       "for": "PROJECT SHOWCASE",
-      "desc": "A video from Foallow\u2019s scripting and visual effects showcase collection.",
+      "desc": "A video from Foallow’s scripting and visual effects showcase collection.",
       "focus": [
         "Scripting",
         "VFX",
@@ -371,7 +373,7 @@ window.SITE = {
       "category": "Scripting + VFX",
       "type": "RECORDED SHOWCASE",
       "for": "PROJECT SHOWCASE",
-      "desc": "A video from Foallow\u2019s scripting and visual effects showcase collection.",
+      "desc": "A video from Foallow’s scripting and visual effects showcase collection.",
       "focus": [
         "Scripting",
         "VFX",
@@ -389,7 +391,7 @@ window.SITE = {
       "category": "Scripting + VFX",
       "type": "RECORDED SHOWCASE",
       "for": "PROJECT SHOWCASE",
-      "desc": "A video from Foallow\u2019s scripting and visual effects showcase collection.",
+      "desc": "A video from Foallow’s scripting and visual effects showcase collection.",
       "focus": [
         "Scripting",
         "VFX",
@@ -407,7 +409,7 @@ window.SITE = {
       "category": "Scripting + VFX",
       "type": "RECORDED SHOWCASE",
       "for": "PROJECT SHOWCASE",
-      "desc": "A video from Foallow\u2019s scripting and visual effects showcase collection.",
+      "desc": "A video from Foallow’s scripting and visual effects showcase collection.",
       "focus": [
         "Scripting",
         "VFX",
@@ -425,7 +427,7 @@ window.SITE = {
       "category": "Scripting + VFX",
       "type": "RECORDED SHOWCASE",
       "for": "PROJECT SHOWCASE",
-      "desc": "A video from Foallow\u2019s scripting and visual effects showcase collection.",
+      "desc": "A video from Foallow’s scripting and visual effects showcase collection.",
       "focus": [
         "Scripting",
         "VFX",
@@ -552,7 +554,7 @@ window.SITE = {
   "prices": [
     {
       "group": "Gameplay systems",
-      "caption": "Combat \u00b7 Movement \u00b7 Abilities",
+      "caption": "Combat · Movement · Abilities",
       "items": [
         [
           "Advanced combat",
@@ -588,7 +590,7 @@ window.SITE = {
     },
     {
       "group": "Complete experiences",
-      "caption": "Football \u00b7 RPG \u00b7 Simulation",
+      "caption": "Football · RPG · Simulation",
       "items": [
         [
           "Full game systems",
@@ -624,7 +626,7 @@ window.SITE = {
     },
     {
       "group": "Interfaces & backend",
-      "caption": "UI \u00b7 Data \u00b7 NPCs \u00b7 Matchmaking",
+      "caption": "UI · Data · NPCs · Matchmaking",
       "items": [
         [
           "UI scripting",
@@ -660,7 +662,7 @@ window.SITE = {
     },
     {
       "group": "Visuals & audio",
-      "caption": "Sound design \u00b7 VFX \u00b7 Cinematics",
+      "caption": "Sound design · VFX · Cinematics",
       "items": [
         [
           "Sound effect design",
@@ -782,7 +784,7 @@ window.SITE = {
           "name": "Combat system",
           "starting": "$145",
           "type": "SINGLE SYSTEM",
-          "desc": "Combos, hit reactions, guarding and parries. Built to fit your game\u2019s combat style.",
+          "desc": "Combos, hit reactions, guarding and parries. Built to fit your game’s combat style.",
           "features": [
             "Server-side hit validation",
             "Combo and defensive states",
