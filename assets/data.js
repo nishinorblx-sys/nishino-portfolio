@@ -43,28 +43,28 @@ window.SITE = {
   ],
   "metrics": [
     {
-      "value": "22",
+      "value": "20",
       "label": "Showcase projects",
       "detail": "Gameplay, scripting, UI, VFX and FPS footage",
-      "icon": "✦"
+      "icon": "\u2726"
     },
     {
       "value": "5",
       "label": "Project categories",
       "detail": "Explore systems, effects and demo reels",
-      "icon": "↗"
+      "icon": "\u2197"
     },
     {
       "value": "10",
       "label": "Development areas",
       "detail": "From LuaU scripting to sound design",
-      "icon": "⌘"
+      "icon": "\u2318"
     },
     {
       "value": "01",
       "label": "Developer",
       "detail": "One portfolio. Many disciplines.",
-      "icon": "◈"
+      "icon": "\u25c8"
     }
   ],
   "studios": [
@@ -111,54 +111,40 @@ window.SITE = {
   ],
   "projects": [
     {
-      "name": "Zombie Wave",
+      "name": "Zombie Wave + Combat System",
       "category": "Games & Physics",
-      "type": "SURVIVAL GAME",
+      "type": "SURVIVAL COMBAT SYSTEM",
       "for": "PROJECT SHOWCASE",
-      "desc": "Wave-based zombie gameplay designed around repeatable encounters and the pace of survival.",
+      "desc": "A combined project featuring wave-based zombie survival gameplay and a custom combat system built for responsive encounters.",
       "focus": [
-        "Wave survival",
-        "Gameplay",
-        "Enemies"
+        "Zombie waves",
+        "Combat system",
+        "Encounter gameplay"
       ],
-      "icon": "wave",
+      "icon": "combat",
       "tone": "ember",
       "code": "01",
       "time": "FOALLOW / ROBLOX",
-      "youtube": "MckUlpPrPH0"
+      "video": "assets/media/zombie-combat-showcase.mp4",
+      "img": "assets/media/zombie-combat-thumb.jpg"
     },
     {
-      "name": "Combat System",
+      "name": "Boss Battle + NPC Dialogue UI",
       "category": "Combat & Abilities",
-      "type": "COMBAT SYSTEM",
+      "type": "BOSS ENCOUNTER / DIALOGUE UI",
       "for": "PROJECT SHOWCASE",
-      "desc": "A combat-focused Roblox system built for player-versus-target interactions and responsive action.",
-      "focus": [
-        "Combat",
-        "Gameplay systems",
-        "Interactions"
-      ],
-      "icon": "combat",
-      "tone": "fire",
-      "code": "02",
-      "time": "FOALLOW / ROBLOX",
-      "youtube": "MckUlpPrPH0"
-    },
-    {
-      "name": "Boss Battle",
-      "category": "Combat & Abilities",
-      "type": "BOSS ENCOUNTER",
-      "for": "PROJECT SHOWCASE",
-      "desc": "A dedicated boss-fight project focused on bringing an encounter to life through combat and presentation.",
+      "desc": "A boss battle showcase paired with an NPC dialogue interface, combining high-pressure combat presentation with in-game interaction flow.",
       "focus": [
         "Boss fight",
-        "Combat",
-        "Encounter design"
+        "Dialogue UI",
+        "Encounter flow"
       ],
       "icon": "boss",
       "tone": "gold",
-      "code": "03",
-      "time": "FOALLOW / ROBLOX"
+      "code": "02",
+      "time": "FOALLOW / ROBLOX",
+      "video": "assets/media/boss-dialogue-showcase.mp4",
+      "img": "assets/media/boss-dialogue-thumb.jpg"
     },
     {
       "name": "Shop UI",
@@ -173,23 +159,7 @@ window.SITE = {
       ],
       "icon": "shop",
       "tone": "bronze",
-      "code": "04",
-      "time": "FOALLOW / ROBLOX"
-    },
-    {
-      "name": "NPC Dialogue UI",
-      "category": "UI & Systems",
-      "type": "INTERFACE",
-      "for": "PROJECT SHOWCASE",
-      "desc": "A conversation interface for NPC interactions, built to give in-game dialogue a clear presentation.",
-      "focus": [
-        "UI",
-        "Dialogue",
-        "NPCs"
-      ],
-      "icon": "dialogue",
-      "tone": "amber",
-      "code": "05",
+      "code": "03",
       "time": "FOALLOW / ROBLOX"
     },
     {
@@ -205,25 +175,28 @@ window.SITE = {
       ],
       "icon": "car",
       "tone": "copper",
-      "code": "06",
+      "code": "04",
       "time": "FOALLOW / ROBLOX",
-      "youtube": "7JPqTRmJWTI"
+      "youtube": "7JPqTRmJWTI",
+      "img": "https://i.ytimg.com/vi/7JPqTRmJWTI/hqdefault.jpg"
     },
     {
       "name": "Skill Trees",
       "category": "UI & Systems",
-      "type": "PROGRESSION SYSTEM",
+      "type": "SKILL TREE SYSTEM",
       "for": "PROJECT SHOWCASE",
-      "desc": "Skill tree interfaces and progression structures for presenting character development paths.",
+      "desc": "A progression-focused skill tree interface showing upgrade paths, unlockable nodes and clear player growth.",
       "focus": [
-        "Skill trees",
+        "Skill tree",
         "Progression",
-        "UI"
+        "Upgrades"
       ],
       "icon": "skills",
       "tone": "gold",
-      "code": "07",
-      "time": "FOALLOW / ROBLOX"
+      "code": "05",
+      "time": "FOALLOW / ROBLOX",
+      "video": "assets/media/skill-tree-showcase.mp4",
+      "img": "assets/media/skill-tree-thumb.jpg"
     },
     {
       "name": "Inventory Systems",
@@ -238,7 +211,7 @@ window.SITE = {
       ],
       "icon": "inventory",
       "tone": "bronze",
-      "code": "08",
+      "code": "06",
       "time": "FOALLOW / ROBLOX"
     },
     {
@@ -254,7 +227,7 @@ window.SITE = {
       ],
       "icon": "cutscene",
       "tone": "ember",
-      "code": "09",
+      "code": "07",
       "time": "FOALLOW / ROBLOX"
     },
     {
@@ -270,7 +243,7 @@ window.SITE = {
       ],
       "icon": "anime",
       "tone": "fire",
-      "code": "10",
+      "code": "08",
       "time": "FOALLOW / ROBLOX"
     },
     {
@@ -286,7 +259,7 @@ window.SITE = {
       ],
       "icon": "transform",
       "tone": "gold",
-      "code": "11",
+      "code": "09",
       "time": "FOALLOW / ROBLOX"
     },
     {
@@ -302,7 +275,7 @@ window.SITE = {
       ],
       "icon": "sports",
       "tone": "copper",
-      "code": "12",
+      "code": "10",
       "time": "FOALLOW / ROBLOX"
     },
     {
@@ -318,7 +291,7 @@ window.SITE = {
       ],
       "icon": "vfx",
       "tone": "amber",
-      "code": "13",
+      "code": "11",
       "time": "FOALLOW / ROBLOX"
     },
     {
@@ -326,7 +299,7 @@ window.SITE = {
       "category": "Scripting + VFX",
       "type": "RECORDED SHOWCASE",
       "for": "PROJECT SHOWCASE",
-      "desc": "A video from Foallow’s scripting and visual effects showcase collection.",
+      "desc": "A video from Foallow\u2019s scripting and visual effects showcase collection.",
       "focus": [
         "Scripting",
         "VFX",
@@ -334,7 +307,7 @@ window.SITE = {
       ],
       "icon": "combat",
       "tone": "amber",
-      "code": "14",
+      "code": "12",
       "time": "FOALLOW / ROBLOX",
       "youtube": "OhZ8M6UczSQ",
       "img": "https://i.ytimg.com/vi/OhZ8M6UczSQ/hqdefault.jpg"
@@ -344,7 +317,7 @@ window.SITE = {
       "category": "Scripting + VFX",
       "type": "RECORDED SHOWCASE",
       "for": "PROJECT SHOWCASE",
-      "desc": "A video from Foallow’s scripting and visual effects showcase collection.",
+      "desc": "A video from Foallow\u2019s scripting and visual effects showcase collection.",
       "focus": [
         "Scripting",
         "VFX",
@@ -352,7 +325,7 @@ window.SITE = {
       ],
       "icon": "vfx",
       "tone": "copper",
-      "code": "15",
+      "code": "13",
       "time": "FOALLOW / ROBLOX",
       "youtube": "oEjWxZo0ooI",
       "img": "https://i.ytimg.com/vi/oEjWxZo0ooI/hqdefault.jpg"
@@ -362,7 +335,7 @@ window.SITE = {
       "category": "Scripting + VFX",
       "type": "RECORDED SHOWCASE",
       "for": "PROJECT SHOWCASE",
-      "desc": "A video from Foallow’s scripting and visual effects showcase collection.",
+      "desc": "A video from Foallow\u2019s scripting and visual effects showcase collection.",
       "focus": [
         "Scripting",
         "VFX",
@@ -370,7 +343,7 @@ window.SITE = {
       ],
       "icon": "combat",
       "tone": "fire",
-      "code": "16",
+      "code": "14",
       "time": "FOALLOW / ROBLOX",
       "youtube": "B8IU8fIAqjY",
       "img": "https://i.ytimg.com/vi/B8IU8fIAqjY/hqdefault.jpg"
@@ -380,7 +353,7 @@ window.SITE = {
       "category": "Scripting + VFX",
       "type": "RECORDED SHOWCASE",
       "for": "PROJECT SHOWCASE",
-      "desc": "A video from Foallow’s scripting and visual effects showcase collection.",
+      "desc": "A video from Foallow\u2019s scripting and visual effects showcase collection.",
       "focus": [
         "Scripting",
         "VFX",
@@ -388,7 +361,7 @@ window.SITE = {
       ],
       "icon": "vfx",
       "tone": "gold",
-      "code": "17",
+      "code": "15",
       "time": "FOALLOW / ROBLOX",
       "youtube": "X7QoovXpDxc",
       "img": "https://i.ytimg.com/vi/X7QoovXpDxc/hqdefault.jpg"
@@ -398,7 +371,7 @@ window.SITE = {
       "category": "Scripting + VFX",
       "type": "RECORDED SHOWCASE",
       "for": "PROJECT SHOWCASE",
-      "desc": "A video from Foallow’s scripting and visual effects showcase collection.",
+      "desc": "A video from Foallow\u2019s scripting and visual effects showcase collection.",
       "focus": [
         "Scripting",
         "VFX",
@@ -406,7 +379,7 @@ window.SITE = {
       ],
       "icon": "combat",
       "tone": "amber",
-      "code": "18",
+      "code": "16",
       "time": "FOALLOW / ROBLOX",
       "youtube": "6Iv0hpyr3nM",
       "img": "https://i.ytimg.com/vi/6Iv0hpyr3nM/hqdefault.jpg"
@@ -416,7 +389,7 @@ window.SITE = {
       "category": "Scripting + VFX",
       "type": "RECORDED SHOWCASE",
       "for": "PROJECT SHOWCASE",
-      "desc": "A video from Foallow’s scripting and visual effects showcase collection.",
+      "desc": "A video from Foallow\u2019s scripting and visual effects showcase collection.",
       "focus": [
         "Scripting",
         "VFX",
@@ -424,7 +397,7 @@ window.SITE = {
       ],
       "icon": "vfx",
       "tone": "copper",
-      "code": "19",
+      "code": "17",
       "time": "FOALLOW / ROBLOX",
       "youtube": "SgKd6-Vc1vY",
       "img": "https://i.ytimg.com/vi/SgKd6-Vc1vY/hqdefault.jpg"
@@ -434,7 +407,7 @@ window.SITE = {
       "category": "Scripting + VFX",
       "type": "RECORDED SHOWCASE",
       "for": "PROJECT SHOWCASE",
-      "desc": "A video from Foallow’s scripting and visual effects showcase collection.",
+      "desc": "A video from Foallow\u2019s scripting and visual effects showcase collection.",
       "focus": [
         "Scripting",
         "VFX",
@@ -442,7 +415,7 @@ window.SITE = {
       ],
       "icon": "combat",
       "tone": "fire",
-      "code": "20",
+      "code": "18",
       "time": "FOALLOW / ROBLOX",
       "youtube": "l7RWrMH_fsg",
       "img": "https://i.ytimg.com/vi/l7RWrMH_fsg/hqdefault.jpg"
@@ -452,7 +425,7 @@ window.SITE = {
       "category": "Scripting + VFX",
       "type": "RECORDED SHOWCASE",
       "for": "PROJECT SHOWCASE",
-      "desc": "A video from Foallow’s scripting and visual effects showcase collection.",
+      "desc": "A video from Foallow\u2019s scripting and visual effects showcase collection.",
       "focus": [
         "Scripting",
         "VFX",
@@ -460,7 +433,7 @@ window.SITE = {
       ],
       "icon": "vfx",
       "tone": "gold",
-      "code": "21",
+      "code": "19",
       "time": "FOALLOW / ROBLOX",
       "youtube": "09ctaAPuhwk",
       "img": "https://i.ytimg.com/vi/09ctaAPuhwk/hqdefault.jpg"
@@ -478,7 +451,7 @@ window.SITE = {
       ],
       "icon": "combat",
       "tone": "fire",
-      "code": "22",
+      "code": "20",
       "time": "FOALLOW / ROBLOX",
       "video": "assets/media/fps-weapon-showcase.mp4",
       "img": "assets/media/fps-weapon-preview.jpg"
@@ -579,7 +552,7 @@ window.SITE = {
   "prices": [
     {
       "group": "Gameplay systems",
-      "caption": "Combat · Movement · Abilities",
+      "caption": "Combat \u00b7 Movement \u00b7 Abilities",
       "items": [
         [
           "Advanced combat",
@@ -615,7 +588,7 @@ window.SITE = {
     },
     {
       "group": "Complete experiences",
-      "caption": "Football · RPG · Simulation",
+      "caption": "Football \u00b7 RPG \u00b7 Simulation",
       "items": [
         [
           "Full game systems",
@@ -651,7 +624,7 @@ window.SITE = {
     },
     {
       "group": "Interfaces & backend",
-      "caption": "UI · Data · NPCs · Matchmaking",
+      "caption": "UI \u00b7 Data \u00b7 NPCs \u00b7 Matchmaking",
       "items": [
         [
           "UI scripting",
@@ -687,7 +660,7 @@ window.SITE = {
     },
     {
       "group": "Visuals & audio",
-      "caption": "Sound design · VFX · Cinematics",
+      "caption": "Sound design \u00b7 VFX \u00b7 Cinematics",
       "items": [
         [
           "Sound effect design",
@@ -809,7 +782,7 @@ window.SITE = {
           "name": "Combat system",
           "starting": "$145",
           "type": "SINGLE SYSTEM",
-          "desc": "Combos, hit reactions, guarding and parries. Built to fit your game’s combat style.",
+          "desc": "Combos, hit reactions, guarding and parries. Built to fit your game\u2019s combat style.",
           "features": [
             "Server-side hit validation",
             "Combo and defensive states",
