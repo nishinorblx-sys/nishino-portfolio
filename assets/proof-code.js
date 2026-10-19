@@ -1,7 +1,7 @@
 (() => {
   const files = [
-    { name: 'CombatHitboxService.luau', label: '01 / COMPLETE COMBAT PIPELINE', title: 'Server-authoritative combat architecture', summary: 'Timed weapon hit windows, validated M1 and M2 requests, deterministic target ordering, walls and range checks, centralized damage, blocking, parrying, clashes, guardbreaks and zone-aware PvP.', chips: ['Server validated', 'Animation marker hooks', 'PvP rules', 'Shared damage resolver'], note: 'This is the combat orchestrator. Expand the modules below to inspect how weapon configuration, state, rules, defense and consequences connect.' },
-    { name: 'AbilityRunner.luau', label: '02 / ABILITY ENGINE', title: 'Protected ability execution', summary: 'A reusable execution gate handles cooldowns, re-entrancy and isolated callback failures without spinning background loops.', chips: ['Cooldown map', 'Protected calls', 'No polling'], note: 'Register abilities on the server; call Execute only after validating your input RemoteEvent.' },
+    { name: 'CombatHitboxService.luau', label: '01 / SERVER COMBAT PIPELINE', title: 'Server-authoritative melee combat', summary: 'Server-owned combos and hit windows with marker fallback, indexed target queries, centralized guard/parry/clash resolution, and PvP zone policy. Ability attacks share the same combat state and resolver.', chips: ['Marker fallback', 'Shared action state', 'Central damage rules', 'Server RemoteEvent'], note: 'Explore every combat dependency below, including the server entry point and test harness.' },
+    { name: 'AbilityRunner.luau', label: '02 / ABILITY ENGINE', title: 'Server-owned ability lifecycle', summary: 'Persistent per-player action ownership, shared combat locks, resource reservation, explicit cooldown commit, bounded callbacks, interruption cancellation, and damage through the centralized combat resolver.', chips: ['Shared combat state', 'Essence reservation', 'Token cancellation', 'Unified PvP rules'], note: 'See the complete server adapter, ability definitions and state tests below. Partial external side effects still need registered cleanup handlers.' },
     { name: 'InventoryService.luau', label: '03 / INVENTORY BACKEND', title: 'Constant-time item transactions', summary: 'Server-owned session inventories with item allowlists, stack limits, transaction checks, immutable snapshots and version numbers.', chips: ['Item lookup', 'Stack limits', 'Immutable snapshot'], note: 'Session-only module. Wire persistence and an authoritative purchase flow into your game.' },
     { name: 'NPCTargetSelector.luau', label: '04 / NPC AI', title: 'Throttled target acquisition', summary: 'NPCs reuse their current target between scans, compare squared distances and avoid per-frame player searches.', chips: ['0.45s refresh', 'Target cache', 'Squared distance'], note: 'This chooses a candidate, not a navigation path. Integrate with pathfinding and line-of-sight rules.' },
     { name: 'DeltaReplicator.luau', label: '05 / NETWORKING', title: 'Batched state replication', summary: 'Only changed, allowlisted values are sent in a 10 Hz server-side batch. Repeated values never generate packets.', chips: ['Dirty fields', '10 Hz batching', 'Server-owned state'], note: 'Client must listen to FoallowStateDelta and obtain a full initial snapshot when ready.' },
@@ -15,14 +15,33 @@
     { name: 'CombatResolver.luau', title: 'Damage Resolution', purpose: 'Shared block, parry, clash, guardbreak and damage pipeline' },
     { name: 'CombatZoneConsequences.luau', title: 'Zone Consequences', purpose: 'Server-owned PvP flags and configurable zone penalties' },
     { name: 'CombatServer.server.luau', title: 'Server Entry Point', purpose: 'Only approved remote actions enter the combat server' },
-    { name: 'CombatSmokeTests.luau', title: 'State Smoke Tests', purpose: 'Checks combo ordering, locks, parry windows and NPC permission' },
+    { name: 'CombatTimeline.luau', title: 'Hit-window State Machine', purpose: 'A single-use window with bounded marker timing, fallback deadlines and closure' },
+    { name: 'CombatHurtboxIndex.luau', title: 'Indexed Targets', purpose: 'Tracks one queryable root per character and rebuilds the filter only when membership changes' },
+    { name: 'CombatSmokeTests.luau', title: 'State & Fallback Tests', purpose: 'Checks combo ordering, timeout fallback, marker single-use, interrupts, guard and NPC permission' },
   ];
+
+  const abilityDependencies = [
+    { name: 'CombatState.luau', title: 'Shared Action Authority', purpose: 'Rejects simultaneous attacks, guards and abilities; owns status locks, Essence and tokens' },
+    { name: 'CombatResolver.luau', title: 'Shared Damage Rules', purpose: 'Abilities use the same PvP, parry, clash, guardbreak and damage pipeline as weapons' },
+    { name: 'AbilityDefinitions.luau', title: 'Server Ability Definitions', purpose: 'EmberStrike and Focus examples showing commit, delayed hit windows and explicit completion' },
+    { name: 'AbilityServer.server.luau', title: 'Ability RemoteEvent Gateway', purpose: 'Allowlisted ability names, bounded input, player setup and server-only registration' },
+    { name: 'AbilityStateTests.luau', title: 'Ability Action-State Tests', purpose: 'Checks resource reservation, cross-system locks, recovery, interrupts and hit windows' },
+    { name: 'AbilityIntegrationTests.server.luau', title: 'Studio Integration Tests', purpose: 'Runs activation, action exclusion, and pre/post-commit failure tests with a real Studio player' },
+  ];
+
+  const abilityArchitecture = `
+    <section class="proof-architecture" aria-label="Ability system architecture">
+      <div class="proof-architecture-head"><span>SERVER LIFECYCLE / SIX SUPPORTING FILES</span><h4>Abilities cannot bypass combat.</h4><p>Client request → shared action lock and Essence reservation → registered ability callback → explicit commit → timed validated effects → completion or cancellation → recovery.</p></div>
+      <div class="proof-architecture-flow"><span>AUTHORIZE</span><i>→</i><span>RESERVE</span><i>→</i><span>COMMIT</span><i>→</i><span>EXECUTE</span><i>→</i><span>CLEANUP</span></div>
+      <div class="proof-dependencies">${abilityDependencies.map(entry => `<details class="proof-dependency" data-combat-source="${entry.name}"><summary><span>${entry.title}<small>${entry.purpose}</small></span><b>VIEW SOURCE ＋</b></summary><div class="proof-dependency-code"><div class="proof-dependency-controls"><a href="assets/code/${entry.name}" download>Download .luau ↗</a><button type="button" data-copy-source="${entry.name}" disabled>Copy source</button></div><pre aria-label="${entry.name} source"><code>Expand to load source</code></pre></div></details>`).join('')}</div><p class="proof-code-note"><a href="assets/code/ABILITY-SETUP.md" download>Download ability integration and failure-policy guide ↗</a></p>
+    </section>
+  `;
 
   const combatArchitecture = `
     <section class="proof-architecture" aria-label="Combat system architecture">
-      <div class="proof-architecture-head"><span>SERVER PIPELINE / SEVEN SUPPORTING FILES</span><h4>One combat flow. Shared rules.</h4><p>Client action → server validation → weapon & combo state → active hit window → PvP permissions → combat resolution → zone consequences.</p></div>
+      <div class="proof-architecture-head"><span>SERVER PIPELINE / NINE SUPPORTING FILES</span><h4>One combat flow. Shared rules.</h4><p>Client request → validated weapon and combo → animation marker or timed fallback → indexed hit detection → shared PvP and defense rules → damage resolution.</p></div>
       <div class="proof-architecture-flow"><span>REQUEST</span><i>→</i><span>VALIDATE</span><i>→</i><span>HIT WINDOW</span><i>→</i><span>RESOLVE</span><i>→</i><span>REPLICATE</span></div>
-      <div class="proof-dependencies">${combatDependencies.map(entry => `<details class="proof-dependency" data-combat-source="${entry.name}"><summary><span>${entry.title}<small>${entry.purpose}</small></span><b>VIEW SOURCE ＋</b></summary><div class="proof-dependency-code"><div class="proof-dependency-controls"><a href="assets/code/${entry.name}" download>Download .luau ↗</a><button type="button" data-copy-source="${entry.name}" disabled>Copy source</button></div><pre aria-label="${entry.name} source"><code>Expand to load source</code></pre></div></details>`).join('')}</div>
+      <div class="proof-dependencies">${combatDependencies.map(entry => `<details class="proof-dependency" data-combat-source="${entry.name}"><summary><span>${entry.title}<small>${entry.purpose}</small></span><b>VIEW SOURCE ＋</b></summary><div class="proof-dependency-code"><div class="proof-dependency-controls"><a href="assets/code/${entry.name}" download>Download .luau ↗</a><button type="button" data-copy-source="${entry.name}" disabled>Copy source</button></div><pre aria-label="${entry.name} source"><code>Expand to load source</code></pre></div></details>`).join('')}</div><p class="proof-code-note"><a href="assets/code/COMBAT-SETUP.md" download>Download the complete integration and test guide ↗</a> · <a href="assets/code/EVALUATOR-RESPONSE.md" download>Read the code review response ↗</a></p>
     </section>
   `;
 
@@ -55,7 +74,7 @@
       <div class="proof-editor"><div class="proof-editor-bar"><div class="proof-editor-circles"><i></i><i></i><i></i></div><span>assets/code/${entry.name}</span><span class="proof-editor-language">Luau</span></div><div class="proof-editor-scroller"><pre aria-label="Code sample for ${entry.title}"><code class="proof-code-lines">Loading source...</code></pre></div></div>
       <div class="proof-code-actions"><button type="button" class="proof-code-button" data-action="expand" disabled>View full source</button><button type="button" class="proof-code-button" data-action="copy" disabled>Copy code</button><a class="proof-code-link" href="assets/code/${entry.name}" download>Download .luau ↗</a></div>
       <p class="proof-code-note">${entry.note}</p>
-      ${index === 0 ? combatArchitecture : ''}
+      ${index === 0 ? combatArchitecture : index === 1 ? abilityArchitecture : ''}
     </article>
   `).join('');
 

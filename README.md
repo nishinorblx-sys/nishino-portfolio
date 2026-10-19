@@ -85,3 +85,26 @@ To publish, upload `proof.html`, `README.md`, `assets/app.js`, `assets/proof-cod
 The Proof page now exposes the main combat module plus seven supporting source files. The headline Proof gallery still has five separate programming systems. The combat implementation has M1 combos, M2 heavy attacks, guarded action input, parries, clashes, guard meter and guardbreak, server-timed attacks, optional server animation markers, collision sampling, line-of-sight tests, distance-sorted target selection, PvP zone decisions and centralized damage calculations. A zone consequence adapter is provided with replaceable example values.
 
 The specific disclaimer panel requested for removal is no longer rendered on the Proof page. The downloadable combat folder includes `COMBAT-SETUP.md` with placement instructions and test cases. Run `CombatSmokeTests.luau` in Roblox Studio and validate in your actual game before production use. No Studio runtime test or external rating has been obtained here.
+
+## V20 Combat Reliability and Review Package
+
+The Proof page still contains five programming showcases. The combat showcase exposes the full server-side module graph and the server RemoteEvent handler. Two additional modules, `CombatTimeline` and `CombatHurtboxIndex`, support deterministic animation fallback and lean target queries.
+
+Changes since V19:
+
+- Animation failures or missing HitStart markers can no longer leave a pending attack without a scheduled damage window. Missing or unplayable assets use the configured windup; marker-based attacks have a bounded 90 ms fallback grace.
+- Each accepted swing owns one timeline and token. It cannot open another hit window after the first has started. Interrupted, unequipped, dead or otherwise invalid attackers cannot continue a pending swing.
+- All active attacks are serviced by one temporary Heartbeat connection. The connection disconnects when no attacks remain.
+- Overlap filtering uses one registered root per character, with a target membership index updated on character and NPC lifecycle events. This avoids returning every limb and piece of map geometry during every sample. Nearby candidates are still distance sorted; no measured throughput guarantee is implied.
+- All core dependencies, PvP zone checks, combat resolver, server entry point, smoke tests and the integration guide are available in `assets/code/` and the source viewer.
+- A small server input throttle suppresses excessively frequent remote requests.
+
+The included smoke script verifies several state and timeline invariants but does not substitute for Studio integration, latency testing or MicroProfiler benchmarks. See `assets/code/COMBAT-SETUP.md` for installation, timing, expected behavior and the recommended test matrix.
+
+## V21: Shared Combat and Ability Lifecycle
+
+The combat module and ability module now share `CombatState` for action ownership, status restrictions, guard conflicts and Essence reservations. `AbilityRunner` no longer releases ownership when `Run` returns. It requires an explicit commit, holds ownership for delayed hit windows, validates tokens and required weapons, and runs registered cleanup handlers on interruption.
+
+Added `AbilityDefinitions.luau`, `AbilityServer.server.luau`, `AbilityStateTests.luau` and `ABILITY-SETUP.md`. The Proof page exposes the complete ability adapter and all related combat modules. The setup file documents cooldown/refund semantics and a multi-client test matrix. See `assets/code/ABILITY-SETUP.md` for installation details.
+
+The files have been checked for references and JavaScript syntax, but have not been benchmarked or executed in Roblox Studio. The combat server and ability server are demonstration entry points and require game-specific setup before shipping.

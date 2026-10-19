@@ -27,6 +27,7 @@ local function get(character)
             LastRequest = -math.huge,
             LastPosition = nil,
             LastPositionAt = 0,
+            Essence = nil,
         }
         states[character] = state
     end
@@ -81,7 +82,7 @@ end
 function State.BeginGuard(character, now)
     local state = get(character)
     refreshGuard(state, now)
-    if state.Guarding or now < state.DisabledUntil or now < state.LockUntil or state.Guard <= 0 then
+    if state.Guarding or state.Action ~= nil or now < state.DisabledUntil or now < state.LockUntil or state.Guard <= 0 then
         return false
     end
     state.Guarding = true
@@ -103,7 +104,7 @@ end
 
 function State.CanAttack(character, now)
     local state = get(character)
-    return not state.Guarding and now >= state.DisabledUntil and now >= state.LockUntil and character:GetAttribute("Stunned") ~= true and character:GetAttribute("Knocked") ~= true and character:GetAttribute("Dodging") ~= true and character:GetAttribute("Blocking") ~= true
+    return state.Action == nil and not state.Guarding and now >= state.DisabledUntil and now >= state.LockUntil and character:GetAttribute("Stunned") ~= true and character:GetAttribute("Knocked") ~= true and character:GetAttribute("Dodging") ~= true and character:GetAttribute("Blocking") ~= true
 end
 
 function State.BeginAttack(character, kind, weapon, now)
@@ -139,23 +140,17 @@ function State.BeginAttack(character, kind, weapon, now)
     state.Action = kind
     state.RequestedAt = now
     state.Recovery = definition.Recovery
-    state.ActiveFrom = now + definition.Windup
-    state.ActiveUntil = state.ActiveFrom + definition.Active
-    state.LockUntil = state.ActiveUntil + definition.Recovery
-    return table.freeze({ Definition = definition, Token = token, Combo = combo or 0, StartsAt = state.ActiveFrom, EndsAt = state.ActiveUntil }), nil
+    local plannedStart = now + definition.Windup
+    local plannedEnd = plannedStart + definition.Active
+    state.ActiveFrom = math.huge
+    state.ActiveUntil = 0
+    state.LockUntil = plannedEnd + definition.Recovery + Config.AnimationMarkerGrace
+    return table.freeze({ Definition = definition, Token = token, Combo = combo or 0, StartsAt = plannedStart, EndsAt = plannedEnd }), nil
 end
 
 function State.IsCurrent(character, token, now)
     local state = get(character)
-    return state.Token == token and state.Action ~= nil and not state.Guarding and now >= state.DisabledUntil and character:GetAttribute("Stunned") ~= true and character:GetAttribute("Knocked") ~= true
-end
-
-function State.SuspendActiveWindow(character, token)
-    local state = get(character)
-    if state.Token == token then
-        state.ActiveFrom = math.huge
-        state.ActiveUntil = 0
-    end
+    return state.Token == token and state.Action ~= nil and not state.Guarding and now >= state.DisabledUntil and character:GetAttribute("Stunned") ~= true and character:GetAttribute("Knocked") ~= true and character:GetAttribute("Dodging") ~= true and character:GetAttribute("Blocking") ~= true
 end
 
 function State.SetActiveWindow(character, token, startTime, duration)
@@ -181,6 +176,31 @@ function State.IsActive(character, now)
     return state.Action ~= nil and now >= state.ActiveFrom and now <= state.ActiveUntil and now >= state.DisabledUntil and character:GetAttribute("Stunned") ~= true and character:GetAttribute("Knocked") ~= true
 end
 
+function State.CompleteAttack(character, token)
+    local state = get(character)
+    if state.Token == token then
+        state.Action = nil
+        state.ActiveFrom = math.huge
+        state.ActiveUntil = 0
+        return true
+    end
+    return false
+end
+
+function State.AbortAttack(character, token)
+    local state = get(character)
+    if state.Token ~= token then
+        return false
+    end
+    state.Token += 1
+    state.Action = nil
+    state.ActiveFrom = math.huge
+    state.ActiveUntil = 0
+    state.ComboIndex = 0
+    state.ComboExpiresAt = 0
+    return true
+end
+
 function State.Interrupt(character, untilTime)
     local state = get(character)
     state.Token += 1
@@ -192,6 +212,82 @@ function State.Interrupt(character, untilTime)
     state.ParryUntil = 0
     state.ComboIndex = 0
     state.ComboExpiresAt = 0
+end
+
+local function essence(state, character)
+    if state.Essence == nil then
+        local value = character:GetAttribute("Essence")
+        if type(value) ~= "number" or value ~= value then
+            value = 0
+        end
+        state.Essence = math.clamp(value, 0, 100000)
+    end
+    return state.Essence
+end
+
+function State.SetEssence(character, amount)
+    assert(type(amount) == "number" and amount == amount and amount >= 0 and amount <= 100000)
+    local state = get(character)
+    state.Essence = amount
+    character:SetAttribute("Essence", amount)
+end
+
+function State.GetEssence(character)
+    return essence(get(character), character)
+end
+
+function State.BeginAbility(character, duration, cost, now)
+    local state = get(character)
+    if not State.CanAttack(character, now) then
+        return nil, "Action locked"
+    end
+    if essence(state, character) < cost then
+        return nil, "Insufficient Essence"
+    end
+    state.Essence -= cost
+    character:SetAttribute("Essence", state.Essence)
+    state.Token += 1
+    state.Action = "Ability"
+    state.RequestedAt = now
+    state.Recovery = 0
+    state.ActiveFrom = math.huge
+    state.ActiveUntil = 0
+    state.LockUntil = now + duration
+    return state.Token
+end
+
+function State.OpenAbilityWindow(character, token, now, duration)
+    local state = get(character)
+    if not State.IsAbilityCurrent(character, token, now) or state.ActiveFrom ~= math.huge or duration <= 0 or duration > 0.5 or now + duration > state.LockUntil then
+        return false
+    end
+    state.ActiveFrom = now
+    state.ActiveUntil = now + duration
+    return true
+end
+
+function State.IsAbilityCurrent(character, token, now)
+    local state = get(character)
+    return state.Token == token and state.Action == "Ability" and now >= state.DisabledUntil and character:GetAttribute("Stunned") ~= true and character:GetAttribute("Knocked") ~= true and character:GetAttribute("Dodging") ~= true and character:GetAttribute("Blocking") ~= true
+end
+
+function State.EndAbility(character, token, now, recovery)
+    local state = get(character)
+    if state.Token ~= token or state.Action ~= "Ability" then
+        return false
+    end
+    state.Token += 1
+    state.Action = nil
+    state.ActiveFrom = math.huge
+    state.ActiveUntil = 0
+    state.LockUntil = math.max(state.DisabledUntil, now + recovery)
+    return true
+end
+
+function State.RefundEssence(character, amount)
+    local state = get(character)
+    state.Essence = math.min(100000, essence(state, character) + amount)
+    character:SetAttribute("Essence", state.Essence)
 end
 
 function State.Defense(character, now)

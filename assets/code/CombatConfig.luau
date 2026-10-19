@@ -10,7 +10,7 @@ local function attack(damage, posture, reach, width, windup, active, recovery, c
         Recovery = recovery,
         Cooldown = cooldown,
         MaxTargets = maxTargets,
-        SampleInterval = 0.045,
+        SampleInterval = 0.05,
     })
 end
 
@@ -33,6 +33,9 @@ local Config = {
     DisplacementAllowance = 7,
     MaxTargetRadiusAllowance = 2.7,
     MaxAttackLifetime = 2.0,
+    AnimationMarkerGrace = 0.09,
+    AnimationEarlyTolerance = 0.08,
+    AnimationLateTolerance = 0.09,
     ZoneTag = "CombatZone",
     WeaponTag = "CombatWeapon",
     NPCTag = "CombatNPC",
