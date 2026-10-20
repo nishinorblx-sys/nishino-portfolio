@@ -838,12 +838,12 @@ window.SITE = {
       "tone": "pigeon"
     },
     {
-      "name": "Steal A Cuisine",
-      "genre": "Tycoon / Multiplayer",
+      "name": "Z Piece",
+      "genre": "Anime RPG / Adventure",
       "note": "Developed or contributed to",
-      "placeId": "107002533085758",
-      "url": "https://www.roblox.com/games/107002533085758/Steal-A-Cuisine",
-      "tone": "cuisine"
+      "placeId": "15060257865",
+      "url": "https://www.roblox.com/games/15060257865/Z-Piece",
+      "tone": "zpiece"
     }
   ]
 };
