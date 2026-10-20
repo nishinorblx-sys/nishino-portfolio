@@ -819,7 +819,8 @@ window.SITE = {
       "note": "Developed or contributed to",
       "placeId": "8720980067",
       "url": "https://www.roblox.com/games/8720980067/Anime-Tales",
-      "tone": "anime"
+      "tone": "anime",
+      "thumbnail": "https://www.roblox.com/asset-thumbnail/image?assetId=8720980067&width=768&height=432&format=png"
     },
     {
       "name": "Anime Last Stand",
@@ -827,7 +828,8 @@ window.SITE = {
       "note": "Developed or contributed to",
       "placeId": "12886143095",
       "url": "https://www.roblox.com/games/12886143095/Anime-Last-Stand",
-      "tone": "stand"
+      "tone": "stand",
+      "thumbnail": "https://www.roblox.com/asset-thumbnail/image?assetId=12886143095&width=768&height=432&format=png"
     },
     {
       "name": "My Pooping Pigeons",
@@ -835,7 +837,8 @@ window.SITE = {
       "note": "Developed or contributed to",
       "placeId": "140327715500229",
       "url": "https://www.roblox.com/games/140327715500229/My-Pooping-Pigeons",
-      "tone": "pigeon"
+      "tone": "pigeon",
+      "thumbnail": "https://www.roblox.com/asset-thumbnail/image?assetId=140327715500229&width=768&height=432&format=png"
     },
     {
       "name": "Z Piece",
@@ -843,7 +846,8 @@ window.SITE = {
       "note": "Developed or contributed to",
       "placeId": "15060257865",
       "url": "https://www.roblox.com/games/15060257865/Z-Piece",
-      "tone": "zpiece"
+      "tone": "zpiece",
+      "thumbnail": "https://www.roblox.com/asset-thumbnail/image?assetId=15060257865&width=768&height=432&format=png"
     }
   ]
 };

@@ -19,3 +19,6 @@
 .featured-game-visit{display:inline-flex;align-items:center;gap:10px;font-size:11px;font-weight:700;color:#bf8aff;letter-spacing:.03em}
 @media(max-width:1050px){.featured-games-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:570px){.featured-games-grid{grid-template-columns:1fr;gap:14px}.featured-game-art{aspect-ratio:1.75}.featured-game-mark{font-size:120px}}
+
+.featured-game-art.has-thumb .featured-game-mark{display:none}
+.featured-game-art img{display:block}
