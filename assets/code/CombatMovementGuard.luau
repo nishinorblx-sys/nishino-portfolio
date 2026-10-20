@@ -146,6 +146,22 @@ function Guard.GetAcceptedPosition(character)
     return entry and entry.Budget and entry.Budget.Accepted or nil
 end
 
+function Guard.TrustedPosition(character, now)
+    if not inspect(character, now or os.clock()) then
+        return nil
+    end
+    local entry = tracked[character]
+    local root = rootOf(character)
+    if not entry or not entry.Budget or not root then
+        return nil
+    end
+    local position = entry.Budget.Accepted
+    if (root.Position - position).Magnitude > Config.MaxTrustedPositionDeviation then
+        return nil
+    end
+    return position
+end
+
 function Guard.IsImpulseAuthorized(character, now)
     local entry = tracked[character]
     local impulse = entry and entry.Budget and entry.Budget.Impulse

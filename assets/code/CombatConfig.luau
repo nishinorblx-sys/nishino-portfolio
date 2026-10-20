@@ -1,4 +1,4 @@
-local function attack(damage, posture, reach, width, windup, active, recovery, cooldown, maxTargets)
+local function attack(damage, posture, reach, width, windup, active, recovery, cooldown, maxTargets, lateral, yaw, shape)
     return table.freeze({
         Damage = damage,
         PostureDamage = posture,
@@ -11,16 +11,17 @@ local function attack(damage, posture, reach, width, windup, active, recovery, c
         Cooldown = cooldown,
         MaxTargets = maxTargets,
         SampleInterval = 0.05,
+        Hitbox = table.freeze({ Shape = shape or "Box", Lateral = lateral or 0, Vertical = 0, Forward = 0, Yaw = yaw or 0, SweepDistance = 1.8 }),
     })
 end
 
 local TrainingSword = table.freeze({
     ComboReset = 1.05,
     Light = table.freeze({
-        attack(10, 14, 5, 4.2, 0.12, 0.14, 0.18, 0.34, 3),
-        attack(11, 15, 5, 4.2, 0.13, 0.14, 0.19, 0.36, 3),
-        attack(12, 16, 5.2, 4.2, 0.14, 0.14, 0.2, 0.38, 3),
-        attack(13, 18, 5.2, 4.2, 0.16, 0.16, 0.22, 0.4, 4),
+        attack(10, 14, 5, 4.2, 0.12, 0.14, 0.18, 0.34, 3, -0.4, -0.12),
+        attack(11, 15, 5, 4.2, 0.13, 0.14, 0.19, 0.36, 3, 0.4, 0.12),
+        attack(12, 16, 5.2, 4.2, 0.14, 0.14, 0.2, 0.38, 3, -0.45, -0.1),
+        attack(13, 18, 5.2, 4.2, 0.16, 0.16, 0.22, 0.4, 4, 0.45, 0.1),
         attack(18, 26, 5.4, 4.4, 0.18, 0.19, 0.36, 0.55, 4),
     }),
     Heavy = attack(25, 39, 6.5, 5, 0.32, 0.2, 0.48, 1.15, 5),
@@ -48,6 +49,9 @@ local Config = {
     AnimationMarkerGrace = 0.09,
     AnimationEarlyTolerance = 0.08,
     AnimationLateTolerance = 0.09,
+    MaxFinalSampleLateness = 0.04,
+    MaxHitboxSweep = 9,
+    MaxTrustedPositionDeviation = 0.6,
     ZoneTag = "CombatZone",
     WeaponTag = "CombatWeapon",
     NPCTag = "CombatNPC",

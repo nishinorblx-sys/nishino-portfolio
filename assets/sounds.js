@@ -133,7 +133,7 @@
       if (enabled) { unlock(); play('click', true) }
     });
   }
-  const hoverTargets = '.desktop-nav a,.mobile-nav a,.filter-btn,.faq-aside a,.studio-row,.route-tile,.project-card,.client-card,.proof-chips span,.mini-tags span,.footer-links a,.foallow-video-card,.foallow-contact-panel,.foallow-video-launch,.foallow-explore-card';
+  const hoverTargets = '.desktop-nav a,.mobile-nav a,.filter-btn,.faq-aside a,.studio-row,.route-tile,.project-card,.featured-game-card,.client-card,.proof-chips span,.mini-tags span,.footer-links a,.foallow-video-card,.foallow-contact-panel,.foallow-video-launch,.foallow-explore-card';
   document.addEventListener('pointerover', event => {
     if (!entered || loader && !loader.classList.contains('ns-loader-hidden')) return;
     if (event.pointerType && event.pointerType !== 'mouse' && event.pointerType !== 'pen') return;

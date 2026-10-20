@@ -811,5 +811,39 @@ window.SITE = {
     "dropAll": "24% extra",
     "consult": "$22",
     "consultTime": "Up to 1 hour"
-  }
+  },
+  "featuredGames": [
+    {
+      "name": "Anime Tales",
+      "genre": "Anime Simulator",
+      "note": "Developed or contributed to",
+      "placeId": "8720980067",
+      "url": "https://www.roblox.com/games/8720980067/Anime-Tales",
+      "tone": "anime"
+    },
+    {
+      "name": "Anime Last Stand",
+      "genre": "Tower Defense",
+      "note": "Developed or contributed to",
+      "placeId": "12886143095",
+      "url": "https://www.roblox.com/games/12886143095/Anime-Last-Stand",
+      "tone": "stand"
+    },
+    {
+      "name": "My Pooping Pigeons",
+      "genre": "Simulation / Tycoon",
+      "note": "Developed or contributed to",
+      "placeId": "140327715500229",
+      "url": "https://www.roblox.com/games/140327715500229/My-Pooping-Pigeons",
+      "tone": "pigeon"
+    },
+    {
+      "name": "Steal A Cuisine",
+      "genre": "Tycoon / Multiplayer",
+      "note": "Developed or contributed to",
+      "placeId": "107002533085758",
+      "url": "https://www.roblox.com/games/107002533085758/Steal-A-Cuisine",
+      "tone": "cuisine"
+    }
+  ]
 };
