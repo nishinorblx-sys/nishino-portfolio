@@ -815,39 +815,39 @@ window.SITE = {
   "featuredGames": [
     {
       "name": "Anime Tales",
+      "thumbnail": "assets/media/anime-tales-game-thumb.png",
       "genre": "Anime Simulator",
       "note": "Developed or contributed to",
       "placeId": "8720980067",
       "url": "https://www.roblox.com/games/8720980067/Anime-Tales",
       "tone": "anime",
-      "thumbnail": "https://www.roblox.com/asset-thumbnail/image?assetId=8720980067&width=768&height=432&format=png"
     },
     {
       "name": "Anime Last Stand",
+      "thumbnail": "assets/media/anime-last-stand-game-thumb.png",
       "genre": "Tower Defense",
       "note": "Developed or contributed to",
       "placeId": "12886143095",
       "url": "https://www.roblox.com/games/12886143095/Anime-Last-Stand",
       "tone": "stand",
-      "thumbnail": "https://www.roblox.com/asset-thumbnail/image?assetId=12886143095&width=768&height=432&format=png"
     },
     {
       "name": "My Pooping Pigeons",
+      "thumbnail": "assets/media/my-pooping-pigeons-game-thumb.png",
       "genre": "Simulation / Tycoon",
       "note": "Developed or contributed to",
       "placeId": "140327715500229",
       "url": "https://www.roblox.com/games/140327715500229/My-Pooping-Pigeons",
       "tone": "pigeon",
-      "thumbnail": "https://www.roblox.com/asset-thumbnail/image?assetId=140327715500229&width=768&height=432&format=png"
     },
     {
       "name": "Z Piece",
+      "thumbnail": "assets/media/z-piece-game-thumb.png",
       "genre": "Anime RPG / Adventure",
       "note": "Developed or contributed to",
       "placeId": "15060257865",
       "url": "https://www.roblox.com/games/15060257865/Z-Piece",
       "tone": "zpiece",
-      "thumbnail": "https://www.roblox.com/asset-thumbnail/image?assetId=15060257865&width=768&height=432&format=png"
     }
   ]
 };
