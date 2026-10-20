@@ -42,3 +42,9 @@ Review `COMBAT-V25-MANIFEST.md` as the authoritative file list. Avoid mixing old
 For a real request-path test, use an isolated Studio place with one player. Set the Workspace attribute `FoallowRunE2E` to `true` before starting Play. Install `CombatLiveE2E.server.luau` as a Script alongside the server combat modules, and `CombatLiveE2E.client.luau` as a LocalScript in StarterPlayerScripts. Install the normal CombatServer Script as well. Do not run production combat-test scripts during normal gameplay. The harness creates a tagged NPC and a temporary tagged weapon, sends Light, Parry, held Guard, and Heavy from the actual client, and verifies server diagnostics and target damage. Remove the harness after capturing the output. Its pass/fail result is meaningful only when actually run in Studio.
 
 `CombatLoadProfiler.server.luau` runs four Studio-only scenarios and logs CPU time for hitbox scanning and per-attack Heartbeat work. `p95HeartbeatInterval` is a scheduler/frame-cadence diagnostic, not CPU time. Record the actual printed results and MicroProfiler traces; avoid claiming performance before a successful run.
+
+## V29 source and validation
+
+Install `CombatWindowScheduler`, `CombatSweepPlanner` and `CombatMovementGuard` beside `CombatHitboxService` in the server-side combat modules folder. Do not leave old copies of these modules in the same hierarchy. The server owns hitbox timing, the accepted movement positions and all resolver decisions. The active hit window uses configured duration, even if a normal animation track ends slightly early. Game-driven interruptions must call `Combat.Cancel` or `State.Interrupt` and must not rely on a cosmetic track stopping.
+
+For a complete code review use `COMBAT-V29-MANIFEST.md`, `COMBAT-V29-VERIFICATION.md`, `CombatWindowSchedulerTests.luau`, `CombatSweepPlannerTests.luau` and `CombatRequestDiagnosticsTests.server.luau`. Run the tests in Studio and retain the actual output separately.

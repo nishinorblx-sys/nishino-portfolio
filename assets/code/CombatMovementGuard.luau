@@ -147,15 +147,20 @@ function Guard.GetAcceptedPosition(character)
 end
 
 function Guard.TrustedPosition(character, now)
-    if not inspect(character, now or os.clock()) then
+    now = now or os.clock()
+    if not finite(now) or not inspect(character, now) then
         return nil
     end
     local entry = tracked[character]
     local root = rootOf(character)
-    if not entry or not entry.Budget or not root then
+    if not entry or not entry.Budget or not root or not root:IsDescendantOf(workspace) then
         return nil
     end
-    local position = entry.Budget.Accepted
+    local budget = entry.Budget
+    if now - budget.LastAt > Config.MaxTrustedPositionAge or now < budget.LastAt then
+        return nil
+    end
+    local position = budget.Accepted
     if (root.Position - position).Magnitude > Config.MaxTrustedPositionDeviation then
         return nil
     end

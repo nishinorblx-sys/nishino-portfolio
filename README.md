@@ -33,3 +33,7 @@ Your existing project videos, SFX clips and media assets are included in the ful
 The homepage's Crafted for Gameplay section now links to four Roblox experiences. A dedicated `games.html` page lists the same game credits and opens the official experience pages in a new tab.
 
 Combat proof additions include bounded hit-window scheduling, attack-specific hitbox geometry, trusted position checks before damage, and separate combat CPU, contact, and damage metrics. Read `assets/code/COMBAT-V26-REVIEW.md` and `assets/code/COMBAT-V26-MANIFEST.md` to review the source as a consistent release. Roblox Studio integration and performance tests must still be run independently.
+
+## V29 combat proof update
+
+The new combat source release includes the scheduler and bounded-sweep planner plus their regression tests, standardized request rejection accounting, movement trust checks and server-authoritative animation completion. `assets/code/COMBAT-V29-MANIFEST.md` lists the current source hashes, while `assets/code/COMBAT-V29-VERIFICATION.md` states test requirements and verification limits. These scripts have not been executed in Roblox Studio in this build.

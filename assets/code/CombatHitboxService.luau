@@ -9,13 +9,14 @@ local Movement = require(script.Parent.CombatMovementGuard)
 local Resolver = require(script.Parent.CombatResolver)
 local Timeline = require(script.Parent.CombatTimeline)
 local Scheduler = require(script.Parent.CombatWindowScheduler)
+local Sweep = require(script.Parent.CombatSweepPlanner)
 local Hurtboxes = require(script.Parent.CombatHurtboxIndex)
 
 local Combat = {}
 local active = {}
 local heartbeat = nil
 local lastRemote = setmetatable({}, { __mode = "k" })
-local metrics = { Requests = 0, Accepted = 0, Rejected = 0, Scans = 0, Queries = 0, Rays = 0, Resolutions = 0, Contacts = 0, Hits = 0, DamagingHits = 0, Blocked = 0, Parried = 0, Clashed = 0, GuardBroken = 0, Faults = 0, ActivePeak = 0, AnimationFallbacks = 0, SkippedSamples = 0, LateSamplesSkipped = 0, Samples = {}, SampleIndex = 0, ProcessingSamples = {}, ProcessingIndex = 0, ProcessingTotal = 0, FrameSamples = {}, FrameSampleIndex = 0, FrameProcessingTotal = 0 }
+local metrics = { Requests = 0, Accepted = 0, Rejected = 0, RejectedContacts = 0, RejectedSweeps = 0, RejectedUntrusted = 0, AnimationStopsContinued = 0, AnimationStopsAborted = 0, Scans = 0, Queries = 0, Rays = 0, Resolutions = 0, Contacts = 0, Hits = 0, DamagingHits = 0, Blocked = 0, Parried = 0, Clashed = 0, GuardBroken = 0, Faults = 0, ActivePeak = 0, AnimationFallbacks = 0, SkippedSamples = 0, LateSamplesSkipped = 0, Samples = {}, SampleIndex = 0, ProcessingSamples = {}, ProcessingIndex = 0, ProcessingTotal = 0, FrameSamples = {}, FrameSampleIndex = 0, FrameProcessingTotal = 0 }
 
 local function measureSample(elapsed)
     metrics.SampleIndex = metrics.SampleIndex % 2048 + 1
@@ -40,6 +41,11 @@ function Combat.Diagnostics(reset)
         Requests = metrics.Requests,
         Accepted = metrics.Accepted,
         Rejected = metrics.Rejected,
+        RejectedContacts = metrics.RejectedContacts,
+        RejectedSweeps = metrics.RejectedSweeps,
+        RejectedUntrusted = metrics.RejectedUntrusted,
+        AnimationStopsContinued = metrics.AnimationStopsContinued,
+        AnimationStopsAborted = metrics.AnimationStopsAborted,
         Scans = metrics.Scans,
         Queries = metrics.Queries,
         Rays = metrics.Rays,
@@ -129,7 +135,7 @@ local function scan(context, now)
         return false
     end
     if not trusted(character, root, now) then
-        metrics.Rejected += 1
+        metrics.RejectedUntrusted += 1
         return false
     end
     local definition = context.Attack.Definition
@@ -175,9 +181,15 @@ local function scan(context, now)
         end
     end
     local previous = context.PreviousHitbox
-    local displacement = previous and (center.Position - previous.Position).Magnitude or 0
-    if previous and displacement >= geometry.SweepDistance and displacement <= Config.MaxHitboxSweep then
-        collect(previous:Lerp(center, 0.5))
+    if previous then
+        local segments = Sweep.Plan(previous, center, geometry.SweepDistance, Config.MaxHitboxSweep, Config.MaxSweepAnglePerStep, Config.MaxSweepSteps)
+        if not segments then
+            metrics.RejectedSweeps += 1
+            return false
+        end
+        for step = 1, segments - 1 do
+            collect(previous:Lerp(center, step / segments))
+        end
     end
     collect(center)
     context.PreviousHitbox = center
@@ -188,7 +200,15 @@ local function scan(context, now)
         return a.Distance < b.Distance
     end)
     for _, candidate in ipairs(candidates) do
-        if not context.Seen[candidate.Character] and trusted(character, root, now) and trusted(candidate.Character, candidate.Root, now) then
+        if not context.Seen[candidate.Character] then
+            if not trusted(character, root, now) then
+                metrics.RejectedUntrusted += 1
+                return false
+            end
+            if not trusted(candidate.Character, candidate.Root, now) then
+                metrics.RejectedUntrusted += 1
+                continue
+            end
             metrics.Rays += 1
             if visible(root, candidate.Root, candidate.Character, context.Raycast) then
                 context.Seen[candidate.Character] = true
@@ -206,7 +226,7 @@ local function scan(context, now)
                     if outcome == "Clashed" then metrics.Clashed += 1 end
                     if outcome == "GuardBroken" then metrics.GuardBroken += 1 end
                 elseif outcome == "Forbidden" or outcome == "Invalid" then
-                    metrics.Rejected += 1
+                    metrics.RejectedContacts += 1
                 end
                 if context.Hits >= definition.MaxTargets or not State.IsCurrent(character, context.Attack.Token, os.clock()) then
                     break
@@ -245,7 +265,7 @@ local function stop(context, aborted)
 end
 
 local function openWindow(context, now, viaMarker)
-    if context.Stopped then
+    if context.Stopped or active[context.Character] ~= context then
         return false
     end
     local timeline = context.Timing
@@ -272,6 +292,9 @@ local function openWindow(context, now, viaMarker)
 end
 
 local function validContext(context, now)
+    if context.Stopped or active[context.Character] ~= context then
+        return false
+    end
     local root, humanoid = living(context.Character)
     if not root or not humanoid or not State.IsCurrent(context.Character, context.Attack.Token, now) then
         return false
@@ -390,10 +413,16 @@ local function attachAnimation(context, humanoid, action)
         end
     end)
     context.Connections[#context.Connections + 1] = track.Stopped:Connect(function()
-        if context.Stopped then return end
+        if context.Stopped or active[context.Character] ~= context then
+            return
+        end
+        local now = os.clock()
         if context.Timing.Phase == "Active" then
-            if os.clock() + 0.005 < context.Timing.EndAt then
+            if not validContext(context, now) then
+                metrics.AnimationStopsAborted += 1
                 stop(context, true)
+            else
+                metrics.AnimationStopsContinued += 1
             end
         else
             context.Timing.FallbackAt = context.Timing.PlannedStart
@@ -492,6 +521,7 @@ function Combat.Request(player, action)
         if character then
             State.EndGuard(character, now)
         end
+        metrics.Accepted += 1
         return true, "Guard released"
     end
     if now - (lastRemote[player] or -math.huge) < 0.03 then
@@ -511,14 +541,18 @@ function Combat.Request(player, action)
             return reject("Guard renewal rejected")
         end
         local renewed = State.KeepGuard(character, now)
-        return renewed, renewed and "Guard renewed" or "Guard not eligible"
+        if not renewed then
+            return reject("Guard not eligible")
+        end
+        metrics.Accepted += 1
+        return true, "Guard renewed"
     end
     if root.Anchored or humanoid.Sit or (root.AssemblyLinearVelocity.Magnitude > Config.MaxLinearSpeed and not Movement.IsImpulseAuthorized(character, now)) then
         return reject("Invalid character")
     end
     local allowed, reason = State.CanRequest(character, now)
     if not allowed then
-        return false, reason
+        return reject(reason)
     end
     if not State.UpdateMovement(character, now) then
         return reject("Implausible movement")
@@ -528,12 +562,24 @@ function Combat.Request(player, action)
         return reject("No authorized weapon")
     end
     if action == "GuardStart" then
-        return State.BeginGuard(character, now), "Guard"
+        if not State.BeginGuard(character, now) then
+            return reject("Guard rejected")
+        end
+        metrics.Accepted += 1
+        return true, "Guard"
     end
     if action == "Parry" then
-        return State.BeginParry(character, now), "Parry"
+        if not State.BeginParry(character, now) then
+            return reject("Parry rejected")
+        end
+        metrics.Accepted += 1
+        return true, "Parry"
     end
-    return beginAttack(character, action, now, weapon, tool, humanoid)
+    local success, result = beginAttack(character, action, now, weapon, tool, humanoid)
+    if not success then
+        return reject(result)
+    end
+    return true, result
 end
 
 function Combat.RequestNPC(character, action)
@@ -556,7 +602,11 @@ function Combat.RequestNPC(character, action)
     if not weapon then
         return reject("Missing server-authorized NPC weapon")
     end
-    return beginAttack(character, action, now, weapon, tool, humanoid)
+    local success, result = beginAttack(character, action, now, weapon, tool, humanoid)
+    if not success then
+        return reject(result)
+    end
+    return true, result
 end
 
 function Combat.Cancel(character)
